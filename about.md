@@ -3,13 +3,20 @@ layout: page
 title: About
 permalink: /about/
 ---
+Senior Software Engineer at RedHat India.
 
-Some information about you!
+Interested in containers, Docker, Kubernetes, Openshift,kubernetes-csi, storage
+and more
+
+Self-directed and motivated Software Engineer experienced  working effectively
+in dynamic environments, Offering 5+ years of experience in full  software
+development life cycle, Quickly learn and master new technologies and working
+in both team and self-directed settings.
 
 ### More Information
 
-A place to include any other types of information that you'd like to include about yourself.
+For more information, please refer to [My resume](../resume.html)
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[madhupr007@gmail.com](mailto:madhupr007@gmail.com)
