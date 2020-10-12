@@ -40,7 +40,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0;
 
   @include mobile {
-    line-height: 1.4;
+    line-height: 1.5;
   }
 }
 
@@ -107,7 +107,7 @@ strong, b {
 }
 
 img {
-  max-width: 100%;
+  max-width: 200%;
 }
 
 // Fixes images in popup boxes from Google Translate
