@@ -54,7 +54,7 @@ baseurl: ""
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-leaf
+theme: jekyll-theme-time-machine
 plugins:
   - jekyll-sitemap # Create a sitemap using the official Jekyll sitemap gem
   - jekyll-feed # Create an Atom feed using the official Jekyll feed gem
