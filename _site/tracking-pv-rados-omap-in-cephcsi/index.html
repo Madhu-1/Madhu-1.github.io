@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Track PV to RADOS omap data mapping stored by cephcsi – Madhu Rajanna – Senior Software Engineer at RedHat</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="This blog will help you to understand how to track the internal rados omap data
+stored by cephcsi for cephfs and rbd pvc.
+
+" />
+    <meta property="og:description" content="This blog will help you to understand how to track the internal rados omap data
+stored by cephcsi for cephfs and rbd pvc.
+
+" />
+    
+    <meta name="author" content="Madhu Rajanna" />
+
+    
+    <meta property="og:title" content="Track PV to RADOS omap data mapping stored by cephcsi" />
+    <meta property="twitter:title" content="Track PV to RADOS omap data mapping stored by cephcsi" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Madhu Rajanna - Senior Software Engineer at RedHat" href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://raw.githubusercontent.com/Madhu-1/Madhu-1.github.io/master/images/Madhu.jpeg" /></a>
+          <nav>
+            <a href="/">Blog</a>
+            <a href="/about">about</a>
+            <a href="/resume">Resume</a>
+          </nav>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <div class="site-info">
+            <h1 class="site-name"><strong><a href="/">Madhu Rajanna</a></strong></h1>
+          </div>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Track PV to RADOS omap data mapping stored by cephcsi</h1>
+
+  <div class="entry">
+    <p>This blog will help you to understand how to track the internal rados omap data
+stored by cephcsi for cephfs and rbd pvc.</p>
+
+<p>Note: This blog assumes that you have rook cluster up and running and few
+CephFS and RBD PVC’s are created.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@ceph <span class="nv">$]</span>kubectl get pvc
+NAME         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
+cephfs-pvc   Bound    pvc-88919d42-ecdf-4737-a805-065eacdfd34f   1Gi        RWO            rook-cephfs       68s
+rbd-pvc      Bound    pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1   1Gi        RWO            rook-ceph-block   79s
+</code></pre></div></div>
+
+<p>In the above PVC list we have one RBD and one CephFS PVC, let us first track the
+rados omap for RBD</p>
+
+<h2 id="track-rbd-omap-data">Track RBD omap data</h2>
+
+<p>To get the omap details we need to know the rbd pool in which cephcsi
+stores the omap data. let’s first get the pool name which is stored in PV CSI
+spec</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@ceph <span class="nv">$]</span>kubectl get pv pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1 <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.csi}'</span>
+<span class="o">{</span>
+	<span class="s2">"controllerExpandSecretRef"</span>: <span class="o">{</span>
+		<span class="s2">"name"</span>: <span class="s2">"rook-csi-rbd-provisioner"</span>,
+		<span class="s2">"namespace"</span>: <span class="s2">"rook-ceph"</span>
+	<span class="o">}</span>,
+	<span class="s2">"driver"</span>: <span class="s2">"rook-ceph.rbd.csi.ceph.com"</span>,
+	<span class="s2">"fsType"</span>: <span class="s2">"ext4"</span>,
+	<span class="s2">"nodeStageSecretRef"</span>: <span class="o">{</span>
+		<span class="s2">"name"</span>: <span class="s2">"rook-csi-rbd-node"</span>,
+		<span class="s2">"namespace"</span>: <span class="s2">"rook-ceph"</span>
+	<span class="o">}</span>,
+	<span class="s2">"volumeAttributes"</span>: <span class="o">{</span>
+		<span class="s2">"clusterID"</span>: <span class="s2">"rook-ceph"</span>,
+		<span class="s2">"imageFeatures"</span>: <span class="s2">"layering"</span>,
+		<span class="s2">"imageFormat"</span>: <span class="s2">"2"</span>,
+		<span class="s2">"imageName"</span>: <span class="s2">"csi-vol-92837648-1431-11eb-8990-0242ac110005"</span>,
+		<span class="s2">"journalPool"</span>: <span class="s2">"replicapool"</span>,
+		<span class="s2">"pool"</span>: <span class="s2">"replicapool"</span>,
+		<span class="s2">"radosNamespace"</span>: <span class="s2">""</span>,
+		<span class="s2">"storage.kubernetes.io/csiProvisionerIdentity"</span>: <span class="s2">"1603348800044-8081-rook-ceph.rbd.csi.ceph.com"</span>
+	<span class="o">}</span>,
+	<span class="s2">"volumeHandle"</span>: <span class="s2">"0001-0009-rook-ceph-0000000000000002-92837648-1431-11eb-8990-0242ac110005"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>In the above PV <code class="language-plaintext highlighter-rouge">replicapool</code> is the journal pool name so let’s step into the toolbox
+pod which helps us to connect to the ceph cluster</p>
+
+<p><strong><em>NOTE:</em></strong> If you are using a standalone ceph cluster you can execute these commands
+from your ceph cluster</p>
+
+<blockquote>
+  <p>Cephcsi internal design created 2 omap mapping</p>
+  <ul>
+    <li>one is request ID(PV name) to unique ID mapping
+      <ul>
+        <li>This helps to make cephcsi idempotent even if we get the same request
+  we return the existing data.</li>
+      </ul>
+    </li>
+    <li>One is uniqueID and image details mapping
+      <ul>
+        <li>This helps cephcsi to extract the image details   when volumeID is passed in
+  the request, cephcsi will decode the volumeID and get the omap
+  details to extract image/volume name etc.</li>
+      </ul>
+    </li>
+  </ul>
+</blockquote>
+
+<h3 id="rbd-pv-name-and-unique-id-mapping">RBD PV name and unique ID mapping</h3>
+
+<p>PV name is the request name, let’s get the unique ID mapped to the request name</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@ceph <span class="nv">$]</span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> rook-ceph-tools-6c984f579-qqh7n sh <span class="nt">-nrook-ceph</span>
+sh-4.4# rados getomapval csi.volumes.default csi.volume.pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1 <span class="nt">--pool</span><span class="o">=</span>replicapool
+value <span class="o">(</span>36 bytes<span class="o">)</span> :
+00000000  39 32 38 33 37 36 34 38  2d 31 34 33 31 2d 31 31  |92837648-1431-11|
+00000010  65 62 2d 38 39 39 30 2d  30 32 34 32 61 63 31 31  |eb-8990-0242ac11|
+00000020  30 30 30 35                                       |0005|
+00000024
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">csi.volumes.default</code> is the object created by cephcsi to store the request
+name to unique ID mapping</p>
+
+<p><code class="language-plaintext highlighter-rouge">92837648-1431-11eb-8990-0242ac110005</code> is the unique ID mapped to request name
+<code class="language-plaintext highlighter-rouge">pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1</code></p>
+
+<h3 id="rbd-unique-id-and-omap-details-mapping">RBD unique ID and omap details mapping</h3>
+
+<p>Let’s get the list of keys cephcsi stores with this unique ID</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh-4.4# rados listomapkeys csi.volume.92837648-1431-11eb-8990-0242ac110005 <span class="nt">--pool</span><span class="o">=</span>replicapool
+csi.imageid
+csi.imagename
+csi.volname
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">csi.volume.92837648-1431-11eb-8990-0242ac110005</code> is the object cephcsi creates
+to store individual image details and its always unique and last part of the
+object is the unique ID that we got from Request Name mapping.</p>
+
+<p>For RBD, cephcsi stores 3 keys in the unique object</p>
+
+<ol>
+  <li>csi.imageid is the key which holds the imageid which is required by cephcsi
+to deletion operation.</li>
+  <li>csi.imagename which holds the RBD image name.</li>
+  <li>csi.volname holds the request name.</li>
+</ol>
+
+<p>Let’s get all the values of these keys</p>
+
+<p><strong>Note:</strong> Am listing all the values stored in the
+<code class="language-plaintext highlighter-rouge">csi.volume.92837648-1431-11eb-8990-0242ac110005</code> object</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh-4.4# rados listomapvals csi.volume.92837648-1431-11eb-8990-0242ac110005 <span class="nt">--pool</span><span class="o">=</span>replicapool
+csi.imageid
+value <span class="o">(</span>11 bytes<span class="o">)</span> :
+00000000  31 30 39 36 39 35 32 32  61 35 63                 |10969522a5c|
+0000000b
+
+csi.imagename
+value <span class="o">(</span>44 bytes<span class="o">)</span> :
+00000000  63 73 69 2d 76 6f 6c 2d  39 32 38 33 37 36 34 38  |csi-vol-92837648|
+00000010  2d 31 34 33 31 2d 31 31  65 62 2d 38 39 39 30 2d  |-1431-11eb-8990-|
+00000020  30 32 34 32 61 63 31 31  30 30 30 35              |0242ac110005|
+0000002c
+
+csi.volname
+value <span class="o">(</span>40 bytes<span class="o">)</span> :
+00000000  70 76 63 2d 34 61 34 63  32 66 61 33 2d 30 38 36  |pvc-4a4c2fa3-086|
+00000010  62 2d 34 39 66 63 2d 61  31 65 66 2d 66 64 38 62  |b-49fc-a1ef-fd8b|
+00000020  30 37 36 38 66 34 62 31                           |0768f4b1|
+00000028
+</code></pre></div></div>
+
+<p>We have seen how to track the PV -&gt; rados omap mapping for the RBD,let’s see how
+to track the CephFS rados omap data</p>
+
+<h2 id="track-cephfs-pvc-omap-data">Track CephFS PVC omap data</h2>
+
+<p>To get the omap details we need to know the cephfs metadata pool in which
+cephcsi stores the omap data. Let’s get the filesystem name which is
+stored in PV CSI spec</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@ceph <span class="nv">$]</span>kubectl get pv pvc-88919d42-ecdf-4737-a805-065eacdfd34f <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.csi}'</span>
+<span class="o">{</span>
+	<span class="s2">"controllerExpandSecretRef"</span>: <span class="o">{</span>
+		<span class="s2">"name"</span>: <span class="s2">"rook-csi-cephfs-provisioner"</span>,
+		<span class="s2">"namespace"</span>: <span class="s2">"rook-ceph"</span>
+	<span class="o">}</span>,
+	<span class="s2">"driver"</span>: <span class="s2">"rook-ceph.cephfs.csi.ceph.com"</span>,
+	<span class="s2">"fsType"</span>: <span class="s2">"ext4"</span>,
+	<span class="s2">"nodeStageSecretRef"</span>: <span class="o">{</span>
+		<span class="s2">"name"</span>: <span class="s2">"rook-csi-cephfs-node"</span>,
+		<span class="s2">"namespace"</span>: <span class="s2">"rook-ceph"</span>
+	<span class="o">}</span>,
+	<span class="s2">"volumeAttributes"</span>: <span class="o">{</span>
+		<span class="s2">"clusterID"</span>: <span class="s2">"rook-ceph"</span>,
+		<span class="s2">"fsName"</span>: <span class="s2">"myfs"</span>,
+		<span class="s2">"pool"</span>: <span class="s2">"myfs-data0"</span>,
+		<span class="s2">"storage.kubernetes.io/csiProvisionerIdentity"</span>: <span class="s2">"1603348799452-8081-rook-ceph.cephfs.csi.ceph.com"</span>,
+		<span class="s2">"subvolumeName"</span>: <span class="s2">"csi-vol-bff8a308-1431-11eb-b0fd-0242ac110006"</span>
+	<span class="o">}</span>,
+	<span class="s2">"volumeHandle"</span>: <span class="s2">"0001-0009-rook-ceph-0000000000000001-bff8a308-1431-11eb-b0fd-0242ac110006"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>In the above PV <code class="language-plaintext highlighter-rouge">myfs</code> is the CephFS filesystem name so let’s step into the
+toolbox pod which helps us to connect to ceph cluster</p>
+
+<p><strong>Note:</strong> If you are using standalone ceph cluster you can execute these commands
+from your ceph cluster</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>To know the metadata pool for the filesystem, run
+sh-4.4# ceph fs ls
+name: myfs, metadata pool: myfs-metadata, data pools: [myfs-data0 ]
+</code></pre></div></div>
+
+<h3 id="cephfs-pv-name-and-unique-id-mapping">CephFS PV name and unique ID mapping</h3>
+
+<p>PV name is the request name, let’s get the unique ID mapped to the request name</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@ceph <span class="nv">$]</span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> rook-ceph-tools-6c984f579-qqh7n sh <span class="nt">-nrook-ceph</span>
+sh-4.4# rados getomapval csi.volumes.default csi.volume.pvc-88919d42-ecdf-4737-a805-065eacdfd34f <span class="nt">--pool</span><span class="o">=</span>myfs-metadata <span class="nt">--namespace</span><span class="o">=</span>csi
+value <span class="o">(</span>36 bytes<span class="o">)</span> :
+00000000  62 66 66 38 61 33 30 38  2d 31 34 33 31 2d 31 31  |bff8a308-1431-11|
+00000010  65 62 2d 62 30 66 64 2d  30 32 34 32 61 63 31 31  |eb-b0fd-0242ac11|
+00000020  30 30 30 36                                       |0006|
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">csi.volumes.default</code> is the object created by cephcsi to store the request
+name to unique ID mapping, For CephFS cephcsi uses <code class="language-plaintext highlighter-rouge">csi</code> namespace by
+default,for RBD its <code class="language-plaintext highlighter-rouge">default</code> rados namespace.</p>
+
+<p><code class="language-plaintext highlighter-rouge">bff8a308-1431-11eb-b0fd-0242ac110006</code> is the unique ID mapped to request name
+<code class="language-plaintext highlighter-rouge">pvc-88919d42-ecdf-4737-a805-065eacdfd34f</code></p>
+
+<h3 id="cephfs-unique-id-and-omap-details-mapping">CephFS unique ID and omap details mapping</h3>
+
+<p>Let’s get the list of keys cephcsi stores with this unique ID</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh-4.4# rados listomapkeys csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006 <span class="nt">--pool</span><span class="o">=</span>myfs-metadata <span class="nt">--namespace</span><span class="o">=</span>csi
+csi.imagename
+csi.volname
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006</code> is the object cephcsi creates
+to store indivisual image details and its always unique and last part of the
+object is the unique ID that we got from Request Name mapping.</p>
+
+<p>For CephFS, cephcsi stores 2 keys in the unique object</p>
+
+<ol>
+  <li>csi.imagename which holds the CephFS subvolume name.</li>
+  <li>csi.volname holds the request name.</li>
+</ol>
+
+<p>Let’s get all the values of these keys</p>
+
+<p>Note:- Am listing all the values stored in the
+<code class="language-plaintext highlighter-rouge">csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006</code> object</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sh-4.4# rados listomapvals csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006 <span class="nt">--pool</span><span class="o">=</span>myfs-metadata <span class="nt">--namespace</span><span class="o">=</span>csi
+csi.imagename
+value <span class="o">(</span>44 bytes<span class="o">)</span> :
+00000000  63 73 69 2d 76 6f 6c 2d  62 66 66 38 61 33 30 38  |csi-vol-bff8a308|
+00000010  2d 31 34 33 31 2d 31 31  65 62 2d 62 30 66 64 2d  |-1431-11eb-b0fd-|
+00000020  30 32 34 32 61 63 31 31  30 30 30 36              |0242ac110006|
+0000002c
+
+csi.volname
+value <span class="o">(</span>40 bytes<span class="o">)</span> :
+00000000  70 76 63 2d 38 38 39 31  39 64 34 32 2d 65 63 64  |pvc-88919d42-ecd|
+00000010  66 2d 34 37 33 37 2d 61  38 30 35 2d 30 36 35 65  |f-4737-a805-065e|
+00000020  61 63 64 66 64 33 34 66                           |acdfd34f|
+00000028
+</code></pre></div></div>
+
+  </div>
+
+  <div class="date">
+    Written on October 22, 2020
+  </div>
+</article>
+
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'http://mrajanna.com/tracking-pv-rados-omap-in-cephcsi/';
+      this.page.identifier = 'http://mrajanna.com/tracking-pv-rados-omap-in-cephcsi/';
+    };
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://madhu-1-github-io-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:Madhupr007@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/Madhu-1"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/madhu-r-4a551573"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/Madhupr007"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+	<!-- Google Analytics -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'JIHOr7sMuScUjTkc83_0L5mNKi72Ic_H6l79QYqlwC4', 'auto');
+		ga('send', 'pageview', {
+		  'page': '/tracking-pv-rados-omap-in-cephcsi/',
+		  'title': 'Track PV to RADOS omap data mapping stored by cephcsi'
+		});
+	</script>
+	<!-- End Google Analytics -->
+
+
+  </body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Install Rook in minikube – Madhu Rajanna – Senior Software Engineer at RedHat</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="This blog will help you out to install and setup rook in a minikube vm, before
+you continue make sure you have installed minikube on your local system
+
+" />
+    <meta property="og:description" content="This blog will help you out to install and setup rook in a minikube vm, before
+you continue make sure you have installed minikube on your local system
+
+" />
+    
+    <meta name="author" content="Madhu Rajanna" />
+
+    
+    <meta property="og:title" content="Install Rook in minikube" />
+    <meta property="twitter:title" content="Install Rook in minikube" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Madhu Rajanna - Senior Software Engineer at RedHat" href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://raw.githubusercontent.com/Madhu-1/Madhu-1.github.io/master/images/Madhu.jpeg" /></a>
+          <nav>
+            <a href="/">Blog</a>
+            <a href="/about">about</a>
+            <a href="/resume">Resume</a>
+          </nav>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <div class="site-info">
+            <h1 class="site-name"><strong><a href="/">Madhu Rajanna</a></strong></h1>
+          </div>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Install Rook in minikube</h1>
+
+  <div class="entry">
+    <p>This blog will help you out to install and setup rook in a minikube vm, before
+you continue make sure you have installed minikube on your local system</p>
+
+<h2 id="install-minikube">Install minikube</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>curl <span class="nt">-LO</span> https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span><span class="nb">sudo install </span>minikube-linux-amd64 /usr/local/bin/minikube
+</code></pre></div></div>
+
+<h2 id="create-kubernetes-cluster-using-minikube">create kubernetes cluster using minikube</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>minikube start <span class="nt">--force</span> <span class="nt">--memory</span><span class="o">=</span><span class="s2">"4096"</span> <span class="nt">--cpus</span><span class="o">=</span><span class="s2">"2"</span> <span class="nt">-b</span> kubeadm <span class="nt">--kubernetes-version</span><span class="o">=</span><span class="s2">"v1.19.2"</span> <span class="nt">--driver</span><span class="o">=</span><span class="s2">"kvm2"</span> <span class="nt">--feature-gates</span><span class="o">=</span><span class="s2">"BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"</span>
+</code></pre></div></div>
+
+<p>I will be using <code class="language-plaintext highlighter-rouge">kvm2</code> in this blog as a vmdriver to  create minikube vm, rook
+expects us to have a raw device on the nodes where we are creating a ceph
+cluster. using kvm2 we can attach devices to the minikube vm.You can also
+select different vm drivers when installing the minikube.</p>
+
+<h3 id="create-a-folder-for-rook-to-store-the-ceph-information">Create a folder for rook to store the ceph information</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>minikube ssh <span class="s2">"sudo mkdir -p /mnt/vda1/var/lib/rook;sudo ln -s /mnt/vda1/var/lib/rook /var/lib/rook"</span>
+</code></pre></div></div>
+
+<h3 id="add-a-disk-to-minikube-vm">Add a disk to minikube vm</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span><span class="nb">sudo</span> <span class="nt">-S</span> qemu-img create <span class="nt">-f</span> raw /var/lib/libvirt/images/minikube-box-vm-disk-50G 50G
+<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>virsh <span class="nt">-c</span> qemu:///system attach-disk minikube <span class="nt">--source</span> /var/lib/libvirt/images/minikube-box-vm-disk-50G <span class="nt">--target</span> vdb <span class="nt">--cache</span> none
+<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>virsh <span class="nt">-c</span> qemu:///system reboot <span class="nt">--domain</span> minikube
+</code></pre></div></div>
+
+<p>Assuming you have already installed libvirt virsh etc. Am attaching a device
+called <code class="language-plaintext highlighter-rouge">vdb</code> to the minikube vm to create ceph cluster.</p>
+
+<p>Note:</p>
+
+<pre><code class="language-note">You can do `minikube ssh` and step inside the minikube vm and check `/dev/vdb` is created.
+sometimes the disk wont show up immidiately for that you can need to  start
+the minikube again.
+</code></pre>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>minikube ssh
+<span class="nv">$ </span><span class="nb">ls</span> /dev/vdb
+<span class="nv">$ </span><span class="nb">exit</span>
+<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>minikube start <span class="nt">--force</span> <span class="nt">--memory</span><span class="o">=</span><span class="s2">"4096"</span> <span class="nt">--cpus</span><span class="o">=</span><span class="s2">"2"</span> <span class="nt">-b</span> kubeadm <span class="nt">--kubernetes-version</span><span class="o">=</span><span class="s2">"v1.19.2"</span> <span class="nt">--driver</span><span class="o">=</span><span class="s2">"kvm2"</span> <span class="nt">--feature-gates</span><span class="o">=</span><span class="s2">"BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"</span>
+</code></pre></div></div>
+
+<p>to verify the kubernetes cluster  is created you can run below command</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[🎩︎]mrajanna@localhost $</span><span class="o">]</span>minikube kubectl <span class="nt">--</span> cluster-info
+</code></pre></div></div>
+
+<h3 id="install-rook">Install Rook</h3>
+
+<p>As the kubernetes cluster is installed we can start installing the rook now,
+for that we need to first download the  rook github project and check out the
+release branch.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>git clone git@github.com:rook/rook.git
+<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>git checkout v1.4.5
+</code></pre></div></div>
+
+<p>All the kubernetes templates which are required for the rook installation are
+localted at <code class="language-plaintext highlighter-rouge">cluster/examples/kubernetes/ceph</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span><span class="nb">cd </span>rook/cluster/examples/kubernetes/ceph
+</code></pre></div></div>
+
+<p>To have a complete ceph cluster, we need to install below yaml files</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>common.yaml         ----&gt; CRD's and RBAC's required for operator
+operator.yaml       ----&gt; Operator deployment
+cluster-test.yaml   ----&gt; The ceph cluster CRD
+pool-test.yaml      ----&gt; block pool CRD
+filesystem.yaml     ----&gt; ceph filesystem CRD
+toolbox.yaml        ----&gt; toolbox deployment to execute ceph commands
+</code></pre></div></div>
+
+<p>Files ending with <em>_test.yaml</em> should be used only for testing not for
+production.</p>
+
+<p>Lets create all the kubernetes templates to create ceph cluster</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> common.yaml
+kubectl create <span class="nt">-f</span> operator.yaml
+kubectl create <span class="nt">-f</span> cluster-test.yaml
+kubectl create <span class="nt">-f</span> pool-test.yaml
+kubectl create <span class="nt">-f</span> filesystem.yaml
+kubectl create <span class="nt">-f</span> toolbox.yaml
+</code></pre></div></div>
+
+<p>Lets wait for few minutes and Verify all the pods are running</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl get po <span class="nt">-nrook-ceph</span>
+NAME                                            READY   STATUS      RESTARTS   AGE
+csi-cephfsplugin-7llbt                          3/3     Running     0          22h
+csi-cephfsplugin-provisioner-5c65b94c8d-tljqd   0/6     Pending     0          22h
+csi-cephfsplugin-provisioner-5c65b94c8d-x4kgq   6/6     Running     8          22h
+csi-rbdplugin-b6jgs                             3/3     Running     0          22h
+csi-rbdplugin-provisioner-569c75558-7twxh       0/6     Pending     0          22h
+csi-rbdplugin-provisioner-569c75558-kx69l       6/6     Running     8          22h
+rook-ceph-mds-myfs-a-6dd4596558-lt94j           1/1     Running     0          22h
+rook-ceph-mds-myfs-b-77986b766d-rlc2v           1/1     Running     0          22h
+rook-ceph-mgr-a-75f9c8bd4b-gwvvx                1/1     Running     2          22h
+rook-ceph-mon-a-5f85c959bf-gmssg                1/1     Running     0          22h
+rook-ceph-operator-6db6f67cd4-7wmkq             1/1     Running     0          22h
+rook-ceph-osd-0-77b585d64-5pfcq                 1/1     Running     0          22h
+rook-ceph-osd-prepare-minikube-hqqj7            0/1     Completed   0          15h
+rook-ceph-tools-6c984f579-m6ccc                 1/1     Running     0          22h
+rook-discover-hjj6c                             1/1     Running     0          22h
+</code></pre></div></div>
+
+<p>Check ceph filesystem  and block pool is create</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl <span class="nt">-n</span> rook-ceph get cephfilesystems myfs
+NAME   ACTIVEMDS   AGE
+myfs   1           22h
+<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl <span class="nt">-n</span> rook-ceph get  cephblockpools replicapool
+NAME          AGE
+replicapool   22h
+</code></pre></div></div>
+
+<p>Let exec into the ceph toolbox pod and verify <code class="language-plaintext highlighter-rouge">ceph status</code>, pools and
+filesystem  created in ceph.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> rook-ceph-tools-6c984f579-m6ccc sh <span class="nt">-nrook-ceph</span>
+sh-4.4# ceph <span class="nt">-s</span>
+  cluster:
+    <span class="nb">id</span>:     f50de5f0-5d0a-4621-a6fb-04192efdcc79
+    health: HEALTH_OK
+
+  services:
+    mon: 1 daemons, quorum a <span class="o">(</span>age 22h<span class="o">)</span>
+    mgr: a<span class="o">(</span>active, since 112m<span class="o">)</span>
+    mds: myfs:1 <span class="o">{</span><span class="nv">0</span><span class="o">=</span>myfs-b<span class="o">=</span>up:active<span class="o">}</span> 1 up:standby-replay
+    osd: 1 osds: 1 up <span class="o">(</span>since 113m<span class="o">)</span>, 1 <span class="k">in</span> <span class="o">(</span>since 22h<span class="o">)</span>
+
+  task status:
+    scrub status:
+        mds.myfs-a: idle
+        mds.myfs-b: idle
+
+  data:
+    pools:   4 pools, 97 pgs
+    objects: 35 objects, 3.2 MiB
+    usage:   1.0 GiB used, 49 GiB / 50 GiB avail
+    pgs:     97 active+clean
+
+  io:
+    client:   1.2 KiB/s rd, 2 op/s rd, 0 op/s wr
+
+sh-4.4# ceph osd lspools
+1 device_health_metrics
+2 replicapool
+3 myfs-metadata
+4 myfs-data0
+sh-4.4# ceph fs <span class="nb">ls
+</span>name: myfs, metadata pool: myfs-metadata, data pools: <span class="o">[</span>myfs-data0 <span class="o">]</span>
+sh-4.4#
+</code></pre></div></div>
+
+<p>Now we have create ceph cluster using rook in minikube. The commands we have
+exectuted is available as a
+<a href="https://gist.github.com/Madhu-1/2f5db960884671942540f06c599e50c2">shell-script</a></p>
+
+  </div>
+
+  <div class="date">
+    Written on October 11, 2020
+  </div>
+</article>
+
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'http://mrajanna.com/setup-minikube-rook/';
+      this.page.identifier = 'http://mrajanna.com/setup-minikube-rook/';
+    };
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://madhu-1-github-io-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:Madhupr007@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/Madhu-1"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/madhu-r-4a551573"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/Madhupr007"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+	<!-- Google Analytics -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'JIHOr7sMuScUjTkc83_0L5mNKi72Ic_H6l79QYqlwC4', 'auto');
+		ga('send', 'pageview', {
+		  'page': '/setup-minikube-rook/',
+		  'title': 'Install Rook in minikube'
+		});
+	</script>
+	<!-- End Google Analytics -->
+
+
+  </body>
+</html>
