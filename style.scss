@@ -159,7 +159,7 @@ img {
   border-bottom: 1px solid $lightGray;
 
   @include mobile {
-    text-align: center;
+    text-align: right;
   }
 }
 
@@ -170,9 +170,9 @@ img {
   margin-right: 15px;
 
   @include mobile {
-    float: none;
+    float: left;
     display: block;
-    margin: 0 auto;
+    margin: auto;
   }
 
   img {
@@ -184,7 +184,7 @@ img {
   float: left;
 
   @include mobile {
-    float: none;
+    float: left;
     display: block;
     margin: 0 auto;
   }

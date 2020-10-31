@@ -198,7 +198,7 @@ img {
 }
 @media screen and (max-width: 640px) {
   .masthead {
-    text-align: center;
+    text-align: right;
   }
 }
 
@@ -210,9 +210,9 @@ img {
 }
 @media screen and (max-width: 640px) {
   .site-avatar {
-    float: none;
+    float: left;
     display: block;
-    margin: 0 auto;
+    margin: auto;
   }
 }
 .site-avatar img {
@@ -224,7 +224,7 @@ img {
 }
 @media screen and (max-width: 640px) {
   .site-info {
-    float: none;
+    float: left;
     display: block;
     margin: 0 auto;
   }
