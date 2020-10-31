@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://mrajanna.com/setup-minikube-rook/</loc>
+<loc>https://mrajanna.com/setup-minikube-rook/</loc>
 <lastmod>2020-10-11T00:00:00+05:30</lastmod>
 </url>
 <url>
-<loc>http://mrajanna.com/tracking-pv-rados-omap-in-cephcsi/</loc>
+<loc>https://mrajanna.com/tracking-pv-rados-omap-in-cephcsi/</loc>
 <lastmod>2020-10-22T00:00:00+05:30</lastmod>
 </url>
 <url>
-<loc>http://mrajanna.com/setup-external-ceph-with-rook/</loc>
+<loc>https://mrajanna.com/setup-external-ceph-with-rook/</loc>
 <lastmod>2020-10-30T00:00:00+05:30</lastmod>
 </url>
 <url>
-<loc>http://mrajanna.com/about/</loc>
+<loc>https://mrajanna.com/about/</loc>
 </url>
 <url>
-<loc>http://mrajanna.com/</loc>
+<loc>https://mrajanna.com/</loc>
 </url>
 <url>
-<loc>http://mrajanna.com/resume.html</loc>
+<loc>https://mrajanna.com/resume.html</loc>
 <lastmod>2020-10-12T18:12:48+05:30</lastmod>
 </url>
 </urlset>
