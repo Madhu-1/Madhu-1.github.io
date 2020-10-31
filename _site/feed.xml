@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2020-10-31T13:16:17+05:30</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">Set up external ceph cluster with Rook</title><link href="https://mrajanna.com/setup-external-ceph-with-rook/" rel="alternate" type="text/html" title="Set up external ceph cluster with Rook" /><published>2020-10-30T00:00:00+05:30</published><updated>2020-10-30T00:00:00+05:30</updated><id>https://mrajanna.com/setup-external-ceph-with-rook</id><content type="html" xml:base="https://mrajanna.com/setup-external-ceph-with-rook/">&lt;p&gt;This blog will help you out understand the various configuration we need to do
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2020-10-31T13:10:31+05:30</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">Set up external ceph cluster with Rook</title><link href="https://mrajanna.com/setup-external-ceph-with-rook/" rel="alternate" type="text/html" title="Set up external ceph cluster with Rook" /><published>2020-10-30T00:00:00+05:30</published><updated>2020-10-30T00:00:00+05:30</updated><id>https://mrajanna.com/setup-external-ceph-with-rook</id><content type="html" xml:base="https://mrajanna.com/setup-external-ceph-with-rook/">&lt;p&gt;This blog will help you out understand the various configuration we need to do
 to manage the external ceph cluster with Rook.&lt;/p&gt;
 
 &lt;h2 id=&quot;checkout-released-rook-branch&quot;&gt;Checkout released Rook branch&lt;/h2&gt;
@@ -631,4 +631,8 @@ sh-4.4#
 
 &lt;p&gt;Now we have create ceph cluster using rook in minikube. The commands we have
 exectuted is available as a
-&lt;a href=&quot;https://gist.github.com/Madhu-1/2f5db960884671942540f06c599e50c2&quot;&gt;shell-script&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">This blog will help you out to install and setup rook in a minikube vm, before you continue make sure you have installed minikube on your local system</summary></entry></feed>
+&lt;a
+href=&quot;https://gist.github.com/Madhu-1/2f5db960884671942540f06c599e50c2&quot;&gt;shell-script&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary
+type="html">This blog will help you out to install and setup rook in a minikube
+vm, before you continue make sure you have installed minikube on your local
+system</summary></entry></feed>
