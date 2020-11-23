@@ -106,22 +106,22 @@ to manage the external ceph cluster with Rook.</p>
 
 <h2 id="checkout-released-rook-branch">Checkout released Rook branch</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>git clone https://github.com/rook/rook
-<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>git checkout v1.4.6
-<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span><span class="nb">cd </span>rook/cluster/examples/kubernetes/ceph
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]git clone https://github.com/rook/rook
+[🎩︎]mrajanna@localhost $]git checkout v1.4.6
+[🎩︎]mrajanna@localhost $]cd rook/cluster/examples/kubernetes/ceph
+</code></pre>
 
 <p>Let’s step into the ceph directory as we are more intrested in configuring the
 Rook for ceph</p>
 
 <h2 id="check-network-connectivity-on-your-kubernetes-nodes">Check network connectivity on your kubernetes nodes</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span><span class="nb">cat</span> &lt; /dev/tcp/192.168.39.101/6789
-ceph v027���<span class="s1">'e����'</span>^C
-<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span> <span class="nb">cat</span> &lt; /dev/tcp/192.168.39.101/3300
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]cat &lt; /dev/tcp/192.168.39.101/6789
+ceph v027���'e����'^C
+[🎩︎]mrajanna@localhost $] cat &lt; /dev/tcp/192.168.39.101/3300
 ceph v2
 ^C
-</code></pre></div></div>
+</code></pre>
 
 <blockquote>
   <p>Press ctrl+c as the command didn’t return.</p>
@@ -129,23 +129,23 @@ ceph v2
 
 <h2 id="create-required-rbac-for-rook">Create Required RBAC for Rook</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl create <span class="nt">-f</span> common.yaml
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl create -f common.yaml
+</code></pre>
 
 <h2 id="create-operator-deployment">Create operator deployment</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl create <span class="nt">-f</span> operator.yaml
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl create -f operator.yaml
+</code></pre>
 
 <blockquote>
   <p>Verify Rook operator is running</p>
 </blockquote>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kuberc get po
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kuberc get po
 NAME                                READY   STATUS    RESTARTS   AGE
 rook-ceph-operator-86756d44-vdr8b   1/1     Running   0          3m20s
 rook-discover-sfjrf                 1/1     Running   0          2m47s
-</code></pre></div></div>
+</code></pre>
 
 <h2 id="importing-external-ceph-cluster">Importing external ceph cluster</h2>
 
@@ -167,40 +167,40 @@ kubectl create -f cluster-external-management.yaml</p>
 <p>In my case Rook is not managing any ceph cluster in <code class="language-plaintext highlighter-rouge">rook-ceph</code> namespace i
 will create both <code class="language-plaintext highlighter-rouge">common-external.yaml</code> and <code class="language-plaintext highlighter-rouge">cluster-external-management.yaml</code></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl create <span class="nt">-f</span> common-external.yaml
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl create -f common-external.yaml
+</code></pre>
 
 <h3 id="import-external-ceph-cluster">Import external ceph cluster</h3>
 
 <p>Export few pieces of information required for importing external ceph cluster</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">NAMESPACE</span><span class="o">=</span>rook-ceph-external <span class="nt">---</span><span class="o">&gt;</span> Namespace where we are planning use of external ceph cluster
-<span class="nb">export </span><span class="nv">ROOK_EXTERNAL_FSID</span><span class="o">=</span>db747e90-2ede-4867-9aee-ba233aa1db55 <span class="nt">---</span><span class="o">&gt;</span> Run <span class="sb">`</span>ceph fsid<span class="sb">`</span> on your ceph cluster to get this
-<span class="nb">export </span><span class="nv">ROOK_EXTERNAL_ADMIN_SECRET</span><span class="o">=</span><span class="nv">AQA2cSJfOMblMRAAeHroW3THSZukFGtpkIhZ1w</span><span class="o">==</span> <span class="nt">---</span><span class="o">&gt;</span> Run <span class="sb">`</span>ceph auth get-key client.admin<span class="sb">`</span>
+<pre><code class="language-bash=">export NAMESPACE=rook-ceph-external ---&gt; Namespace where we are planning use of external ceph cluster
+export ROOK_EXTERNAL_FSID=db747e90-2ede-4867-9aee-ba233aa1db55 ---&gt; Run `ceph fsid` on your ceph cluster to get this
+export ROOK_EXTERNAL_ADMIN_SECRET=AQA2cSJfOMblMRAAeHroW3THSZukFGtpkIhZ1w== ---&gt; Run `ceph auth get-key client.admin`
 on external ceph cluster
-<span class="nb">export </span><span class="nv">ROOK_EXTERNAL_CEPH_MON_DATA</span><span class="o">=</span>mon.ceph-node1<span class="o">=</span>192.168.39.101:6789 <span class="nt">---</span><span class="o">&gt;</span> Run <span class="sb">`</span>ceph mon dump<span class="sb">`</span> to get the list of monitors<span class="o">(</span>passing one Monitor IP should be enough<span class="o">)</span>
-</code></pre></div></div>
+export ROOK_EXTERNAL_CEPH_MON_DATA=mon.ceph-node1=192.168.39.101:6789 ---&gt; Run `ceph mon dump` to get the list of monitors(passing one Monitor IP should be enough)
+</code></pre>
 
 <blockquote>
   <p>Make sure you pass correct monitor name, Provided an example below
 <code class="language-plaintext highlighter-rouge">mon.ceph-node1</code> is the monitor name for <code class="language-plaintext highlighter-rouge">192.168.39.101:6789</code></p>
 </blockquote>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>ceph mon dump
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]ceph mon dump
 dumped monmap epoch 1
 epoch 1
 fsid fbafbb58-51d3-4f44-bedd-b3b728bc5766
 last_changed 2020-10-27 09:48:52.247843
 created 2020-10-27 09:48:52.247843
-min_mon_release 14 <span class="o">(</span>nautilus<span class="o">)</span>
-0: <span class="o">[</span>v2:192.168.39.101:3300/0,v1:192.168.39.101:6789/0] mon.ceph-node1
-1: <span class="o">[</span>v2:192.168.39.102:3300/0,v1:192.168.39.102:6789/0] mon.ceph-node2
-2: <span class="o">[</span>v2:192.168.39.103:3300/0,v1:192.168.39.103:6789/0] mon.ceph-node3
+min_mon_release 14 (nautilus)
+0: [v2:192.168.39.101:3300/0,v1:192.168.39.101:6789/0] mon.ceph-node1
+1: [v2:192.168.39.102:3300/0,v1:192.168.39.102:6789/0] mon.ceph-node2
+2: [v2:192.168.39.103:3300/0,v1:192.168.39.103:6789/0] mon.ceph-node3
 
-</code></pre></div></div>
+</code></pre>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span> bash import-external-cluster.sh
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $] bash import-external-cluster.sh
+</code></pre>
 
 <h3 id="create-ceph-cluster-crd">Create ceph cluster CRD</h3>
 
@@ -222,15 +222,15 @@ ceph cluster CRD.</p>
     <span class="na">image</span><span class="pi">:</span> <span class="s">ceph/ceph:v14.2.12</span> <span class="c1"># Should match external cluster version</span>
 </code></pre></div></div>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl create <span class="nt">-f</span> cluster-external-management.yaml
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl create -f cluster-external-management.yaml
+</code></pre>
 
 <p>Let us check the status of the externa ceph cluster</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl get cephcluster <span class="nt">-nrook-ceph-external</span>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl get cephcluster -nrook-ceph-external
 NAME                 DATADIRHOSTPATH   MONCOUNT   AGE   PHASE        MESSAGE                 HEALTH
 rook-ceph-external   /var/lib/rook                16s   Connecting   Cluster is connecting
-</code></pre></div></div>
+</code></pre>
 
 <blockquote>
   <p>If the status is in the <code class="language-plaintext highlighter-rouge">Connecting</code> Phase for a longtime please check Rook
@@ -240,8 +240,8 @@ operator pod which will be running in <code class="language-plaintext highlighte
 <p>If you don’t see any useful logs in the operator pod, increase the log level of
 the Rook operator deployment.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl edit deployment rook-ceph-operator <span class="nt">-nrook-ceph</span>
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl edit deployment rook-ceph-operator -nrook-ceph
+</code></pre>
 
 <blockquote>
   <p>Change <code class="language-plaintext highlighter-rouge">ROOK_LOG_LEVEL</code> from <code class="language-plaintext highlighter-rouge">INFO</code> to <code class="language-plaintext highlighter-rouge">DEBUG</code></p>
@@ -271,8 +271,8 @@ the Rook operator deployment.</p>
 <p>If you see an error like <code class="language-plaintext highlighter-rouge">ceph username</code> we need to remove the unwanted entry in
 the secret created from the <code class="language-plaintext highlighter-rouge">import-external-cluster.sh</code></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl edit secret rook-ceph-mon <span class="nt">-nrook-ceph-external</span>
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl edit secret rook-ceph-mon -nrook-ceph-external
+</code></pre>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">data</span><span class="pi">:</span>
@@ -308,27 +308,27 @@ Secret “rook-csi-rbd-provisioner” is invalid: type: Invalid value:
 <p>To fix this issue lets delete all the secrets created by
 <code class="language-plaintext highlighter-rouge">import-external-cluster.sh</code> script and let <code class="language-plaintext highlighter-rouge">Rook</code> create required secrets</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl delete secret rook-csi-cephfs-node rook-csi-cephfs-provisioner rook-csi-rbd-node rook-csi-rbd-provisioner <span class="nt">-nrook-ceph-external</span>
-secret <span class="s2">"rook-csi-cephfs-node"</span> deleted
-secret <span class="s2">"rook-csi-cephfs-provisioner"</span> deleted
-secret <span class="s2">"rook-csi-rbd-node"</span> deleted
-secret <span class="s2">"rook-csi-rbd-provisioner"</span> deleted
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl delete secret rook-csi-cephfs-node rook-csi-cephfs-provisioner rook-csi-rbd-node rook-csi-rbd-provisioner -nrook-ceph-external
+secret "rook-csi-cephfs-node" deleted
+secret "rook-csi-cephfs-provisioner" deleted
+secret "rook-csi-rbd-node" deleted
+secret "rook-csi-rbd-provisioner" deleted
+</code></pre>
 
 <p>Once we delete the secrets, let’s restart the <code class="language-plaintext highlighter-rouge">Rook</code> operator pod</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl delete po/rook-ceph-operator-675fdbc9d9-g6mjm <span class="nt">-nrook-ceph</span>
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl delete po/rook-ceph-operator-675fdbc9d9-g6mjm -nrook-ceph
+</code></pre>
 
 <p>Start Watching for the operator pod log again, to see if there are any other
 issues</p>
 
 <p>Meanwhile, start checking the <code class="language-plaintext highlighter-rouge">cephclusters</code> status</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl get cephclusters.ceph.rook.io <span class="nt">-nrook-ceph-external</span>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl get cephclusters.ceph.rook.io -nrook-ceph-external
 NAME                 DATADIRHOSTPATH   MONCOUNT   AGE   PHASE       MESSAGE                          HEALTH
 rook-ceph-external   /var/lib/rook                32m   Connected   Cluster connected successfully   HEALTH_OK
-</code></pre></div></div>
+</code></pre>
 
 <p>Wow!!! Now Rook is connected to the external ceph cluster.</p>
 

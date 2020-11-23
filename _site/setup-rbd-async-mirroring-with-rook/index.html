@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Play with RBD Async mirroring with minikube – Madhu Rajanna – Senior Software Engineer at RedHat</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="This doc assumes that you already have a minikube installed, minikube is configured to use kvm2 to create a virtual machine. You can refer kvm2 to install the required prerequisites.
+
+" />
+    <meta property="og:description" content="This doc assumes that you already have a minikube installed, minikube is configured to use kvm2 to create a virtual machine. You can refer kvm2 to install the required prerequisites.
+
+" />
+    
+    <meta name="author" content="Madhu Rajanna" />
+
+    
+    <meta property="og:title" content="Play with RBD Async mirroring with minikube" />
+    <meta property="twitter:title" content="Play with RBD Async mirroring with minikube" />
+    
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Play with RBD Async mirroring with minikube | Madhu Rajanna</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Play with RBD Async mirroring with minikube" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This doc assumes that you already have a minikube installed, minikube is configured to use kvm2 to create a virtual machine. You can refer kvm2 to install the required prerequisites." />
+<meta property="og:description" content="This doc assumes that you already have a minikube installed, minikube is configured to use kvm2 to create a virtual machine. You can refer kvm2 to install the required prerequisites." />
+<link rel="canonical" href="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/" />
+<meta property="og:url" content="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/" />
+<meta property="og:site_name" content="Madhu Rajanna" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-11-23T00:00:00+05:30" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"https://mrajanna.com/setup-rbd-async-mirroring-with-rook/","headline":"Play with RBD Async mirroring with minikube","dateModified":"2020-11-23T00:00:00+05:30","datePublished":"2020-11-23T00:00:00+05:30","mainEntityOfPage":{"@type":"WebPage","@id":"https://mrajanna.com/setup-rbd-async-mirroring-with-rook/"},"description":"This doc assumes that you already have a minikube installed, minikube is configured to use kvm2 to create a virtual machine. You can refer kvm2 to install the required prerequisites.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<meta name="google-site-verification" content="qrFYIlFxt1yD_oRmFPV2ZpEOYn46EXVxnRpg2HhMaUU" />
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mrajanna.com/feed.xml" title="Madhu Rajanna" />
+	<!-- Google Analytics -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'qrFYIlFxt1yD_oRmFPV2ZpEOYn46EXVxnRpg2HhMaUU', 'auto');
+		ga('send', 'pageview', {
+		  'page': '/setup-rbd-async-mirroring-with-rook/',
+		  'title': 'Play with RBD Async mirroring with minikube'
+		});
+	</script>
+	<!-- End Google Analytics -->
+
+</head>
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Madhu Rajanna - Senior Software Engineer at RedHat" href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://raw.githubusercontent.com/Madhu-1/Madhu-1.github.io/master/images/Madhu.jpeg" /></a>
+          <nav>
+            <a href="/">Blog</a>
+            <a href="/about">about</a>
+            <a href="/resume">Resume</a>
+          </nav>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <div class="site-info">
+            <h1 class="site-name"><strong><a href="/">Madhu Rajanna</a></strong></h1>
+          </div>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Play with RBD Async mirroring with minikube</h1>
+
+  <div class="entry">
+    <p>This doc assumes that you already have a minikube <a href="https://minikube.sigs.k8s.io/docs/start/">installed</a>, minikube is configured to use <code class="language-plaintext highlighter-rouge">kvm2</code> to create a virtual machine. You can refer <a href="https://minikube.sigs.k8s.io/docs/drivers/kvm2/">kvm2</a> to install the required prerequisites.</p>
+
+<blockquote>
+  <p>Install <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/"><code class="language-plaintext highlighter-rouge">kubectl</code></a> on the machine where you want to create kubernetes clusters and from where you want to access kubernetes
+To Play with RBD async mirroring we need to have two kubernetes/OCP clusters as it’s for just let’s use minikube to create 2 kubernetes clusters.</p>
+</blockquote>
+
+<h2 id="create-kubernetes-cluster">Create Kubernetes cluster</h2>
+
+<h3 id="create-kubernetes-cluster1">Create kubernetes cluster1</h3>
+
+<pre><code class="language-bash=">$minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true" --profile="cluster1"
+😄  [cluster1] minikube v1.14.0 on Fedora 32
+❗  minikube skips various validations when --force is supplied; this may lead to unexpected behavior
+✨  Using the kvm2 driver based on user configuration
+🛑  The "kvm2" driver should not be used with root privileges.
+💡  If you are running minikube within a VM, consider using --driver=none:
+📘    https://minikube.sigs.k8s.io/docs/reference/drivers/none/
+👍  Starting control plane node cluster1 in cluster cluster1
+🔥  Creating kvm2 VM (CPUs=2, Memory=4096MB, Disk=20000MB) ...
+🐳  Preparing Kubernetes v1.19.2 on Docker 19.03.12 ...
+🔎  Verifying Kubernetes components...
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "cluster1" by default
+</code></pre>
+
+<blockquote>
+  <p>Note:- <code class="language-plaintext highlighter-rouge">--profile</code> is the name of the minikube VM being used. This can be set to allow having multiple instances of minikube independently. (default “minikube, so we are going to set it to <code class="language-plaintext highlighter-rouge">cluster1</code> as we are planning to create 2 minikube clusters</p>
+</blockquote>
+
+<h3 id="create-kubernetes-cluster2">Create kubernetes cluster2</h3>
+
+<p>We are going to use the same <code class="language-plaintext highlighter-rouge">minikube start</code> command to create kubernetes cluster but we are going to change the <code class="language-plaintext highlighter-rouge">--profile</code> name.</p>
+
+<pre><code class="language-bash=">$minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true" --profile="cluster2"
+😄  [cluster2] minikube v1.14.0 on Fedora 32
+❗  minikube skips various validations when --force is supplied; this may lead to unexpected behavior
+✨  Using the kvm2 driver based on user configuration
+🛑  The "kvm2" driver should not be used with root privileges.
+💡  If you are running minikube within a VM, consider using --driver=none:
+📘    https://minikube.sigs.k8s.io/docs/reference/drivers/none/
+👍  Starting control plane node cluster2 in cluster cluster2
+🔥  Creating kvm2 VM (CPUs=2, Memory=4096MB, Disk=20000MB) ...
+🐳  Preparing Kubernetes v1.19.2 on Docker 19.03.12 ...
+🔎  Verifying Kubernetes components...
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "cluster2" by default
+</code></pre>
+
+<h3 id="verify-kubernetes-clusters">Verify kubernetes clusters</h3>
+
+<p>As we have created the 2 kubernetes clusters, Let’s verify it. Am going to use <code class="language-plaintext highlighter-rouge">--context</code> with kubectl to talk to different clusters</p>
+
+<pre><code class="language-bash=">[root@dhcp53-215 ~]$ kubectl get nodes --context=cluster1
+NAME       STATUS   ROLES    AGE     VERSION
+cluster1   Ready    master   8m14s   v1.19.2
+[root@dhcp53-215 $ kubectl get nodes --context=cluster2
+NAME       STATUS   ROLES    AGE     VERSION
+cluster2   Ready    master   3m19s   v1.19.2
+</code></pre>
+
+<blockquote>
+  <p>The value  for the <code class="language-plaintext highlighter-rouge">--context</code> will be the name we passed in <code class="language-plaintext highlighter-rouge">--profile</code> when creating kubernetes clusters</p>
+</blockquote>
+
+<p>As we got the kubernetes cluster, we need to add a disk to minikube VM as Rook needs a raw device to create ceph OSD and also we need to create a directory that is required to store monitor details.</p>
+
+<h3 id="add-device-to-minikube-vms">Add Device to minikube VM’s</h3>
+
+<pre><code class="language-bash=">minikube ssh "sudo mkdir -p /mnt/vda1/var/lib/rook;sudo ln -s /mnt/vda1/var/lib/rook /var/lib/rook" --profile="cluster1"
+</code></pre>
+
+<blockquote>
+  <p>Repeat the same step for cluster2 minikube VM also just change the <code class="language-plaintext highlighter-rouge">--profile</code> value to <code class="language-plaintext highlighter-rouge">cluster2</code></p>
+</blockquote>
+
+<p>Now let’s add a device to minikube vm’s</p>
+
+<pre><code class="language-bash=">$sudo -S qemu-img create -f raw /var/lib/libvirt/images/minikube-box2-vm-disk-"cluster1"-50G 50G
+$virsh -c qemu:///system attach-disk "cluster1" --source /var/lib/libvirt/images/minikube-box2-vm-disk-"cluster1"-50G --target vdb --cache none
+$virsh -c qemu:///system reboot --domain "cluster1"
+</code></pre>
+
+<h3 id="verify-that-thedevice-is-present-in-the-minikube-vm">Verify that thedevice is present in the minikube VM</h3>
+
+<pre><code class="language-bash=">$minikube ssh --profile=cluster1
+                         _             _
+            _         _ ( )           ( )
+  ___ ___  (_)  ___  (_)| |/')  _   _ | |_      __
+/' _ ` _ `\| |/' _ `\| || , &lt;  ( ) ( )| '_`\  /'__`\
+| ( ) ( ) || || ( ) || || |\`\ | (_) || |_) )(  ___/
+(_) (_) (_)(_)(_) (_)(_)(_) (_)`\___/'(_,__/'`\____)
+
+$ ls /dev/vd
+vda   vda1  vdb
+$ ls /dev/vd
+vda   vda1  vdb
+$ ls /dev/vdb
+/dev/vdb
+$ exit
+</code></pre>
+
+<blockquote>
+  <p>If the device is not visible inside the minikube VM, you need to start the minikube with the same command <code class="language-plaintext highlighter-rouge">minikube start</code> we used above to create the kubernetes cluster.</p>
+</blockquote>
+
+<blockquote>
+  <p>Repeat the same steps to add a  device to the other kubernetes cluster  <code class="language-plaintext highlighter-rouge">cluster2</code>, don’t forget to change <code class="language-plaintext highlighter-rouge">--profile</code> value to <code class="language-plaintext highlighter-rouge">cluster2</code>.</p>
+</blockquote>
+
+<h2 id="install-rook">Install Rook</h2>
+
+<p>Now we have the basic infrastructure to create a Ceph cluster. let’s install Rook on both kubernetes clusters</p>
+
+<pre><code class="language-bash=">$git clone git@github.com:rook/rook.git
+$ cd rook
+</code></pre>
+
+<h3 id="create-required-rbac-and-crd">Create Required RBAC and CRD</h3>
+<pre><code class="language-bash=">$kubectl create -f cluster/examples/kubernetes/ceph/common.yaml --context=cluster1
+$kubectl create -f cluster/examples/kubernetes/ceph/crds.yaml --context=cluster1
+</code></pre>
+
+<h3 id="install-rook-operator">Install Rook operator</h3>
+
+<pre><code class="language-bash=">$kubectl create -f cluster/examples/kubernetes/ceph/operator.yaml --context=cluster1
+configmap/rook-ceph-operator-config created
+deployment.apps/rook-ceph-operator created
+</code></pre>
+
+<p>As you already know that for RBD async mirroring RBD daemon need to talk to each other so am going to use hostNetworking for now to create a Ceph cluster</p>
+
+<h3 id="create-ceph-cluster">Create ceph cluster</h3>
+
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: rook-config-override
+  namespace: rook-ceph
+data:
+  config: |
+    [global]
+    osd_pool_default_size = 1
+    mon_warn_on_pool_no_redundancy = false
+---
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: my-cluster
+  namespace: rook-ceph
+spec:
+  dataDirHostPath: /var/lib/rook
+  cephVersion:
+    image: ceph/ceph:v15
+    allowUnsupported: true
+  mon:
+    count: 1
+    allowMultiplePerNode: true
+  dashboard:
+    enabled: true
+  crashCollector:
+    disable: true
+  storage:
+    useAllNodes: true
+    useAllDevices: true
+  network:
+    provider: host
+  healthCheck:
+    daemonHealth:
+      mon:
+        interval: 45s
+        timeout: 600s
+EOF
+</code></pre>
+<h3 id="create-toolbox-pod">Create toolbox pod</h3>
+
+<pre><code class="language-bash=">$kubectl create -f cluster/examples/kubernetes/ceph/toolbox.yaml --context=cluster1
+deployment.apps/rook-ceph-tools created
+</code></pre>
+
+<h3 id="verify-all-pods-are-in-running-state">Verify all pods are in running state</h3>
+
+<pre><code class="language-bash=">$kubectl get po --context=cluster1 -nrook-ceph
+NAME                                            READY   STATUS      RESTARTS   AGE
+csi-cephfsplugin-gzgxm                          3/3     Running     0          21m
+csi-cephfsplugin-provisioner-6cfdb89f9b-5bqbf   6/6     Running     0          21m
+csi-cephfsplugin-provisioner-6cfdb89f9b-d2bp6   0/6     Pending     0          21m
+csi-rbdplugin-ffpsh                             3/3     Running     0          21m
+csi-rbdplugin-provisioner-785d8b7967-wxfp7      0/7     Pending     0          21m
+csi-rbdplugin-provisioner-785d8b7967-zrv5x      7/7     Running     0          21m
+rook-ceph-mgr-a-7c74849566-ghmqp                1/1     Running     0          24m
+rook-ceph-mon-a-5bb9f8787d-v5n4m                1/1     Running     0          24m
+rook-ceph-operator-d758658ff-4ldqs              1/1     Running     0          33m
+rook-ceph-osd-0-56d989d9cc-6rsxl                1/1     Running     0          24m
+rook-ceph-osd-prepare-cluster1-hpxfp            0/1     Completed   0          24m
+rook-ceph-tools-78cdfd976c-jj98r                1/1     Running     0          3m30s
+rook-discover-p4dfs                             1/1     Running     0          32m
+</code></pre>
+
+<blockquote>
+  <p>Repeat the same steps we did to install rook. Now install Rook on cluster2. Don’t forget to change the <code class="language-plaintext highlighter-rouge">--context</code> value</p>
+</blockquote>
+
+<p>Once we have Rook installed on both the clusters, we can create pools, configure mirroring and try out rbd async replication</p>
+
+<h3 id="create-rbd-block-pool">Create RBD Block Pool</h3>
+
+<p>Rook allows the creation and customization of storage pools through the custom resource definitions (CRDs), Let’s create a Pool with Name <code class="language-plaintext highlighter-rouge">replicapool</code> with mirroring Enabled</p>
+
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: replicapool
+  namespace: rook-ceph
+spec:
+  replicated:
+    size: 1
+  mirroring:
+    enabled: true
+    mode: image
+    # schedule(s) of snapshot
+    snapshotSchedules:
+      - interval: 24h # daily snapshots
+        startTime: 14:00:00-05:00
+EOF
+</code></pre>
+
+<p>Once mirroring is enabled, Rook will by default create its own bootstrap peer token so that it can be used by another cluster. The bootstrap peer token can be found in a Kubernetes Secret. The name of the Secret is present in the Status field of the CephBlockPool CR:</p>
+
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.info}'
+{"rbdMirrorBootstrapPeerSecretName":"pool-peer-token-replicapool"}
+</code></pre>
+
+<p>This secret can then be fetched like so:</p>
+
+<pre><code class="language-bash=">$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster2 -o jsonpath='{.data.token}'|base64 -d
+eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0=
+</code></pre>
+
+<h3 id="create-rbd-mirror-daemon-crd">Create RBD mirror daemon CRD</h3>
+
+<p>Rook allows the creation and updating of the rbd-mirror daemon(s) through the custom resource definitions (CRDs). RBD images can be asynchronously mirrored between two Ceph clusters.</p>
+
+<h4 id="configure-rbd-mirroring-on-cluster1">Configure RBD mirroring on cluster1</h4>
+
+<p>Let’s configure the RBD mirror daemon on the cluster1, To do that we need to get the pool secret and site_name from the cluster2</p>
+
+<h5 id="get-site_name-from-the-cluster2">Get site_name from the cluster2</h5>
+
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath='{.status.mirroringInfo.summary.summary.site_name}'
+e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph
+</code></pre>
+
+<h5 id="get-token-from-the-cluster2">Get token from the cluster2</h5>
+
+<pre><code class="language-bash=">$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster2 -o jsonpath='{.data.token}'|base64 -d
+eyJmc2lkIjoiZTE4NzdhOTctNjYwNy00YmFhLWI0NzctNjRiMGM2MWYyNjhmIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFCZ1U3dGZydUh5THhBQVBMRE9EajJRMEcybjRCd2tDbmxLQUE9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuMTYwOjMzMDAsdjE6MTkyLjE2OC4zOS4xNjA6Njc4OV0ifQ==
+</code></pre>
+
+<p>When the peer token is available, you need to create a Kubernetes Secret. Our <code class="language-plaintext highlighter-rouge">e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph</code> will have to be created manually, like so:</p>
+
+<h5 id="create-secret-for-rbd-mirroring-on-cluster1">Create secret for RBD mirroring on cluster1</h5>
+
+<pre><code class="language-bash=">$kubectl -n rook-ceph create secret generic --context=cluster1 "e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph" \
+--from-literal=token=eyJmc2lkIjoiZTE4NzdhOTctNjYwNy00YmFhLWI0NzctNjRiMGM2MWYyNjhmIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFCZ1U3dGZydUh5THhBQVBMRE9EajJRMEcybjRCd2tDbmxLQUE9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuMTYwOjMzMDAsdjE6MTkyLjE2OC4zOS4xNjA6Njc4OV0ifQ== \
+--from-literal=pool=replicapool
+secret/e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph created
+</code></pre>
+
+<blockquote>
+  <p>Pass the correct pool name and token retrieved from cluster2</p>
+</blockquote>
+
+<p>Rook will read both token and pool keys of the Data content of the Secret. Rook also accepts the destination key, which specifies the mirroring direction. It defaults to rx-tx for bidirectional mirroring, but can also be set to rx-only for unidirectional mirroring.</p>
+
+<h5 id="create-mirroring-crd-on-cluster1">Create mirroring CRD on cluster1</h5>
+
+<p>You can now inject the rbdmirror CR:</p>
+
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
+apiVersion: ceph.rook.io/v1
+kind: CephRBDMirror
+metadata:
+  name: my-rbd-mirror
+  namespace: rook-ceph
+spec:
+  count: 1
+  peers:
+    secretNames:
+      - "e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph"
+EOF
+cephrbdmirror.ceph.rook.io/my-rbd-mirror created
+</code></pre>
+<blockquote>
+  <p>Update the secretName in Mirror CRD with the one you created above.</p>
+</blockquote>
+
+<h5 id="validate-mirroring-health-on-cluster1">Validate mirroring health on cluster1</h5>
+
+<p>Once we create mirror CRD we need to validate two things.</p>
+<ol>
+  <li>Mirroring Pod in  rook-ceph namespace</li>
+  <li>Blockpool mirroring info</li>
+</ol>
+
+<h6 id="check-mirroring-pod-status">Check mirroring pod status</h6>
+
+<pre><code class="language-bash=">$kubectl get po -nrook-ceph --context=cluster1
+NAME                                            READY   STATUS      RESTARTS   AGE
+csi-cephfsplugin-8jj5b                          3/3     Running     0          28m
+csi-cephfsplugin-provisioner-7dc78747bf-426cp   6/6     Running     0          28m
+csi-rbdplugin-64w97                             3/3     Running     0          28m
+csi-rbdplugin-provisioner-54d48757b4-4hzml      6/6     Running     0          28m
+rook-ceph-mgr-a-f59fd65f4-bwnlb                 1/1     Running     0          27m
+rook-ceph-mon-a-7f754c4768-rwz29                1/1     Running     0          28m
+rook-ceph-operator-559b6fcf59-77tct             1/1     Running     0          29m
+rook-ceph-osd-0-6774f57f64-qmjqx                1/1     Running     0          27m
+rook-ceph-osd-prepare-cluster1-n8vqb            0/1     Completed   0          27m
+rook-ceph-rbd-mirror-a-6cbdcd6cc9-cfsj2         1/1     Running     0          6m33s
+</code></pre>
+
+<h6 id="check-blockpool-mirroring-status">Check blockpool mirroring status</h6>
+
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.mirroringStatus.summary.summary}'
+{"daemon_health":"OK","health":"OK","image_health":"OK","states":{}}
+</code></pre>
+
+<blockquote>
+  <p>You need to wait till all fields in <code class="language-plaintext highlighter-rouge">summary</code> become <code class="language-plaintext highlighter-rouge">OK</code></p>
+</blockquote>
+
+<p>Wow!! Everything seems fine let’s configure the mirroring daemon on cluster2</p>
+
+<h4 id="configure-rbd-mirroring-on-cluster2">Configure RBD mirroring on cluster2</h4>
+
+<p>Configure the RBD mirror daemon on the cluster2, To do that we need to get the pool secret and site_name from the cluster1</p>
+
+<h5 id="get-site_name-from-the-cluster1">Get site_name from the cluster1</h5>
+
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.mirroringInfo.summary.summary.site_name}'
+f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph
+</code></pre>
+
+<h5 id="get-token-from-the-cluster1">Get token from the cluster1</h5>
+
+<pre><code class="language-bash=">$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
+eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0=
+</code></pre>
+
+<p>When the peer token is available, you need to create a Kubernetes Secret. Our <code class="language-plaintext highlighter-rouge">f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph</code> will have to be created manually, like so:</p>
+
+<h5 id="create-secret-for-rbd-mirroring-on-cluster2">Create secret for RBD mirroring on cluster2</h5>
+
+<pre><code class="language-bash=">$kubectl -n rook-ceph create secret generic --context=cluster2 "f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph" \
+--from-literal=token=eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0= \
+--from-literal=pool=replicapool
+secret/f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph created
+</code></pre>
+
+<blockquote>
+  <p>Pass the correct pool name and token retrieved from cluster1</p>
+</blockquote>
+
+<h5 id="create-mirroring-crd-on-cluster2">Create mirroring CRD on cluster2</h5>
+
+<p>You can now inject the rbdmirror CR:</p>
+
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster2 apply -f -
+apiVersion: ceph.rook.io/v1
+kind: CephRBDMirror
+metadata:
+  name: my-rbd-mirror
+  namespace: rook-ceph
+spec:
+  count: 1
+  peers:
+    secretNames:
+      - "f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph"
+EOF
+cephrbdmirror.ceph.rook.io/my-rbd-mirror created
+</code></pre>
+<blockquote>
+  <p>Update the secretName in CRD with the one you created.</p>
+</blockquote>
+
+<h5 id="validate-mirroring-health-on-cluster1-1">Validate mirroring health on cluster1</h5>
+
+<p>Once we create mirror CRD we need to validate two things.</p>
+<ol>
+  <li>Mirroring Pod in  rook-ceph namespace</li>
+  <li>Blockpool mirroring info</li>
+</ol>
+
+<h6 id="check-mirroring-pod-status-1">Check mirroring pod status</h6>
+
+<pre><code class="language-bash=">$kubectl get po -nrook-ceph --context=cluster2
+NAME                                            READY   STATUS      RESTARTS   AGE
+csi-cephfsplugin-pkrhb                          3/3     Running     0          38m
+csi-cephfsplugin-provisioner-7dc78747bf-gr99q   6/6     Running     0          38m
+csi-rbdplugin-provisioner-54d48757b4-4kpw5      6/6     Running     0          38m
+csi-rbdplugin-xwz6j                             3/3     Running     0          38m
+rook-ceph-mgr-a-565774f8fb-b66xs                1/1     Running     0          38m
+rook-ceph-mon-a-88b5d6d95-vkgsb                 1/1     Running     0          38m
+rook-ceph-operator-559b6fcf59-mzbpb             1/1     Running     0          39m
+rook-ceph-osd-0-557d5f5948-9qrvq                1/1     Running     0          37m
+rook-ceph-osd-prepare-cluster2-j9ccs            0/1     Completed   0          38m
+rook-ceph-rbd-mirror-a-7c6d49f67c-b2vd2         1/1     Running     0          83s
+</code></pre>
+
+<h6 id="check-blockpool-mirroring-status-1">Check blockpool mirroring status</h6>
+
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath='{.status.mirroringStatus.summary.summary}'
+{"daemon_health":"OK","health":"OK","image_health":"OK","states":{}}
+</code></pre>
+
+<blockquote>
+  <p>You need to wait till all fields in <code class="language-plaintext highlighter-rouge">summary</code> become <code class="language-plaintext highlighter-rouge">OK</code></p>
+</blockquote>
+
+<p>Now the installation is complete, Let’s see we can create rbd images and able to mirror it to the <code class="language-plaintext highlighter-rouge">secondary</code> cluster.</p>
+
+<h3 id="provision-storage">Provision storage</h3>
+
+<p>Create a <code class="language-plaintext highlighter-rouge">storageclass</code> and <code class="language-plaintext highlighter-rouge">PVC</code></p>
+
+<h4 id="create-storageclass">Create storageclass</h4>
+
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: rook-ceph-block
+provisioner: rook-ceph.rbd.csi.ceph.com
+parameters:
+    clusterID: rook-ceph
+    pool: replicapool
+    imageFormat: "2"
+    imageFeatures: layering
+    csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+    csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+    csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+    csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+    csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+    csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+    csi.storage.k8s.io/fstype: ext4
+reclaimPolicy: Retain
+EOF
+storageclass.storage.k8s.io/rook-ceph-block created
+</code></pre>
+
+<blockquote>
+  <p>Create a storageclass with <code class="language-plaintext highlighter-rouge">Retain</code> <code class="language-plaintext highlighter-rouge">reclaimPolicy</code> so that we can use static binding for
+DR.</p>
+</blockquote>
+
+<h3 id="create-persistentvolumeclaim-on-cluster1">Create PersistentVolumeClaim on cluster1</h3>
+
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rbd-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: rook-ceph-block
+EOF
+</code></pre>
+
+<p>Check PVC is in bound state</p>
+
+<pre><code class="language-bash=">$kubectl get pvc --context=cluster1
+NAME      STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
+rbd-pvc   Bound    pvc-57cfca36-cb76-4d79-b258-a107bc5c4d15   1Gi        RWO            rook-ceph-block   44s
+</code></pre>
+
+<p>Get the RBD image name created for this PVC</p>
+
+<pre><code class="language-bash=">$kubectl get pv --context=cluster1 $(kubectl get pvc rbd-pvc  --context=cluster1 -o jsonpath='{.spec.volumeName}') -o jsonpath='{.spec.csi.volumeAttributes.imageName}'
+csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004
+</code></pre>
+
+<p>Run commands on toolbox pod on cluster1 to enable mirroring</p>
+
+<pre><code class="language-bash=">$kubectl get po --context=cluster1 -nrook-ceph -l  app=rook-ceph-tools
+NAME                               READY   STATUS    RESTARTS   AGE
+rook-ceph-tools-78cdfd976c-jrhjm   1/1     Running   0          3m53s
+</code></pre>
+
+<pre><code class="language-bash=">$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+	size 1 GiB in 256 objects
+	order 22 (4 MiB objects)
+	snapshot_count: 0
+	id: 13a672b41f5f
+	block_name_prefix: rbd_data.13a672b41f5f
+	format: 2
+	features: layering
+	op_features:
+	flags:
+	create_timestamp: Mon Nov 23 07:04:21 2020
+	access_timestamp: Mon Nov 23 07:04:21 2020
+	modify_timestamp: Mon Nov 23 07:04:21 2020
+</code></pre>
+
+<pre><code class="language-bash=">kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd mirror image enable csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 snapshot --pool=replicapool
+Mirroring enabled
+</code></pre>
+
+<p>Verify that mirroring enabled on the image</p>
+
+<pre><code class="language-bash=">$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+	size 1 GiB in 256 objects
+	order 22 (4 MiB objects)
+	snapshot_count: 1
+	id: 13a672b41f5f
+	block_name_prefix: rbd_data.13a672b41f5f
+	format: 2
+	features: layering
+	op_features:
+	flags:
+	create_timestamp: Mon Nov 23 07:04:21 2020
+	access_timestamp: Mon Nov 23 07:04:21 2020
+	modify_timestamp: Mon Nov 23 07:04:21 2020
+	mirroring state: enabled
+	mirroring mode: snapshot
+	mirroring global id: 7da10ec2-aa67-4b05-86f0-487b4fa9fdbb
+	mirroring primary: true
+</code></pre>
+
+<h4 id="verify-that-image-is-mirrored-on-the-secondary-cluster">Verify that image is mirrored on the secondary cluster</h4>
+
+<p>Run commands on toolbox pod on cluster1 to enable mirroring</p>
+
+<pre><code class="language-bash=">$kubectl get po --context=cluster2 -nrook-ceph -l  app=rook-ceph-tools
+NAME                               READY   STATUS    RESTARTS   AGE
+rook-ceph-tools-78cdfd976c-2566m   1/1     Running   0          3m53s
+</code></pre>
+
+<pre><code class="language-bash=">$kubectl exec --context=cluster2 -nrook-ceph rook-ceph-tools-78cdfd976c-2566m -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+	size 1 GiB in 256 objects
+	order 22 (4 MiB objects)
+	snapshot_count: 1
+	id: 12a55edc8361
+	block_name_prefix: rbd_data.12a55edc8361
+	format: 2
+	features: layering, non-primary
+	op_features:
+	flags:
+	create_timestamp: Mon Nov 23 07:12:33 2020
+	access_timestamp: Mon Nov 23 07:12:33 2020
+	modify_timestamp: Mon Nov 23 07:12:33 2020
+	mirroring state: enabled
+	mirroring mode: snapshot
+	mirroring global id: 7da10ec2-aa67-4b05-86f0-487b4fa9fdbb
+	mirroring primary: false
+</code></pre>
+
+  </div>
+
+  <div class="date">
+    Written on November 23, 2020
+  </div>
+</article>
+
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://mrajanna.com/setup-rbd-async-mirroring-with-rook/';
+      this.page.identifier = 'https://mrajanna.com/setup-rbd-async-mirroring-with-rook/';
+    };
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://madhu-1-github-io-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:Madhupr007@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/Madhu-1"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/madhu-r-4a551573"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/Madhupr007"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+	<!-- Google Analytics -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'qrFYIlFxt1yD_oRmFPV2ZpEOYn46EXVxnRpg2HhMaUU', 'auto');
+		ga('send', 'pageview', {
+		  'page': '/setup-rbd-async-mirroring-with-rook/',
+		  'title': 'Play with RBD Async mirroring with minikube'
+		});
+	</script>
+	<!-- End Google Analytics -->
+
+
+  </body>
+</html>

@@ -106,14 +106,14 @@ you continue make sure you have installed minikube on your local system</p>
 
 <h2 id="install-minikube">Install minikube</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>curl <span class="nt">-LO</span> https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span><span class="nb">sudo install </span>minikube-linux-amd64 /usr/local/bin/minikube
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+[🎩︎]mrajanna@localhost $]sudo install minikube-linux-amd64 /usr/local/bin/minikube
+</code></pre>
 
 <h2 id="create-kubernetes-cluster-using-minikube">create kubernetes cluster using minikube</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>minikube start <span class="nt">--force</span> <span class="nt">--memory</span><span class="o">=</span><span class="s2">"4096"</span> <span class="nt">--cpus</span><span class="o">=</span><span class="s2">"2"</span> <span class="nt">-b</span> kubeadm <span class="nt">--kubernetes-version</span><span class="o">=</span><span class="s2">"v1.19.2"</span> <span class="nt">--driver</span><span class="o">=</span><span class="s2">"kvm2"</span> <span class="nt">--feature-gates</span><span class="o">=</span><span class="s2">"BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"</span>
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"
+</code></pre>
 
 <p>I will be using <code class="language-plaintext highlighter-rouge">kvm2</code> in this blog as a vmdriver to  create minikube vm, rook
 expects us to have a raw device on the nodes where we are creating a ceph
@@ -122,15 +122,15 @@ select different vm drivers when installing the minikube.</p>
 
 <h3 id="create-a-folder-for-rook-to-store-the-ceph-information">Create a folder for rook to store the ceph information</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>minikube ssh <span class="s2">"sudo mkdir -p /mnt/vda1/var/lib/rook;sudo ln -s /mnt/vda1/var/lib/rook /var/lib/rook"</span>
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]minikube ssh "sudo mkdir -p /mnt/vda1/var/lib/rook;sudo ln -s /mnt/vda1/var/lib/rook /var/lib/rook"
+</code></pre>
 
 <h3 id="add-a-disk-to-minikube-vm">Add a disk to minikube vm</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span><span class="nb">sudo</span> <span class="nt">-S</span> qemu-img create <span class="nt">-f</span> raw /var/lib/libvirt/images/minikube-box-vm-disk-50G 50G
-<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>virsh <span class="nt">-c</span> qemu:///system attach-disk minikube <span class="nt">--source</span> /var/lib/libvirt/images/minikube-box-vm-disk-50G <span class="nt">--target</span> vdb <span class="nt">--cache</span> none
-<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>virsh <span class="nt">-c</span> qemu:///system reboot <span class="nt">--domain</span> minikube
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]sudo -S qemu-img create -f raw /var/lib/libvirt/images/minikube-box-vm-disk-50G 50G
+[🎩︎]mrajanna@localhost $]virsh -c qemu:///system attach-disk minikube --source /var/lib/libvirt/images/minikube-box-vm-disk-50G --target vdb --cache none
+[🎩︎]mrajanna@localhost $]virsh -c qemu:///system reboot --domain minikube
+</code></pre>
 
 <p>Assuming you have already installed libvirt virsh etc. Am attaching a device
 called <code class="language-plaintext highlighter-rouge">vdb</code> to the minikube vm to create ceph cluster.</p>
@@ -142,11 +142,11 @@ sometimes the disk wont show up immidiately for that you can need to  start
 the minikube again.
 </code></pre>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>minikube ssh
-<span class="nv">$ </span><span class="nb">ls</span> /dev/vdb
-<span class="nv">$ </span><span class="nb">exit</span>
-<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>minikube start <span class="nt">--force</span> <span class="nt">--memory</span><span class="o">=</span><span class="s2">"4096"</span> <span class="nt">--cpus</span><span class="o">=</span><span class="s2">"2"</span> <span class="nt">-b</span> kubeadm <span class="nt">--kubernetes-version</span><span class="o">=</span><span class="s2">"v1.19.2"</span> <span class="nt">--driver</span><span class="o">=</span><span class="s2">"kvm2"</span> <span class="nt">--feature-gates</span><span class="o">=</span><span class="s2">"BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"</span>
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]minikube ssh
+$ ls /dev/vdb
+$ exit
+[🎩︎]mrajanna@localhost $]minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"
+</code></pre>
 
 <p>to verify the kubernetes cluster  is created you can run below command</p>
 
@@ -159,15 +159,15 @@ the minikube again.
 for that we need to first download the  rook github project and check out the
 release branch.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>git clone git@github.com:rook/rook.git
-<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>git checkout v1.4.5
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]git clone git@github.com:rook/rook.git
+[🎩︎]mrajanna@localhost $]git checkout v1.4.5
+</code></pre>
 
 <p>All the kubernetes templates which are required for the rook installation are
 localted at <code class="language-plaintext highlighter-rouge">cluster/examples/kubernetes/ceph</code></p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span><span class="nb">cd </span>rook/cluster/examples/kubernetes/ceph
-</code></pre></div></div>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]cd rook/cluster/examples/kubernetes/ceph
+</code></pre>
 
 <p>To have a complete ceph cluster, we need to install below yaml files</p>
 
@@ -184,17 +184,17 @@ production.</p>
 
 <p>Lets create all the kubernetes templates to create ceph cluster</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create <span class="nt">-f</span> common.yaml
-kubectl create <span class="nt">-f</span> operator.yaml
-kubectl create <span class="nt">-f</span> cluster-test.yaml
-kubectl create <span class="nt">-f</span> pool-test.yaml
-kubectl create <span class="nt">-f</span> filesystem.yaml
-kubectl create <span class="nt">-f</span> toolbox.yaml
-</code></pre></div></div>
+<pre><code class="language-bash=">kubectl create -f common.yaml
+kubectl create -f operator.yaml
+kubectl create -f cluster-test.yaml
+kubectl create -f pool-test.yaml
+kubectl create -f filesystem.yaml
+kubectl create -f toolbox.yaml
+</code></pre>
 
 <p>Lets wait for few minutes and Verify all the pods are running</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl get po <span class="nt">-nrook-ceph</span>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl get po -nrook-ceph
 NAME                                            READY   STATUS      RESTARTS   AGE
 csi-cephfsplugin-7llbt                          3/3     Running     0          22h
 csi-cephfsplugin-provisioner-5c65b94c8d-tljqd   0/6     Pending     0          22h
@@ -211,32 +211,32 @@ rook-ceph-osd-0-77b585d64-5pfcq                 1/1     Running     0          2
 rook-ceph-osd-prepare-minikube-hqqj7            0/1     Completed   0          15h
 rook-ceph-tools-6c984f579-m6ccc                 1/1     Running     0          22h
 rook-discover-hjj6c                             1/1     Running     0          22h
-</code></pre></div></div>
+</code></pre>
 
 <p>Check ceph filesystem  and block pool is create</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl <span class="nt">-n</span> rook-ceph get cephfilesystems myfs
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl -n rook-ceph get cephfilesystems myfs
 NAME   ACTIVEMDS   AGE
 myfs   1           22h
-<span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl <span class="nt">-n</span> rook-ceph get  cephblockpools replicapool
+[🎩︎]mrajanna@localhost $]kubectl -n rook-ceph get  cephblockpools replicapool
 NAME          AGE
 replicapool   22h
-</code></pre></div></div>
+</code></pre>
 
 <p>Let exec into the ceph toolbox pod and verify <code class="language-plaintext highlighter-rouge">ceph status</code>, pools and
 filesystem  created in ceph.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@localhost <span class="nv">$]</span>kubectl <span class="nb">exec</span> <span class="nt">-it</span> rook-ceph-tools-6c984f579-m6ccc sh <span class="nt">-nrook-ceph</span>
-sh-4.4# ceph <span class="nt">-s</span>
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl exec -it rook-ceph-tools-6c984f579-m6ccc sh -nrook-ceph
+sh-4.4# ceph -s
   cluster:
-    <span class="nb">id</span>:     f50de5f0-5d0a-4621-a6fb-04192efdcc79
+    id:     f50de5f0-5d0a-4621-a6fb-04192efdcc79
     health: HEALTH_OK
 
   services:
-    mon: 1 daemons, quorum a <span class="o">(</span>age 22h<span class="o">)</span>
-    mgr: a<span class="o">(</span>active, since 112m<span class="o">)</span>
-    mds: myfs:1 <span class="o">{</span><span class="nv">0</span><span class="o">=</span>myfs-b<span class="o">=</span>up:active<span class="o">}</span> 1 up:standby-replay
-    osd: 1 osds: 1 up <span class="o">(</span>since 113m<span class="o">)</span>, 1 <span class="k">in</span> <span class="o">(</span>since 22h<span class="o">)</span>
+    mon: 1 daemons, quorum a (age 22h)
+    mgr: a(active, since 112m)
+    mds: myfs:1 {0=myfs-b=up:active} 1 up:standby-replay
+    osd: 1 osds: 1 up (since 113m), 1 in (since 22h)
 
   task status:
     scrub status:
@@ -257,10 +257,10 @@ sh-4.4# ceph osd lspools
 2 replicapool
 3 myfs-metadata
 4 myfs-data0
-sh-4.4# ceph fs <span class="nb">ls
-</span>name: myfs, metadata pool: myfs-metadata, data pools: <span class="o">[</span>myfs-data0 <span class="o">]</span>
+sh-4.4# ceph fs ls
+name: myfs, metadata pool: myfs-metadata, data pools: [myfs-data0 ]
 sh-4.4#
-</code></pre></div></div>
+</code></pre>
 
 <p>Now we have create ceph cluster using rook in minikube. The commands we have
 exectuted is available as a
