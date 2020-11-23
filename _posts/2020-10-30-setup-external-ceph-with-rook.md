@@ -9,7 +9,7 @@ to manage the external ceph cluster with Rook.
 
 ## Checkout released Rook branch
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]git clone https://github.com/rook/rook
 [🎩︎]mrajanna@localhost $]git checkout v1.4.6
 [🎩︎]mrajanna@localhost $]cd rook/cluster/examples/kubernetes/ceph
@@ -20,7 +20,7 @@ Rook for ceph
 
 ## Check network connectivity on your kubernetes nodes
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]cat < /dev/tcp/192.168.39.101/6789
 ceph v027���'e����'^C
 [🎩︎]mrajanna@localhost $] cat < /dev/tcp/192.168.39.101/3300
@@ -32,19 +32,19 @@ ceph v2
 
 ## Create Required RBAC for Rook
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl create -f common.yaml
 ```
 
 ## Create operator deployment
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl create -f operator.yaml
 ```
 
 > Verify Rook operator is running
 
- ```bash
+ ```bash=
 [🎩︎]mrajanna@localhost $]kuberc get po
 NAME                                READY   STATUS    RESTARTS   AGE
 rook-ceph-operator-86756d44-vdr8b   1/1     Running   0          3m20s
@@ -67,7 +67,7 @@ rook-discover-sfjrf                 1/1     Running   0          2m47s
 In my case Rook is not managing any ceph cluster in `rook-ceph` namespace i
 will create both `common-external.yaml` and `cluster-external-management.yaml`
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl create -f common-external.yaml
 ```
 
@@ -75,7 +75,7 @@ will create both `common-external.yaml` and `cluster-external-management.yaml`
 
 Export few pieces of information required for importing external ceph cluster
 
-```bash
+```bash=
 export NAMESPACE=rook-ceph-external ---> Namespace where we are planning use of external ceph cluster
 export ROOK_EXTERNAL_FSID=db747e90-2ede-4867-9aee-ba233aa1db55 ---> Run `ceph fsid` on your ceph cluster to get this
 export ROOK_EXTERNAL_ADMIN_SECRET=AQA2cSJfOMblMRAAeHroW3THSZukFGtpkIhZ1w== ---> Run `ceph auth get-key client.admin`
@@ -86,7 +86,7 @@ export ROOK_EXTERNAL_CEPH_MON_DATA=mon.ceph-node1=192.168.39.101:6789 ---> Run `
 >Make sure you pass correct monitor name, Provided an example below
 > `mon.ceph-node1` is the monitor name for `192.168.39.101:6789`
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]ceph mon dump
 dumped monmap epoch 1
 epoch 1
@@ -100,7 +100,7 @@ min_mon_release 14 (nautilus)
 
 ```
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $] bash import-external-cluster.sh
 ```
 
@@ -125,13 +125,13 @@ spec:
     image: ceph/ceph:v14.2.12 # Should match external cluster version
 ```
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl create -f cluster-external-management.yaml
 ```
 
 Let us check the status of the externa ceph cluster
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl get cephcluster -nrook-ceph-external
 NAME                 DATADIRHOSTPATH   MONCOUNT   AGE   PHASE        MESSAGE                 HEALTH
 rook-ceph-external   /var/lib/rook                16s   Connecting   Cluster is connecting
@@ -143,7 +143,7 @@ rook-ceph-external   /var/lib/rook                16s   Connecting   Cluster is 
 If you don't see any useful logs in the operator pod, increase the log level of
 the Rook operator deployment.
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl edit deployment rook-ceph-operator -nrook-ceph
 ```
 
@@ -162,7 +162,7 @@ And watch for the operator logs again of any issue
 If you see an error like `ceph username` we need to remove the unwanted entry in
 the secret created from the `import-external-cluster.sh`
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl edit secret rook-ceph-mon -nrook-ceph-external
 ```
 
@@ -199,7 +199,7 @@ We have got one more issue in Rook operator related to updating secret failure
 To fix this issue lets delete all the secrets created by
 `import-external-cluster.sh` script and let `Rook` create required secrets
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl delete secret rook-csi-cephfs-node rook-csi-cephfs-provisioner rook-csi-rbd-node rook-csi-rbd-provisioner -nrook-ceph-external
 secret "rook-csi-cephfs-node" deleted
 secret "rook-csi-cephfs-provisioner" deleted
@@ -209,7 +209,7 @@ secret "rook-csi-rbd-provisioner" deleted
 
 Once we delete the secrets, let's restart the `Rook` operator pod
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl delete po/rook-ceph-operator-675fdbc9d9-g6mjm -nrook-ceph
 ```
 
@@ -218,7 +218,7 @@ issues
 
 Meanwhile, start checking the `cephclusters` status
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl get cephclusters.ceph.rook.io -nrook-ceph-external
 NAME                 DATADIRHOSTPATH   MONCOUNT   AGE   PHASE       MESSAGE                          HEALTH
 rook-ceph-external   /var/lib/rook                32m   Connected   Cluster connected successfully   HEALTH_OK

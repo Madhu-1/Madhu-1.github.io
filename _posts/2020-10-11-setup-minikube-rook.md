@@ -9,14 +9,14 @@ you continue make sure you have installed minikube on your local system
 
 ## Install minikube
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 [🎩︎]mrajanna@localhost $]sudo install minikube-linux-amd64 /usr/local/bin/minikube
 ```
 
 ## create kubernetes cluster using minikube
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"
 ```
 
@@ -27,13 +27,13 @@ select different vm drivers when installing the minikube.
 
 ### Create a folder for rook to store the ceph information
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]minikube ssh "sudo mkdir -p /mnt/vda1/var/lib/rook;sudo ln -s /mnt/vda1/var/lib/rook /var/lib/rook"
 ```
 
 ### Add a disk to minikube vm
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]sudo -S qemu-img create -f raw /var/lib/libvirt/images/minikube-box-vm-disk-50G 50G
 [🎩︎]mrajanna@localhost $]virsh -c qemu:///system attach-disk minikube --source /var/lib/libvirt/images/minikube-box-vm-disk-50G --target vdb --cache none
 [🎩︎]mrajanna@localhost $]virsh -c qemu:///system reboot --domain minikube
@@ -50,7 +50,7 @@ sometimes the disk wont show up immidiately for that you can need to  start
 the minikube again.
 ```
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]minikube ssh
 $ ls /dev/vdb
 $ exit
@@ -69,7 +69,7 @@ As the kubernetes cluster is installed we can start installing the rook now,
 for that we need to first download the  rook github project and check out the
 release branch.
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]git clone git@github.com:rook/rook.git
 [🎩︎]mrajanna@localhost $]git checkout v1.4.5
 ```
@@ -77,7 +77,7 @@ release branch.
 All the kubernetes templates which are required for the rook installation are
 localted at `cluster/examples/kubernetes/ceph`
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]cd rook/cluster/examples/kubernetes/ceph
 ```
 
@@ -97,7 +97,7 @@ production.
 
 Lets create all the kubernetes templates to create ceph cluster
 
-```bash
+```bash=
 kubectl create -f common.yaml
 kubectl create -f operator.yaml
 kubectl create -f cluster-test.yaml
@@ -108,7 +108,7 @@ kubectl create -f toolbox.yaml
 
 Lets wait for few minutes and Verify all the pods are running
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl get po -nrook-ceph
 NAME                                            READY   STATUS      RESTARTS   AGE
 csi-cephfsplugin-7llbt                          3/3     Running     0          22h
@@ -130,7 +130,7 @@ rook-discover-hjj6c                             1/1     Running     0          2
 
 Check ceph filesystem  and block pool is create
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl -n rook-ceph get cephfilesystems myfs
 NAME   ACTIVEMDS   AGE
 myfs   1           22h
@@ -142,7 +142,7 @@ replicapool   22h
 Let exec into the ceph toolbox pod and verify `ceph status`, pools and
 filesystem  created in ceph.
 
-```bash
+```bash=
 [🎩︎]mrajanna@localhost $]kubectl exec -it rook-ceph-tools-6c984f579-m6ccc sh -nrook-ceph
 sh-4.4# ceph -s
   cluster:

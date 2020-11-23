@@ -10,7 +10,7 @@ stored by cephcsi for cephfs and rbd pvc.
 Note: This blog assumes that you have rook cluster up and running and few
 CephFS and RBD PVC's are created.
 
-```bash
+```bash=
 [🎩︎]mrajanna@ceph $]kubectl get pvc
 NAME         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
 cephfs-pvc   Bound    pvc-88919d42-ecdf-4737-a805-065eacdfd34f   1Gi        RWO            rook-cephfs       68s
@@ -26,7 +26,7 @@ To get the omap details we need to know the rbd pool in which cephcsi
 stores the omap data. let's first get the pool name which is stored in PV CSI
 spec
 
-```bash
+```bash=
 [🎩︎]mrajanna@ceph $]kubectl get pv pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1 -o jsonpath='{.spec.csi}'
 {
 	"controllerExpandSecretRef": {
@@ -72,7 +72,7 @@ from your ceph cluster
 
 PV name is the request name, let's get the unique ID mapped to the request name
 
-```bash
+```bash=
 [🎩︎]mrajanna@ceph $]kubectl exec -it rook-ceph-tools-6c984f579-qqh7n sh -nrook-ceph
 sh-4.4# rados getomapval csi.volumes.default csi.volume.pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1 --pool=replicapool
 value (36 bytes) :
@@ -92,7 +92,7 @@ name to unique ID mapping
 
 Let's get the list of keys cephcsi stores with this unique ID
 
-```bash
+```bash=
 sh-4.4# rados listomapkeys csi.volume.92837648-1431-11eb-8990-0242ac110005 --pool=replicapool
 csi.imageid
 csi.imagename
@@ -115,7 +115,7 @@ Let's get all the values of these keys
 **Note:** Am listing all the values stored in the
 `csi.volume.92837648-1431-11eb-8990-0242ac110005` object
 
-```bash
+```bash=
 sh-4.4# rados listomapvals csi.volume.92837648-1431-11eb-8990-0242ac110005 --pool=replicapool
 csi.imageid
 value (11 bytes) :
@@ -146,7 +146,7 @@ To get the omap details we need to know the cephfs metadata pool in which
 cephcsi stores the omap data. Let's get the filesystem name which is
 stored in PV CSI spec
 
-```bash
+```bash=
 [🎩︎]mrajanna@ceph $]kubectl get pv pvc-88919d42-ecdf-4737-a805-065eacdfd34f -o jsonpath='{.spec.csi}'
 {
 	"controllerExpandSecretRef": {
@@ -186,7 +186,7 @@ name: myfs, metadata pool: myfs-metadata, data pools: [myfs-data0 ]
 
 PV name is the request name, let's get the unique ID mapped to the request name
 
-```bash
+```bash=
 [🎩︎]mrajanna@ceph $]kubectl exec -it rook-ceph-tools-6c984f579-qqh7n sh -nrook-ceph
 sh-4.4# rados getomapval csi.volumes.default csi.volume.pvc-88919d42-ecdf-4737-a805-065eacdfd34f --pool=myfs-metadata --namespace=csi
 value (36 bytes) :
@@ -206,7 +206,7 @@ default,for RBD its `default` rados namespace.
 
 Let's get the list of keys cephcsi stores with this unique ID
 
-```bash
+```bash=
 sh-4.4# rados listomapkeys csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006 --pool=myfs-metadata --namespace=csi
 csi.imagename
 csi.volname
@@ -226,7 +226,7 @@ Let's get all the values of these keys
 Note:- Am listing all the values stored in the
 `csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006` object
 
-```bash
+```bash=
 sh-4.4# rados listomapvals csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006 --pool=myfs-metadata --namespace=csi
 csi.imagename
 value (44 bytes) :
