@@ -9,13 +9,13 @@ Interested in containers, Docker, Kubernetes, Openshift,kubernetes-csi, storage
 and more
 
 Self-directed and motivated Software Engineer experienced  working effectively
-in dynamic environments, Offering 5+ years of experience in full  software
+in dynamic environments, Offering 6+ years of experience in full  software
 development life cycle, Quickly learn and master new technologies and working
 in both team and self-directed settings.
 
 ### More Information
 
-For more information, please refer to [My resume](../resume.html)
+For more information, please refer to [Resume](../resume.html)
 
 ### Contact me
 
