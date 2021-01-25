@@ -5,8 +5,8 @@ permalink: /about/
 ---
 Senior Software Engineer at RedHat India.
 
-Interested in containers, Docker, Kubernetes, Openshift,kubernetes-csi, storage
-and more
+Interested in Cloud native, Backup and Disaster Recovery,
+Containers, Docker, Kubernetes, Openshift,Kubernetes-csi, Storage and more
 
 Self-directed and motivated Software Engineer experienced  working effectively
 in dynamic environments, Offering 6+ years of experience in full  software
