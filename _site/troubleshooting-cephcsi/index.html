@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Troubleshooting Cephcsi – Madhu Rajanna – Senior Software Engineer at RedHat</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen to Many reasons like Network connectivity between csi pods and ceph, cluster health issue,Slow operations, kubernetes issue, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues.
+
+" />
+    <meta property="og:description" content="The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen to Many reasons like Network connectivity between csi pods and ceph, cluster health issue,Slow operations, kubernetes issue, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues.
+
+" />
+    
+    <meta name="author" content="Madhu Rajanna" />
+
+    
+    <meta property="og:title" content="Troubleshooting Cephcsi" />
+    <meta property="twitter:title" content="Troubleshooting Cephcsi" />
+    
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Troubleshooting Cephcsi | Madhu Rajanna</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Troubleshooting Cephcsi" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen to Many reasons like Network connectivity between csi pods and ceph, cluster health issue,Slow operations, kubernetes issue, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues." />
+<meta property="og:description" content="The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen to Many reasons like Network connectivity between csi pods and ceph, cluster health issue,Slow operations, kubernetes issue, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues." />
+<link rel="canonical" href="https://mrajanna.com/troubleshooting-cephcsi/" />
+<meta property="og:url" content="https://mrajanna.com/troubleshooting-cephcsi/" />
+<meta property="og:site_name" content="Madhu Rajanna" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-25T00:00:00+05:30" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","url":"https://mrajanna.com/troubleshooting-cephcsi/","headline":"Troubleshooting Cephcsi","dateModified":"2021-01-25T00:00:00+05:30","datePublished":"2021-01-25T00:00:00+05:30","mainEntityOfPage":{"@type":"WebPage","@id":"https://mrajanna.com/troubleshooting-cephcsi/"},"description":"The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen to Many reasons like Network connectivity between csi pods and ceph, cluster health issue,Slow operations, kubernetes issue, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<meta name="google-site-verification" content="qrFYIlFxt1yD_oRmFPV2ZpEOYn46EXVxnRpg2HhMaUU" />
+  <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mrajanna.com/feed.xml" title="Madhu Rajanna" />
+	<!-- Google Analytics -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'qrFYIlFxt1yD_oRmFPV2ZpEOYn46EXVxnRpg2HhMaUU', 'auto');
+		ga('send', 'pageview', {
+		  'page': '/troubleshooting-cephcsi/',
+		  'title': 'Troubleshooting Cephcsi'
+		});
+	</script>
+	<!-- End Google Analytics -->
+
+</head>
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Madhu Rajanna - Senior Software Engineer at RedHat" href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://raw.githubusercontent.com/Madhu-1/Madhu-1.github.io/master/images/Madhu.jpeg" /></a>
+          <nav>
+            <a href="/">Blog</a>
+            <a href="/about">about</a>
+            <a href="/resume">Resume</a>
+          </nav>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <div class="site-info">
+            <h1 class="site-name"><strong><a href="/">Madhu Rajanna</a></strong></h1>
+          </div>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Troubleshooting Cephcsi</h1>
+
+  <div class="entry">
+    <p>The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen to Many reasons like <strong><code class="language-plaintext highlighter-rouge">Network connectivity between csi pods and ceph</code></strong>, <strong><code class="language-plaintext highlighter-rouge">cluster health issue</code></strong>,<strong><code class="language-plaintext highlighter-rouge">Slow operations</code></strong>, <strong><code class="language-plaintext highlighter-rouge">kubernetes issue</code></strong>, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues.</p>
+
+<h2 id="how-to-identify-network-issues">How to identify network issues</h2>
+
+<p>Get the monitor IP from the configmap you have created when starting the cephcsi pods or from the ceph cluster.</p>
+
+<pre><code class="language-bash=">sh-4.4# ceph mon dump
+dumped monmap epoch 1
+epoch 1
+fsid ba41ac93-3b55-4f32-9e06-d3d8c6ff7334
+last_changed 2021-01-20T12:28:37.972517+0000
+created 2021-01-20T12:28:37.972517+0000
+min_mon_release 15 (octopus)
+0: [v2:10.111.136.166:3300/0,v1:10.111.136.166:6789/0] mon.a
+</code></pre>
+
+<p><strong>Note:-</strong> <code class="language-plaintext highlighter-rouge">10.111.136.166</code>is the Monitor IP and <code class="language-plaintext highlighter-rouge">6789</code> is the monitor port that will be used by CephCSI to connect to the ceph cluster.</p>
+
+<blockquote>
+  <p>Ceph Monitors normally listen on port 3300 for the new v2 protocol, and 6789 for the old v1 protocol. Check if your cluster is listening on v2 or v1 protocol.</p>
+</blockquote>
+
+<h3 id="check-network-connectivity-on-your-kubernetes-nodes">Check network connectivity on your kubernetes nodes</h3>
+
+<p>If you are seeing the issue in Provisioning the PVC then you need to check the network connectivity from the Provisioner pods.</p>
+
+<ul>
+  <li>CephFS</li>
+</ul>
+
+<p>If it’s <strong>CephFS PVC</strong> then you need to check network connectivity from the <strong>csi-cephfsplugin</strong> container of the <strong>csi-cephfsplugin-provisioner</strong> Pods.</p>
+
+<ul>
+  <li>RBD</li>
+</ul>
+
+<p>If it’s <strong>RBD PVC</strong> then you need to check network connectivity from the <strong>csi-rbdplugin</strong> container of the <strong>csi-rbdplugin-provisioner</strong> Pods.</p>
+
+<blockquote>
+  <p>Based on the kubernetes nodes count or the configuration there might be 1 or more provisioner pods will be running. It’s good to validate you can check the ceph cluster from all provisioner pods.</p>
+</blockquote>
+
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]cat &lt; /dev/tcp/10.111.136.166/6789
+ceph v027���'e����'^C
+[🎩︎]mrajanna@localhost $] cat &lt; /dev/tcp/10.111.136.166/3300
+ceph v2
+^C
+</code></pre>
+
+<blockquote>
+  <p>If you have multiple monitors make sure you check network connectivity for all monitor IP’s and ports which are passed to cephcsi.</p>
+</blockquote>
+
+<blockquote>
+  <p>If the above commands do not return any response then it will be a network issue to connect to the ceph cluster.</p>
+</blockquote>
+
+<h2 id="check-ceph-cluster-is-healhty">check ceph cluster is healhty</h2>
+
+<p>Sometimes unhealthy ceph cluster can contribute to the issues in Creating or mounting the pvc. Please make sure your ceph cluster is healthy</p>
+
+<pre><code class="language-bash=">sh-4.4# ceph health detail
+HEALTH_OK
+</code></pre>
+
+<h2 id="check-for-slow-ops">check for slow ops</h2>
+
+<p>Even slow ops in the ceph cluster can contribute to the issues. Please make sure that No slow Ops are present and the ceph cluster is healthy</p>
+
+<pre><code class="language-bash=">sh-4.4# ceph -s
+  cluster:
+    id:     ba41ac93-3b55-4f32-9e06-d3d8c6ff7334
+    health: HEALTH_WARN
+            30 slow ops, oldest one blocked for 10624 sec, mon.a has slow ops
+</code></pre>
+
+<p>Some tips on what to check.</p>
+
+<ul>
+  <li>Look in the monitor logs</li>
+  <li>Look in the OSD logs
+    <ul>
+      <li>Check Disk Health</li>
+    </ul>
+  </li>
+  <li>Check Network Health</li>
+</ul>
+
+<blockquote>
+  <p>How to debug different issues in the ceph cluster is documented at <a href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/4/html/troubleshooting_guide/index"><strong>ceph troubleshooting</strong></a></p>
+</blockquote>
+
+<h2 id="pool-or-subvolumegroup-exists-in-the-ceph-cluster">Pool or subvolumegroup exists in the ceph cluster</h2>
+
+<ul>
+  <li>RBD
+ Make sure the pool you have specified in the <a href="https://github.com/rook/rook/blob/master/cluster/examples/kubernetes/ceph/csi/rbd/storageclass.yaml#L34">storageclass.yaml</a> Exists in the ceph cluster.</li>
+</ul>
+
+<p>Suppose the pool name is mentioned in the storageclass.yaml is replicapool. It can be verified as below.</p>
+
+<pre><code class="language-bash=">sh-4.4# ceph osd lspools
+1 device_health_metrics
+2 replicapool
+</code></pre>
+
+<blockquote>
+  <p><strong>If the pool does not exists make sure you create the pool before proceeding.</strong></p>
+</blockquote>
+
+<ul>
+  <li>CephFS
+ Make sure the filesystem and pool you have specified in the <a href="https://github.com/rook/rook/blob/master/cluster/examples/kubernetes/ceph/csi/cephfs/storageclass.yaml">storageclass.yaml</a> Exist in the ceph cluster.</li>
+</ul>
+
+<p>Suppose the filesystem name mentioned in the storageclass.yaml is <code class="language-plaintext highlighter-rouge">myfs</code>. It can be verified as below.</p>
+
+<pre><code class="language-bash=">sh-4.4# ceph fs ls
+name: myfs, metadata pool: myfs-metadata, data pools: [myfs-data0 ]
+</code></pre>
+
+<blockquote>
+  <p>In case, if you have a specified pool name make sure it is available in the above data pools list.</p>
+</blockquote>
+
+<h2 id="check-cephcsi-can-create-subvolumegroup">Check cephcsi can create subvolumegroup</h2>
+
+<p>If the subvolumegroup is not specified in the cephcsi configmap (where you have passed the ceph monitor information). cephcsi creates the default subvolumegroup when name <code class="language-plaintext highlighter-rouge">csi</code>.</p>
+
+<pre><code class="language-bash=">sh-4.4# ceph fs subvolumegroup ls myfs
+[
+    {
+        "name": "csi"
+    }
+]
+</code></pre>
+
+<blockquote>
+  <p><strong>This is not applicable for Rook Users.</strong></p>
+</blockquote>
+
+<p>Couple for cephfs issue which might help  to debug cephfs network issue <a href="https://github.com/rook/rook/issues/4251">4251</a>,<a href="https://github.com/rook/rook/issues/6183">6183</a>
+If you don’t have any issues with your ceph cluster, we can start debugging the issue from the CSI side.</p>
+
+<h2 id="issue-in-provisioning-volume">Issue in Provisioning Volume</h2>
+
+<p>Most of the time the issue can also exist in the cephcsi or the sidecar containers we are using in cephcsi.</p>
+
+<p>For CephFS or RBD cephcsi has included number of sidecar containers in the provisioner pods example <strong><code class="language-plaintext highlighter-rouge">csi-attacher</code> <code class="language-plaintext highlighter-rouge">csi-resizer</code> <code class="language-plaintext highlighter-rouge">csi-provisioner</code> <code class="language-plaintext highlighter-rouge">csi-cephfsplugin</code> <code class="language-plaintext highlighter-rouge">csi-snapshotter</code> <code class="language-plaintext highlighter-rouge">liveness-prometheus</code></strong></p>
+
+<blockquote>
+  <p><strong>If it’s a CephFS provisioner pod you will see <code class="language-plaintext highlighter-rouge">csi-cephfsplugin</code> as one of the container names. If its an RBD provisioner you will see <code class="language-plaintext highlighter-rouge">csi-rbdplugin</code> as the container name</strong></p>
+</blockquote>
+
+<p>Let us see the functionality of the sidecar containers we use in cephcsi provisioner pods.</p>
+
+<ul>
+  <li>
+    <p><strong>csi-provisioner</strong></p>
+
+    <p>The external-provisioner is a sidecar container that dynamically provisions volumes by calling ControllerCreateVolume and ControllerDeleteVolume functions of CSI drivers. More details about external-provisioner can be found <a href="https://github.com/kubernetes-csi/external-provisioner">here</a>.</p>
+
+    <p>If any issue exists in PVC create or Delete operation you can check the logs of the csi-provisioner sidecar container.</p>
+  </li>
+</ul>
+
+<pre><code class="language-bash=">$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
+</code></pre>
+
+<ul>
+  <li>
+    <p><strong>csi-resizer</strong></p>
+
+    <p>The CSI external-resizer is a sidecar container that watches the Kubernetes API server for PersistentVolumeClaim updates and triggers <strong>ControllerExpandVolume</strong> operations against a CSI endpoint if the user requested more storage on the PersistentVolumeClaim object. More details about external-provisioner can be found <a href="https://github.com/kubernetes-csi/external-resizer">here</a>.</p>
+
+    <p>If any issue exists in PVC expansion you can check the logs of the csi-resizer sidecar container.</p>
+  </li>
+</ul>
+
+<pre><code class="language-bash=">$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-resizer
+</code></pre>
+
+<ul>
+  <li>
+    <p><strong>csi-snapshotter</strong></p>
+
+    <p>The CSI external-snapshotter sidecar only watches for VolumeSnapshotContent create/update/delete events. It will talk to cephcsi containers to create or delete snapshots. More details about external-snapshotter can be found <a href="https://github.com/kubernetes-csi/external-snapshotter">here</a>.</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong>In Kubernetes 1.17 when the volume snapshot feature is promoted to beta. In Kubernetes 1.20, the feature gate is enabled by default on standard Kubernetes deployments and cannot be turned off.</strong></p>
+</blockquote>
+
+<p>Make sure you have installed the right snapshotter CRD version.</p>
+
+<pre><code class="language-bash=">kubectl get crd |grep snapshot
+volumesnapshotclasses.snapshot.storage.k8s.io    2021-01-25T11:19:38Z
+volumesnapshotcontents.snapshot.storage.k8s.io   2021-01-25T11:19:39Z
+volumesnapshots.snapshot.storage.k8s.io          2021-01-25T11:19:40Z
+</code></pre>
+
+<p>Check above CRD’s is having Right version and you are using the Correct Version in your <strong>snapshotclass.yaml</strong> or <strong>snapshot.yaml</strong> as well. Or else <strong>VolumeSnapshot</strong> and <strong>VolumesnapshotContent</strong> might not get created.</p>
+
+<p>The snapshot controller is responsible for creating both VolumeSnapshot and VolumesnapshotContent object. If the objects are not getting created, You may need to check the logs of the snapshot-controller pod.</p>
+
+<blockquote>
+  <p><strong>Rook</strong> only installs the snapshotter sidecar container, not the
+controller. It is strongly recommended that Kubernetes distributors bundle
+and deploy the controller and CRDs as part of their Kubernetes cluster
+management process (independent of any CSI Driver).</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>If your Kubernetes distribution does not bundle the snapshot controller, you may manually install these <a href="https://github.com/kubernetes-csi/external-snapshotter#usage">components</a></strong></p>
+</blockquote>
+
+<p>If any issue exists in the snapshot Create/Delete operation you can check the logs of the csi-snapshotter sidecar container.</p>
+
+<pre><code class="language-bash=">$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-snapshotter
+</code></pre>
+
+<blockquote>
+  <p>If you see error like <code class="language-plaintext highlighter-rouge">GRPC error: rpc error: code = Aborted desc = an operation with the given Volume ID 0001-0009-rook-ceph-0000000000000001-8d0ba728-0e17-11eb-a680-ce6eecc894de already exists</code>.</p>
+</blockquote>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">The</span> <span class="n">issue</span> <span class="n">mostly</span> <span class="n">exists</span> <span class="n">in</span> <span class="n">ceph</span> <span class="n">cluster</span> <span class="n">or</span> <span class="n">network</span> <span class="n">connectivity</span><span class="o">.</span> <span class="n">If</span> <span class="n">the</span> <span class="n">issue</span> <span class="n">is</span> <span class="n">in</span> <span class="n">Provisioning</span> <span class="n">the</span> <span class="n">PVC</span> <span class="n">Restarting</span> <span class="n">the</span> <span class="n">Provisioner</span> <span class="n">pods</span> <span class="n">help</span><span class="p">(</span><span class="k">for</span> <span class="n">CephFS</span> <span class="n">issue</span> <span class="n">restart</span> <span class="s">`csi-cephfsplugin-provisioner-xxxxxx`</span> <span class="n">CephFS</span> <span class="n">Provisioner</span><span class="o">.</span> <span class="n">For</span> <span class="n">RBD</span><span class="p">,</span> <span class="n">restart</span> <span class="s">`csi-rbdplugin-provisioner-xxxxxx`</span> <span class="n">pod</span><span class="o">.</span> <span class="n">If</span> <span class="n">the</span> <span class="n">issue</span> <span class="n">is</span> <span class="n">in</span> <span class="n">mounting</span> <span class="n">the</span> <span class="n">PVC</span><span class="p">,</span> <span class="n">restarting</span> <span class="n">the</span> <span class="n">csi</span><span class="o">-</span><span class="n">rbdplugin</span><span class="o">-</span><span class="n">xxxxx</span> <span class="k">for</span> <span class="n">RBD</span> <span class="n">issue</span> <span class="n">and</span> <span class="n">csi</span><span class="o">-</span><span class="n">cephfsplugin</span><span class="o">-</span><span class="n">xxxxx</span> <span class="n">pod</span> <span class="k">for</span> <span class="n">CephFS</span> <span class="n">issue</span> <span class="n">helps</span> <span class="n">sometimes</span> <span class="n">not</span> <span class="n">always</span><span class="o">.</span>
+</code></pre></div></div>
+
+<h2 id="issue-in-mounting-the-pvc-to-application-pods">Issue in Mounting the pvc to application pods</h2>
+
+<p>When a user requests to create the application pod with PVC. It’s a three-step
+process</p>
+
+<ul>
+  <li>csi-driver Registration</li>
+  <li>Create volume attachment object</li>
+  <li>Stage and Publish Volume.</li>
+</ul>
+
+<h3 id="csi-driver-registration">csi-driver registration</h3>
+
+<p><code class="language-plaintext highlighter-rouge">csi-cephfsplugin-xxxx</code> or <code class="language-plaintext highlighter-rouge">csi-rbdplugin-xxxx</code> is a daemonset pod running on all the nodes where your application gets scheduled. If the plugin pods are not running on the node where your application is scheduled might cause the issue, Make sure plugin pods are always running.</p>
+
+<p>Each plugin pod has 2 important container one is <code class="language-plaintext highlighter-rouge">driver-registrar</code> and <code class="language-plaintext highlighter-rouge">csi-rbdplugin</code> or <code class="language-plaintext highlighter-rouge">csi-cephfsplugin</code>. sometimes we also deploy a <code class="language-plaintext highlighter-rouge">liveness-prometheus</code> container.</p>
+
+<ul>
+  <li>
+    <p><strong>driver-registrar</strong></p>
+
+    <p>The node-driver-registrar is a sidecar container that registers the CSI driver with Kubelet. More datils can be found <a href="https://github.com/kubernetes-csi/node-driver-registrar">here</a></p>
+  </li>
+</ul>
+
+<p>If any issue exists in attaching the PVC to the application pod check logs from <em>driver-registrar</em> sidecar container in plugin pod where your application pod is scheduled.</p>
+
+<pre><code class="language-bash=">$ kubectl logs po/csi-rbdplugin-vh8d5 -c driver-registrar
+I0120 12:28:34.231761  124018 main.go:112] Version: v2.0.1
+I0120 12:28:34.233910  124018 connection.go:151] Connecting to unix:///csi/csi.sock
+I0120 12:28:35.242469  124018 node_register.go:55] Starting Registration Server at: /registration/rook-ceph.rbd.csi.ceph.com-reg.sock
+I0120 12:28:35.243364  124018 node_register.go:64] Registration Server started at: /registration/rook-ceph.rbd.csi.ceph.com-reg.sock
+I0120 12:28:35.243673  124018 node_register.go:86] Skipping healthz server because port set to: 0
+I0120 12:28:36.318482  124018 main.go:79] Received GetInfo call: &amp;InfoRequest{}
+I0120 12:28:37.455211  124018 main.go:89] Received NotifyRegistrationStatus call: &amp;RegistrationStatus{PluginRegistered:true,Error:,}
+E0121 05:19:28.658390  124018 connection.go:129] Lost connection to unix:///csi/csi.sock.
+E0125 07:11:42.926133  124018 connection.go:129] Lost connection to unix:///csi/csi.sock.
+</code></pre>
+
+<blockquote>
+  <p>You should see <code class="language-plaintext highlighter-rouge">RegistrationStatus{PluginRegistered:true,Error:,}</code> response in the logs to confirm that plugin is registered with kubelet.</p>
+</blockquote>
+
+<blockquote>
+  <p>If you see a driver not found an error in the application pod describe output. restarting the csi-xxxxplugin-xxx pod on the node helps sometimes.</p>
+</blockquote>
+
+<h3 id="check-issue-in-volume-attachment">Check Issue in Volume attachment</h3>
+
+<p>Each provisioner pod also consists of a sidecar container called csi-attacher.</p>
+
+<ul>
+  <li>
+    <p><strong>csi-attacher</strong></p>
+
+    <p>The external-attacher is a sidecar container that attaches volumes to nodes by calling ControllerPublish and ControllerUnpublish functions of CSI drivers. It is necessary because the internal Attach/Detach controller running in Kubernetes controller-manager does not have any direct interfaces to CSI drivers. More datils can be found <a href="https://github.com/kubernetes-csi/external-attacher">here</a></p>
+  </li>
+</ul>
+
+<p>If any issue exists in attaching the PVC to the application pod first check the <code class="language-plaintext highlighter-rouge">volumettachment</code> object created and also log from <em>csi-attacher</em> sidecar container in provisioner pod.</p>
+
+<pre><code class="language-bash=">$ kubectl get volumeattachment
+NAME                                                                   ATTACHER                        PV                                         NODE       ATTACHED   AGE
+csi-75903d8a902744853900d188f12137ea1cafb6c6f922ebc1c116fd58e950fc92   rook-ceph.cephfs.csi.ceph.com   pvc-5c547d2a-fdb8-4cb2-b7fe-e0f30b88d454   minikube   true       4m26s
+</code></pre>
+
+<pre><code class="language-bash=">kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-attacher
+</code></pre>
+
+<h3 id="how-to-identify-stale-operations">How to identify stale operations</h3>
+
+<ul>
+  <li>CephFS
+ Check for any stale mount commands on the csi-cephfsplugin-xxxx pod on the node where your application pod is scheduled.</li>
+</ul>
+
+<p>You need to exec in the <code class="language-plaintext highlighter-rouge">csi-cephfsplugin-xxxx</code> pod and grep for stale <code class="language-plaintext highlighter-rouge">mount</code> operators.</p>
+
+<blockquote>
+  <p>Identify the csi-cephfsplugin-xxxx pod running on the node where your application is scheduled with <code class="language-plaintext highlighter-rouge">kubectl get po -owide</code> and match the node names.</p>
+</blockquote>
+
+<pre><code class="language-bash=">$ kubectl exec -it csi-cephfsplugin-tfk2g -c csi-cephfsplugin -- sh
+sh-4.4# ps -ef |grep mount
+root          67      60  0 11:55 pts/0    00:00:00 grep mount
+sh-4.4# ps -ef |grep ceph
+root           1       0  0 Jan20 ?        00:00:26 /usr/local/bin/cephcsi --nodeid=minikube --type=cephfs --endpoint=unix:///csi/csi.sock --v=0 --nodeserver=true --drivername=rook-ceph.cephfs.csi.ceph.com --pidlimit=-1 --metricsport=9091 --forcecephkernelclient=true --metricspath=/metrics --enablegrpcmetrics=true
+root          69      60  0 11:55 pts/0    00:00:00 grep ceph
+</code></pre>
+
+<p>If any commands are stuck check the <strong><code class="language-plaintext highlighter-rouge">dmesg</code></strong> logs from the node, Restarting the csi-cephfsplugin pod also might work sometime.</p>
+
+<p>If you don’t see any stuck command, Make sure about network connectivity and ceph health, and slow ops.</p>
+
+<ul>
+  <li>RBD</li>
+</ul>
+
+<p>Check for any stale map/mkfs/mount commands on the csi-rbdplugin-xxxx pod on the node where your application pod is scheduled.</p>
+
+<p>You need to exec in the <code class="language-plaintext highlighter-rouge">csi-rbdplugin-xxxx</code> pod and grep for stale operators like (<strong><code class="language-plaintext highlighter-rouge">rbd map</code></strong>, <strong><code class="language-plaintext highlighter-rouge">rbd unmap</code></strong>, <strong><code class="language-plaintext highlighter-rouge">mkfs</code></strong>, <strong><code class="language-plaintext highlighter-rouge">mount</code></strong> and <strong><code class="language-plaintext highlighter-rouge">umount</code></strong>).</p>
+
+<blockquote>
+  <p>Identify the csi-rbdplugin-xxxx pod running on the node where your application is scheduled with <code class="language-plaintext highlighter-rouge">kubectl get po -owide</code> and match the node names.</p>
+</blockquote>
+
+<pre><code class="language-bash=">$ kubectl exec -it csi-rbdplugin-vh8d5 -c csi-rbdplugin -- sh
+sh-4.4# ps -ef |grep map
+root     1297024 1296907  0 12:00 pts/0    00:00:00 grep map
+sh-4.4# ps -ef |grep mount
+root        1824       1  0 Jan19 ?        00:00:00 /usr/sbin/rpc.mountd
+ceph     1041020 1040955  1 07:11 ?        00:03:43 ceph-mgr --fsid=ba41ac93-3b55-4f32-9e06-d3d8c6ff7334 --keyring=/etc/ceph/keyring-store/keyring --log-to-stderr=true --err-to-stderr=true --mon-cluster-log-to-stderr=true --log-stderr-prefix=debug  --default-log-to-file=false --default-mon-cluster-log-to-file=false --mon-host=[v2:10.111.136.166:3300,v1:10.111.136.166:6789] --mon-initial-members=a --id=a --setuser=ceph --setgroup=ceph --client-mount-uid=0 --client-mount-gid=0 --foreground --public-addr=172.17.0.6
+root     1297115 1296907  0 12:00 pts/0    00:00:00 grep mount
+sh-4.4# ps -ef |grep mkfs
+root     1297291 1296907  0 12:00 pts/0    00:00:00 grep mkfs
+sh-4.4# ps -ef |grep umount
+root     1298500 1296907  0 12:01 pts/0    00:00:00 grep umount
+sh-4.4# ps -ef |grep unmap
+root     1298578 1296907  0 12:01 pts/0    00:00:00 grep unmap
+</code></pre>
+
+<p>If any commands are stuck check the <strong><code class="language-plaintext highlighter-rouge">dmesg</code></strong> logs from the node, Restarting the csi-rbdplugin pod also might work sometime.</p>
+
+<p>If you don’t see any stuck command, Make sure about network connectivity and ceph health, and slow ops.</p>
+
+<h3 id="how-to-check-dmesg-logs">How to check dmesg logs</h3>
+
+<p>Checking the <em>dmesg</em> logs on the node where pvc mounting is failing or the csi-rbdplugin container of the csi-rbdplugin-xxxx pod on that node always helps.</p>
+
+<pre><code class="language-bash=">$ dmesg
+</code></pre>
+
+<h3 id="if-nothing-helps-get-the-last-executed-command-from-the-cephcsi-pod-logs-and-run-it-manually-inside-provisioner-or-plugin-pod">If nothing helps get the last executed command from the cephcsi pod logs and run it manually inside provisioner or plugin pod</h3>
+
+<pre><code class="language-bash=">$ rbd ls --id=csi-rbd-node -m=10.111.136.166:6789 --key=AQDpIQhg+v83EhAAgLboWIbl+FL/nThJzoI3Fg==
+</code></pre>
+
+<blockquote>
+  <p>Need to pass the exact user ID, key and monitor IP’s and port when executing the command.</p>
+</blockquote>
+
+  </div>
+
+  <div class="date">
+    Written on January 25, 2021
+  </div>
+</article>
+
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://mrajanna.com/troubleshooting-cephcsi/';
+      this.page.identifier = 'https://mrajanna.com/troubleshooting-cephcsi/';
+    };
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://madhu-1-github-io-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:Madhupr007@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/Madhu-1"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/madhu-r-4a551573"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/Madhupr007"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+	<!-- Google Analytics -->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'qrFYIlFxt1yD_oRmFPV2ZpEOYn46EXVxnRpg2HhMaUU', 'auto');
+		ga('send', 'pageview', {
+		  'page': '/troubleshooting-cephcsi/',
+		  'title': 'Troubleshooting Cephcsi'
+		});
+	</script>
+	<!-- End Google Analytics -->
+
+
+  </body>
+</html>
