@@ -234,6 +234,8 @@ spec:
 EOF
 ```
 
+> Repeat the same steps on cluster2. Don't forget to change the `--context` value
+
 Once mirroring is enabled, Rook will by default create its own bootstrap peer token so that it can be used by another cluster. The bootstrap peer token can be found in a Kubernetes Secret. The name of the Secret is present in the Status field of the CephBlockPool CR:
 
 ```bash=
@@ -244,14 +246,13 @@ $kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-c
 This secret can then be fetched like so:
 
 ```bash=
-$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster2 -o jsonpath='{.data.token}'|base64 -d
+$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
 eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0=
 ```
 
 ### Create RBD mirror daemon CRD
 
 Rook allows the creation and updating of the rbd-mirror daemon(s) through the custom resource definitions (CRDs). RBD images can be asynchronously mirrored between two Ceph clusters.
-
 
 #### Configure RBD mirroring on cluster1
 

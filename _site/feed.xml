@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2021-01-25T21:15:30+05:30</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">Troubleshooting Cephcsi</title><link href="https://mrajanna.com/troubleshooting-cephcsi/" rel="alternate" type="text/html" title="Troubleshooting Cephcsi" /><published>2021-01-25T00:00:00+05:30</published><updated>2021-01-25T00:00:00+05:30</updated><id>https://mrajanna.com/troubleshooting-cephcsi</id><content type="html" xml:base="https://mrajanna.com/troubleshooting-cephcsi/">&lt;p&gt;The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2021-03-30T10:28:33+05:30</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">Troubleshooting Cephcsi</title><link href="https://mrajanna.com/troubleshooting-cephcsi/" rel="alternate" type="text/html" title="Troubleshooting Cephcsi" /><published>2021-01-25T00:00:00+05:30</published><updated>2021-01-25T00:00:00+05:30</updated><id>https://mrajanna.com/troubleshooting-cephcsi</id><content type="html" xml:base="https://mrajanna.com/troubleshooting-cephcsi/">&lt;p&gt;The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to
 application pods can happen for Many reasons like &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Network connectivity
 between csi pods and ceph&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cluster health issue&lt;/code&gt;&lt;/strong&gt;,&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Slow operations&lt;/code&gt;&lt;/strong&gt;,
 &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubernetes issue&lt;/code&gt;&lt;/strong&gt;, etc. Even the issue can be at the Ceph-CSI layer
@@ -696,6 +696,10 @@ spec:
 EOF
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;blockquote&gt;
+  &lt;p&gt;Repeat the same steps on cluster2. Don’t forget to change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--context&lt;/code&gt; value&lt;/p&gt;
+&lt;/blockquote&gt;
+
 &lt;p&gt;Once mirroring is enabled, Rook will by default create its own bootstrap peer token so that it can be used by another cluster. The bootstrap peer token can be found in a Kubernetes Secret. The name of the Secret is present in the Status field of the CephBlockPool CR:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.info}'
@@ -704,7 +708,7 @@ EOF
 
 &lt;p&gt;This secret can then be fetched like so:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster2 -o jsonpath='{.data.token}'|base64 -d
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
 eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0=
 &lt;/code&gt;&lt;/pre&gt;
 

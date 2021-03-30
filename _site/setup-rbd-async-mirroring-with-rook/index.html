@@ -328,6 +328,10 @@ spec:
 EOF
 </code></pre>
 
+<blockquote>
+  <p>Repeat the same steps on cluster2. Don’t forget to change the <code class="language-plaintext highlighter-rouge">--context</code> value</p>
+</blockquote>
+
 <p>Once mirroring is enabled, Rook will by default create its own bootstrap peer token so that it can be used by another cluster. The bootstrap peer token can be found in a Kubernetes Secret. The name of the Secret is present in the Status field of the CephBlockPool CR:</p>
 
 <pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.info}'
@@ -336,7 +340,7 @@ EOF
 
 <p>This secret can then be fetched like so:</p>
 
-<pre><code class="language-bash=">$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster2 -o jsonpath='{.data.token}'|base64 -d
+<pre><code class="language-bash=">$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
 eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0=
 </code></pre>
 
