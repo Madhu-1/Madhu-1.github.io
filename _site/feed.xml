@@ -1,4 +1,409 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2021-03-30T10:28:33+05:30</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">Troubleshooting Cephcsi</title><link href="https://mrajanna.com/troubleshooting-cephcsi/" rel="alternate" type="text/html" title="Troubleshooting Cephcsi" /><published>2021-01-25T00:00:00+05:30</published><updated>2021-01-25T00:00:00+05:30</updated><id>https://mrajanna.com/troubleshooting-cephcsi</id><content type="html" xml:base="https://mrajanna.com/troubleshooting-cephcsi/">&lt;p&gt;The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2021-05-04T13:45:44+05:30</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">DR failover and failback for RBD Async mirroring with minikube</title><link href="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/" rel="alternate" type="text/html" title="DR failover and failback for RBD Async mirroring with minikube" /><published>2021-05-04T00:00:00+05:30</published><updated>2021-05-04T00:00:00+05:30</updated><id>https://mrajanna.com/rbd-async-mirroring-dr-with-rook</id><content type="html" xml:base="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/">&lt;p&gt;This doc assumes that you already set up the rbd mirroring between two clusters.&lt;/p&gt;
+
+&lt;p&gt;Please refer to &lt;a href=&quot;2020-11-23-setup-rbd-async-mirroring-with-rook.md&quot;&gt;doc&lt;/a&gt; on how
+to setup RBD mirroring.&lt;/p&gt;
+
+&lt;h2 id=&quot;set-up-initial-dr-components&quot;&gt;Set up initial DR components&lt;/h2&gt;
+
+&lt;p&gt;we need to Enable two new sidecar deployment in the RBD provisioner pods which
+will help in achieving rbd mirroring&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;OMAP Regenerator -&amp;gt; This is a cephcsi component that regenerates the
+required OMAP data for cephcsi to perform CSI operations after failover.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Volume Replication operator -&amp;gt; Volume replication operator which exposes
+Replication CRD to perform the RBD async operations like enable and disable mirroring,
+promote, demote, force promote, and resync. Refer &lt;a href=&quot;https://github.com/csi-addons/volume-replication-operator&quot;&gt;operator&lt;/a&gt; for more details about it.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;enable-dr-components&quot;&gt;Enable DR components&lt;/h3&gt;
+
+&lt;h4 id=&quot;upgrade-to-rook-v160&quot;&gt;Upgrade to Rook v1.6.0+&lt;/h4&gt;
+
+&lt;p&gt;Rook &lt;a href=&quot;https://github.com/rook/rook/releases/tag/v1.6.0&quot;&gt;v1.6.0&lt;/a&gt; comes with the
+new volume replication support and also cephcsi v3.3.0, Install/Upgrade to Rook
+v1.6.0 or higher versions.&lt;/p&gt;
+
+&lt;h4 id=&quot;re-apply-the-commonyaml-and-crdsyaml&quot;&gt;Re-apply the common.yaml and crds.yaml&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;kubectl apply -f crds.yaml common.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Once we reapply/create the crds.yaml we should see two new CRD’s related to
+volume replication&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$ kubectl get crd |grep volumereplication
+volumereplicationclasses.replication.storage.openshift.io   2021-04-28T05:57:57Z
+volumereplications.replication.storage.openshift.io         2021-04-28T05:57:57Z
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As we need to provide Edit &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rook-ceph-operator-config&lt;/code&gt; configmap and add below
+two configurations to the list&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;apiVersion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;v1&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;CSI_ENABLE_OMAP_GENERATOR&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;true&quot;&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;CSI_ENABLE_VOLUME_REPLICATION&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;true&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl edit cm rook-ceph-operator-config  -nrook-ceph
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Once you edit and save the configmap you will see that CSI pods are getting
+recreated, just wait until you see 8 containers in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;csi-rbdplugin-provisioner-xxx&lt;/code&gt;
+pod.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;kubectl get po -nrook-ceph
+NAME                                            READY   STATUS      RESTARTS   AGE
+csi-cephfsplugin-bkgkt                          3/3     Running     0          5d23h
+csi-cephfsplugin-provisioner-6544c5b576-ndf58   6/6     Running     0          5d23h
+csi-rbdplugin-provisioner-7465df5764-5g8mj      8/8     Running     0          6m7s
+csi-rbdplugin-vpq4k                             3/3     Running     0          5d23h
+rook-ceph-mgr-a-54bbfb54b9-pg827                1/1     Running     0          6d
+rook-ceph-mon-a-79dfbdcdb6-qwssl                1/1     Running     0          6d
+rook-ceph-operator-54cf7487d4-gdp5s             1/1     Running     0          6d
+rook-ceph-osd-0-b99c76b7b-6cbnk                 1/1     Running     0          6d
+rook-ceph-osd-prepare-minicluster2-57552        0/1     Completed   0          6d
+rook-ceph-rbd-mirror-a-d449c66db-2c4hr          1/1     Running     0          5d23h
+rook-ceph-tools-78cdfd976c-nm2jx                1/1     Running     0          6d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;kubectl logs po/csi-rbdplugin-provisioner-7465df5764-5g8mj -nrook-ceph
+error: a container name must be specified for pod csi-rbdplugin-provisioner-7465df5764-5g8mj, choose one of: [csi-provisioner csi-resizer csi-attacher csi-snapshotter csi-omap-generator volume-replication csi-rbdplugin liveness-prometheus]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In the above logs we can see that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;csi-omap-generator&lt;/code&gt; and
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;volume-replication&lt;/code&gt; containers got created in
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;csi-rbdplugin-provisioner-xxx&lt;/code&gt; pods.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt; The above steps need to be done on both clusters.&lt;/p&gt;
+
+&lt;p&gt;Now the initial bootstrapping is completed.&lt;/p&gt;
+
+&lt;h2 id=&quot;provision-storage-on-cluster1&quot;&gt;Provision storage on cluster1&lt;/h2&gt;
+
+&lt;p&gt;Create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;storageclass&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PVC&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;create-storageclass-on-cluster1&quot;&gt;Create storageclass on cluster1&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$cat &amp;lt;&amp;lt;EOF | kubectl --context=cluster1 apply -f -
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: rook-ceph-block
+provisioner: rook-ceph.rbd.csi.ceph.com
+parameters:
+    clusterID: rook-ceph
+    pool: replicapool
+    imageFormat: &quot;2&quot;
+    imageFeatures: layering
+    csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+    csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+    csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+    csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+    csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+    csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+    csi.storage.k8s.io/fstype: ext4
+reclaimPolicy: Retain
+EOF
+storageclass.storage.k8s.io/rook-ceph-block created
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Create a storageclass with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Retain&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;reclaimPolicy&lt;/code&gt; so that we can use static binding for
+DR.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;create-persistentvolumeclaim-on-cluster1&quot;&gt;Create PersistentVolumeClaim on cluster1&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$cat &amp;lt;&amp;lt;EOF | kubectl --context=cluster1 apply -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rbd-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: rook-ceph-block
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Check PVC is in bound state&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get pvc --context=cluster1
+NAME      STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
+rbd-pvc   Bound    pvc-57cfca36-cb76-4d79-b258-a107bc5c4d15   1Gi        RWO            rook-ceph-block   44s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;create-volume-replication-class-on-cluster1&quot;&gt;Create Volume Replication class on cluster1&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$cat &amp;lt;&amp;lt;EOF | kubectl --context=cluster1 apply -f -
+apiVersion: replication.storage.openshift.io/v1alpha1
+kind: VolumeReplicationClass
+metadata:
+  name: rbd-volumereplicationclass
+spec:
+  provisioner: rook-ceph.rbd.csi.ceph.com
+  parameters:
+    mirroringMode: snapshot
+    replication.storage.openshift.io/replication-secret-name: rook-csi-rbd-provisioner
+    replication.storage.openshift.io/replication-secret-namespace: rook-ceph
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The volume replication class holds the storage admin information required
+for the volume replication operator.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;create-volume-replication-for-pvc-on-cluster1&quot;&gt;Create Volume Replication for PVC on cluster1&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$cat &amp;lt;&amp;lt;EOF | kubectl --context=cluster1 apply -f -
+apiVersion: replication.storage.openshift.io/v1alpha1
+kind: VolumeReplication
+metadata:
+  name: pvc-volumereplication2
+spec:
+  volumeReplicationClass: rbd-volumereplicationclass
+  replicationState: primary
+  dataSource:
+    apiGroup: &quot;&quot;
+    kind: PersistentVolumeClaim
+    name: rbd-pvc # Name of the PVC to which mirroring to be enabled.
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replicationState&lt;/code&gt; is the state of the volume being referenced.
+  Possible values are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;primary&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secondary&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;resync&lt;/code&gt;.&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;primary&lt;/code&gt; denotes that the volume is primary&lt;/li&gt;
+    &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secondary&lt;/code&gt; denotes that the volume is secondary&lt;/li&gt;
+    &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;resync&lt;/code&gt; denotes that the volume needs to be resynced&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;VolumeReplication&lt;/code&gt; is a namespace scoped object it should be in the namespace as of PVC.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Check VolumeReplication CR status&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$ kubectl get volumereplication pvc-volumereplication -oyaml
+...
+spec:
+  dataSource:
+    apiGroup: &quot;&quot;
+    kind: PersistentVolumeClaim
+    name: rbd-pvc
+  replicationState: primary
+  volumeReplicationClass: rbd-volumereplicationclass
+status:
+  conditions:
+  - lastTransitionTime: &quot;2021-05-04T07:39:00Z&quot;
+    message: &quot;&quot;
+    observedGeneration: 1
+    reason: Promoted
+    status: &quot;True&quot;
+    type: Completed
+  - lastTransitionTime: &quot;2021-05-04T07:39:00Z&quot;
+    message: &quot;&quot;
+    observedGeneration: 1
+    reason: Healthy
+    status: &quot;False&quot;
+    type: Degraded
+  - lastTransitionTime: &quot;2021-05-04T07:39:00Z&quot;
+    message: &quot;&quot;
+    observedGeneration: 1
+    reason: NotResyncing
+    status: &quot;False&quot;
+    type: Resyncing
+  lastCompletionTime: &quot;2021-05-04T07:39:00Z&quot;
+  lastStartTime: &quot;2021-05-04T07:38:59Z&quot;
+  message: volume is marked primary
+  observedGeneration: 1
+  state: Primary
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Run commands on toolbox pod on cluster1 to check to mirror is enabled on ceph block pool&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get po --context=cluster1 -nrook-ceph -l  app=rook-ceph-tools
+NAME                               READY   STATUS    RESTARTS   AGE
+rook-ceph-tools-78cdfd976c-jrhjm   1/1     Running   0          3m53s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Verify that mirroring enabled on the image&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+    size 1 GiB in 256 objects
+    order 22 (4 MiB objects)
+    snapshot_count: 1
+    id: 13a672b41f5f
+    block_name_prefix: rbd_data.13a672b41f5f
+    format: 2
+    features: layering
+    op_features:
+    flags:
+    create_timestamp: Mon Nov 23 07:04:21 2020
+    access_timestamp: Mon Nov 23 07:04:21 2020
+    modify_timestamp: Mon Nov 23 07:04:21 2020
+    mirroring state: enabled
+    mirroring mode: snapshot
+    mirroring global id: 7da10ec2-aa67-4b05-86f0-487b4fa9fdbb
+    mirroring primary: true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;You can get the RBD image name from the PV object.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;verify-that-the-image-is-mirrored-on-the-secondary-cluster&quot;&gt;Verify that the image is mirrored on the secondary cluster&lt;/h4&gt;
+
+&lt;p&gt;Run commands on toolbox pod on cluster2&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get po --context=cluster2 -nrook-ceph -l  app=rook-ceph-tools
+NAME                               READY   STATUS    RESTARTS   AGE
+rook-ceph-tools-78cdfd976c-2566m   1/1     Running   0          3m53s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl exec --context=cluster2 -nrook-ceph rook-ceph-tools-78cdfd976c-2566m -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+    size 1 GiB in 256 objects
+    order 22 (4 MiB objects)
+    snapshot_count: 1
+    id: 12a55edc8361
+    block_name_prefix: rbd_data.12a55edc8361
+    format: 2
+    features: layering, non-primary
+    op_features:
+    flags:
+    create_timestamp: Mon Nov 23 07:12:33 2020
+    access_timestamp: Mon Nov 23 07:12:33 2020
+    modify_timestamp: Mon Nov 23 07:12:33 2020
+    mirroring state: enabled
+    mirroring mode: snapshot
+    mirroring global id: 7da10ec2-aa67-4b05-86f0-487b4fa9fdbb
+    mirroring primary: false
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;take-a-backup-of-pvc-and-pv-object-on-cluster1&quot;&gt;Take a backup of PVC and PV object on cluster1&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;kubectl get pvc rbd-pvc -oyaml &amp;gt;pvc-bkp.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;kubectl get pv/pvc-0b93de3a-3946-4909-a189-f44dba0abc76 -oyaml &amp;gt;pv_bkp.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;remove-the-claimref-on-the-backed-up-pv-objects-in--yaml-files&quot;&gt;Remove the claimRef on the backed up PV objects in  yaml files&lt;/h4&gt;
+
+&lt;p&gt;sample claimRef in PV object&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-yaml=&quot;&gt;apiVersion: v1
+kind: PersistentVolume
+metadata:
+  ...
+  name: pvc-0b93de3a-3946-4909-a189-f44dba0abc76
+  resourceVersion: &quot;2516&quot;
+  selfLink: /api/v1/persistentvolumes/pvc-0b93de3a-3946-4909-a189-f44dba0abc76
+  uid: 0b1a1560-2c0b-4906-8059-d6be95954bc0
+spec:
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: rbd-pvc
+    namespace: default
+    resourceVersion: &quot;2512&quot;
+    uid: 0b93de3a-3946-4909-a189-f44dba0abc76
+ ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Remove the claimRef in all PV backup’s&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;vi pv_bkp.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;planned-storage-migration&quot;&gt;Planned Storage Migration&lt;/h2&gt;
+
+&lt;h3 id=&quot;failover&quot;&gt;Failover&lt;/h3&gt;
+
+&lt;p&gt;Follow the Below steps for planned migration when you want to move the workload from one cluster to another cluster&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Scale down all the application pods which are using the mirrored PVC&lt;/li&gt;
+  &lt;li&gt;Take a back up of PVC and PV object from the cluster1
+    &lt;ul&gt;
+      &lt;li&gt;This can be done using some backup tools like velero also&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;update replicationState to secondary in VolumeReplication CR at Primary Site. When the operator sees this change, it will pass the information down to the driver via GRPC request to mark the dataSource as secondary.&lt;/li&gt;
+  &lt;li&gt;If you are manually recreating the PVC and PV on the secondary cluster. remove the claimRef section in the PV objects.&lt;/li&gt;
+  &lt;li&gt;Recreate the storageclass, PVC, and PV objects on the cluster2
+    &lt;ul&gt;
+      &lt;li&gt;As you are creating the static binding between PVC and PV, a new PV won’t be created here, the PVC will get bind to the existing PV.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Create the VolumeReplicationClass on the cluster2&lt;/li&gt;
+  &lt;li&gt;Create the VolumeReplications for all the PVC’s for which mirroring is enabled
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replicationState&lt;/code&gt; should be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;primary&lt;/code&gt; for all the PVC’s on the cluster1&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Check whether the image is primary on cluster2 by looking at toolbox or VolumeReplication CR status&lt;/li&gt;
+  &lt;li&gt;Once the Image is marked as Primary create the application to use the PVC
+In the case of planned migration,&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;failback&quot;&gt;Failback&lt;/h4&gt;
+
+&lt;p&gt;Once the planned work is done and you want to failback, follow the above Failover steps again. the only difference, in this case, is we don’t need to recreate anything we just need to change &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replicationState&lt;/code&gt; from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secondary&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;primary&lt;/code&gt; in current cluster1.&lt;/p&gt;
+
+&lt;h2 id=&quot;storage-disaster-recovery&quot;&gt;Storage Disaster Recovery&lt;/h2&gt;
+
+&lt;h3 id=&quot;failover-1&quot;&gt;Failover&lt;/h3&gt;
+
+&lt;p&gt;In case of disaster recovery, create VolumeReplication CR at the Secondary Site. Since the connection to the Primary Site is lost, the operator automatically sends a GRPC request down to the driver to forcefully mark the dataSource as primary.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;If you are manually recreating the PVC and PV on the secondary cluster. remove the claimRef section in the PV objects.&lt;/li&gt;
+  &lt;li&gt;Recreate the storageclass, PVC, and PV objects on the cluster2
+    &lt;ul&gt;
+      &lt;li&gt;As you are creating the static binding between PVC and PV, a new PV won’t be created here, the PVC will get bind to the existing PV.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Create the VolumeReplicationClass and VolumeReplication CR on the cluster2&lt;/li&gt;
+  &lt;li&gt;Check whether the image is primary on cluster2 by looking at toolbox or VolumeReplication CR status&lt;/li&gt;
+  &lt;li&gt;Once the Image is marked as Primary create the application to use the PVC
+In the case of planned migration,&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;failback-1&quot;&gt;Failback&lt;/h3&gt;
+
+&lt;p&gt;Once the failed cluster is recovered and you want to failback, follow the below steps&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Update the VolumeReplication CR &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replicationState&lt;/code&gt; state from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;primary&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secondary&lt;/code&gt; in cluster1&lt;/li&gt;
+  &lt;li&gt;Scale down the applications on the cluster2&lt;/li&gt;
+  &lt;li&gt;Update the VolumeReplication CR &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replicationState&lt;/code&gt; state from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;primary&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secondary&lt;/code&gt; in cluster2&lt;/li&gt;
+  &lt;li&gt;On the cluster1 verify that the VR status is marked as volume ready to use&lt;/li&gt;
+  &lt;li&gt;Once the volume is marked to ready to use, change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;replicationState&lt;/code&gt; state from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secondary&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;primary&lt;/code&gt; in cluster1&lt;/li&gt;
+  &lt;li&gt;Scale up the applications again on cluster1&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">This doc assumes that you already set up the rbd mirroring between two clusters.</summary></entry><entry><title type="html">Troubleshooting Cephcsi</title><link href="https://mrajanna.com/troubleshooting-cephcsi/" rel="alternate" type="text/html" title="Troubleshooting Cephcsi" /><published>2021-01-25T00:00:00+05:30</published><updated>2021-01-25T00:00:00+05:30</updated><id>https://mrajanna.com/troubleshooting-cephcsi</id><content type="html" xml:base="https://mrajanna.com/troubleshooting-cephcsi/">&lt;p&gt;The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to
 application pods can happen for Many reasons like &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Network connectivity
 between csi pods and ceph&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cluster health issue&lt;/code&gt;&lt;/strong&gt;,&lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Slow operations&lt;/code&gt;&lt;/strong&gt;,
 &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubernetes issue&lt;/code&gt;&lt;/strong&gt;, etc. Even the issue can be at the Ceph-CSI layer
