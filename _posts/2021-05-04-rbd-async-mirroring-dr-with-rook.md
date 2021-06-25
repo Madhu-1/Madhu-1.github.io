@@ -6,7 +6,7 @@ comments: true
 
 This doc assumes that you already set up the rbd mirroring between two clusters.
 
-Please refer to [doc](2020-11-23-setup-rbd-async-mirroring-with-rook.md) on how
+Please refer to [doc](../setup-rbd-async-mirroring-with-rook) on how
 to setup RBD mirroring.
 
 ## Set up initial DR components
