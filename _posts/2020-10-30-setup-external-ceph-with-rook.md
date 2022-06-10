@@ -121,6 +121,7 @@ spec:
     enable: true -> set this to false if you want Rook to manage your external ceph cluster
   dataDirHostPath: /var/lib/rook
   # providing an image is required, if you want to create other CRs (rgw, mds, nfs)
+  # In latest Rook release we dont need to provide cephVersion we can skip this one.
   cephVersion:
     image: ceph/ceph:v14.2.12 # Should match external cluster version
 ```
