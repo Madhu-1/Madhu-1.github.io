@@ -4,14 +4,15 @@ title: Consuming Storage From external ceph cluster in Rook
 comments: true
 ---
 
+
+This blog will help you to Understand how to consume storage from external ceph
+cluster in Rook and how to create and consume Below listed resources in the
+ceph cluster.
+
 This doc assumes that you already set up the Rook with an external ceph cluster.
 
 Please refer to [doc](../setup-external-ceph-cluster-with-rook) on how to setup
 external ceph cluster with Rook.
-
-This blog will help you to Understand how to consume storage from imported
-external ceph cluster in Rook and how to create and consume Below listed
-resources in ceph cluster.
 
 * CephBlockPool
 * CephFileSystem
@@ -25,40 +26,42 @@ you are using the ceph cluster deployed with Rook.
 
 ### Create RBD Pool
 
-```bash=
-ceph osd pool create replicapool 128
-rbd pool init
-ceph osd pool set replicapool size 1 --yes-i-really-mean-it
+```bash
+[🎩︎]mrajanna@fedora $]ceph osd pool create replicapool 128
+[🎩︎]mrajanna@fedora $]rbd pool init
+[🎩︎]mrajanna@fedora $]ceph osd pool set replicapool size 1 --yes-i-really-mean-it
 ```
 
 ### Create CephFS Filesystem
 
-```console
-ceph osd pool create myfs-metadata 128
-ceph osd pool create myfs-data 124
-ceph fs new myfs myfs-metadata myfs-data
+```bash
+[🎩︎]mrajanna@fedora $]ceph osd pool create myfs-metadata 128
+[🎩︎]mrajanna@fedora $]ceph osd pool create myfs-data 124
+[🎩︎]mrajanna@fedora $]ceph fs new myfs myfs-metadata myfs-data
 ```
 
 ### Create SubVolumeGroup
 
 Let's create a SubVolumeGroup in the Filesystem `myfs` created above
 
-```bash=
-ceph fs subvolumegroup create myfs volgroup
+```bash
+[🎩︎]mrajanna@fedora $]ceph fs subvolumegroup create myfs volgroup
 ```
 
 ### Create RadosNamespace
 
 Let's create a RadosNamespace in the BlockPool `replicapool` created above
 
-```bash=
-rbd namespace create replicapool/testnamespace
+```bash
+[🎩︎]mrajanna@fedora $]rbd namespace create replicapool/testnamespace
 ```
 
-checkout Rook 1.9.5 Repository
+## checkout Rook v1.9.5 Repository
 
-```bash=
-cd rook/deploy/examples
+```bash
+[🎩︎]mrajanna@fedora $]git clone https://github.com/rook/rook.git
+[🎩︎]mrajanna@fedora $]git checkout v1.9.5
+[🎩︎]mrajanna@fedora $]cd rook/deploy/examples
 ```
 
 ## Consume above created ceph resources in kubernetes cluster
@@ -76,9 +79,9 @@ OSD please set it to `3`.
 As this ceph cluster is deployed in the `rook-ceph-external` namespace, we need
 to update a few details in RBD storageclass
 
-```bash=
-$ cd csi/rbd
-$ cat storageclass-test.yaml
+```bash
+[🎩︎]mrajanna@fedora $] cd csi/rbd
+[🎩︎]mrajanna@fedora $] cat storageclass-test.yaml
 allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -107,25 +110,25 @@ storageclass-test.yaml).
 
 Let's create RBD storageclass, PVC, Pod and verify it on the ceph cluster.
 
-```bash=
-[🎩︎]mrajanna@fedora rbd $]kubectl create -f storageclass-test.yaml
+```bash
+[🎩︎]mrajanna@fedora $]kubectl create -f storageclass-test.yaml
 storageclass.storage.k8s.io/rook-ceph-block created
-[🎩︎]mrajanna@fedora rbd $]kubectl create -f pvc.yaml
+[🎩︎]mrajanna@fedora $]kubectl create -f pvc.yaml
 persistentvolumeclaim/rbd-pvc created
-[🎩︎]mrajanna@fedora rbd $]kubectl get pvc
+[🎩︎]mrajanna@fedora $]kubectl get pvc
 NAME      STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
 rbd-pvc   Bound    pvc-a1a802fd-a577-45e4-b52d-687b8333cbef   1Gi        RWO            rook-ceph-block   4s
-[🎩︎]mrajanna@fedora rbd $]kubectl create -f pod.yaml
+[🎩︎]mrajanna@fedora $]kubectl create -f pod.yaml
 pod/csirbd-demo-pod created
-[🎩︎]mrajanna@fedora rbd $]kubectl get po
+[🎩︎]mrajanna@fedora $]kubectl get po
 NAME              READY   STATUS    RESTARTS   AGE
 csirbd-demo-pod   1/1     Running   0          43s
 ```
 
 Let's verify we have the rbd image in the ceph cluster.
 
-```bash=
-sh-4.4$ rbd ls replicapool
+```bash
+[🎩︎]mrajanna@fedora $] rbd ls replicapool
 csi-vol-9475df3e-e895-11ec-bbf0-9a1ab8207c3a
 ```
 
@@ -140,9 +143,9 @@ point to the Filesystem where to create the PVC.
 As this ceph cluster is deployed in the `rook-ceph-external` namespace, we need
 to update a few details in CephFS storageclass
 
-```bash=
-$ cd csi/cephfs
-$ cat storageclass.yaml
+```bash
+[🎩︎]mrajanna@fedora $] cd csi/cephfs
+[🎩︎]mrajanna@fedora $] cat storageclass.yaml
 allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -168,25 +171,25 @@ configurations as it is.
 
 Let's create CephFS storageclass, PVC, Pod and verify it on the ceph cluster.
 
-```bash=
-[🎩︎]mrajanna@fedora cephfs $]kubectl create  -f cephfs/storageclass.yaml
+```bash
+[🎩︎]mrajanna@fedora $]kubectl create  -f cephfs/storageclass.yaml
 storageclass.storage.k8s.io/rook-cephfs created
-[🎩︎]mrajanna@fedora cephfs $]kubectl create -f pvc.yaml
+[🎩︎]mrajanna@fedora $]kubectl create -f pvc.yaml
 persistentvolumeclaim/cephfs-pvc created
-[🎩︎]mrajanna@fedora cephfs $]kubectl get pvc
+[🎩︎]mrajanna@fedora $]kubectl get pvc
 NAME         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
 cephfs-pvc   Bound    pvc-52186bd0-92dd-433c-af00-e0a60baf71a1   1Gi        RWO            rook-cephfs       2s
-[🎩︎]mrajanna@fedora cephfs $]kubectl create -f pod.yaml
+[🎩︎]mrajanna@fedora $]kubectl create -f pod.yaml
 pod/csicephfs-demo-pod created
-[🎩︎]mrajanna@fedora cephfs $]kubectl get po
+[🎩︎]mrajanna@fedora $]kubectl get po
 NAME                 READY   STATUS    RESTARTS   AGE
 csicephfs-demo-pod   1/1     Running   0          24s
 ```
 
 Let's verify we have cephfs Subvolume created in the ceph cluster.
 
-```bash=
-sh-4.4$ ceph fs subvolume ls myfs --group_name=csi
+```bash
+[🎩︎]mrajanna@fedora $] ceph fs subvolume ls myfs --group_name=csi
 [
     {
         "name": "csi-vol-9bcadef0-e896-11ec-93d2-8a68b48559cc"
@@ -208,8 +211,8 @@ Let's use the same for testing
 
 #### Create SubVolumeGroup CR
 
-```bash=
-[🎩︎]mrajanna@fedora examples $]cat <<EOFcat <<EOF | kubectl apply -f -
+```bash
+[🎩︎]mrajanna@fedora $]cat <<EOFcat <<EOF | kubectl apply -f -
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephFilesystemSubVolumeGroup
@@ -227,11 +230,11 @@ and ClusterID mapping, it won't create SubVolumeGroup in the Ceph cluster.
 
 #### Check SubVolumeGroup details
 
-```bash=
-[🎩︎]mrajanna@fedora examples $]kubectl get cephfilesystemsubvolumegroup.ceph.rook.io/volgroup -nrook-ceph-external
+```bash
+[🎩︎]mrajanna@fedora $]kubectl get cephfilesystemsubvolumegroup.ceph.rook.io/volgroup -nrook-ceph-external
 NAME       PHASE
 volgroup   Ready
-[🎩︎]mrajanna@fedora examples $]kubectl get cephfilesystemsubvolumegroup.ceph.rook.io/volgroup -nrook-ceph-external -o jsonpath='{.status.info}'
+[🎩︎]mrajanna@fedora $]kubectl get cephfilesystemsubvolumegroup.ceph.rook.io/volgroup -nrook-ceph-external -o jsonpath='{.status.info}'
 {"clusterID":"728ed87ac1a8809431b4549f4a4897aa"}
 ```
 
@@ -244,8 +247,8 @@ subvolumegroup
 
 #### Check mapping between clusterID and SubVolumeGroup
 
-```bash=
-[🎩︎]mrajanna@fedora examples $]kubectl get cm rook-ceph-csi-config -nrook-ceph -oyaml
+```bash
+[🎩︎]mrajanna@fedora $]kubectl get cm rook-ceph-csi-config -nrook-ceph -oyaml
 apiVersion: v1
 data:
   csi-cluster-config-json: '[{"clusterID":"rook-ceph-external","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external"},{"clusterID":"728ed87ac1a8809431b4549f4a4897aa","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external","cephFS":{"subvolumeGroup":"volgroup"}}]'
@@ -267,8 +270,8 @@ metadata:
 
 #### Create StorageClass, PVC and Pod
 
-```bash=
-$cat <<EOF | kubectl apply -f -
+```bash
+[🎩︎]mrajanna@fedora $]cat <<EOF | kubectl apply -f -
 allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -291,15 +294,15 @@ EOF
 storageclass.storage.k8s.io/rook-cephfs-subvol-group created
 ```
 
-```bash=
-[🎩︎]mrajanna@fedora cephfs $]kubectl create -f pvc.yaml
+```bash
+[🎩︎]mrajanna@fedora $]kubectl create -f pvc.yaml
 persistentvolumeclaim/cephfs-subvol-pvc created
-[🎩︎]mrajanna@fedora cephfs $]kubectl get pvc
+[🎩︎]mrajanna@fedora $]kubectl get pvc
 NAME                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS               AGE
 cephfs-subvol-pvc   Bound    pvc-556acc86-ba24-43d6-ae19-85fa21a046a4   1Gi        RWO            rook-cephfs-subvol-group   2s
-[🎩︎]mrajanna@fedora cephfs $]kubectl create -f pod.yaml
+[🎩︎]mrajanna@fedora $]kubectl create -f pod.yaml
 pod/csicephfssubvol-demo-pod created
-[🎩︎]mrajanna@fedora cephfs $]kubectl get po
+[🎩︎]mrajanna@fedora $]kubectl get po
 NAME                       READY   STATUS    RESTARTS   AGE
 csicephfssubvol-demo-pod   1/1     Running   0          70s
 ```
@@ -310,8 +313,8 @@ subvolumegroup storageClass
 Let's verify we have cephfs Subvolume in the specified group created in the
 ceph cluster.
 
-```bash=
-sh-4.4$ ceph fs subvolume ls myfs --group_name=volgroup
+```bash
+[🎩︎]mrajanna@fedora $]ceph fs subvolume ls myfs --group_name=volgroup
 [
     {
         "name": "csi-vol-e0905660-e898-11ec-93d2-8a68b48559cc"
@@ -333,8 +336,8 @@ RadosNamespaces where to create the PVC.
 
 ### Create RadosNamespaces CR
 
-```bash=
-[🎩︎]mrajanna@fedora examples $]cat <<EOF | kubectl apply -f -
+```bash
+[🎩︎]mrajanna@fedora $]cat <<EOF | kubectl apply -f -
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPoolRadosNamespace
@@ -352,11 +355,11 @@ and ClusterID mapping, it won't create RadosNamespace in the Ceph cluster.
 
 #### Get RadosNamespaces details
 
-```bash=
-kubectl get cephblockcephblockpoolradosnamespace.ceph.rook.io/testnamespace -nrook-ceph-external
+```bash
+[🎩︎]mrajanna@fedora $]kubectl get cephblockcephblockpoolradosnamespace.ceph.rook.io/testnamespace -nrook-ceph-external
 NAME            AGE
 testnamespace   28s
-[🎩︎]mrajanna@fedora examples $]kubectl get cephblockpoolradosnamespace.ceph.rook.io/testnamespace -nrook-ceph-external -o jsonpath='{.status.info}'
+[🎩︎]mrajanna@fedora $]kubectl get cephblockpoolradosnamespace.ceph.rook.io/testnamespace -nrook-ceph-external -o jsonpath='{.status.info}'
 {"clusterID":"6165a9e9a61346a8b8e629bdfb583414"}
 ```
 
@@ -369,8 +372,8 @@ RadosNamespace
 
 #### Check mapping between clusterID and RadosNamespace
 
-```bash=
-[🎩︎]mrajanna@fedora examples $]kubectl get cm rook-ceph-csi-config -nrook-ceph -oyaml
+```bash
+[🎩︎]mrajanna@fedora $]kubectl get cm rook-ceph-csi-config -nrook-ceph -oyaml
 apiVersion: v1
 data:
   csi-cluster-config-json: '[{"clusterID":"rook-ceph-external","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external"},{"clusterID":"728ed87ac1a8809431b4549f4a4897aa","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external","cephFS":{"subvolumeGroup":"volgroup"}},{"clusterID":"6165a9e9a61346a8b8e629bdfb583414","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external","rbd":{"radosNamespace":"testnamespace"}}]'
@@ -393,8 +396,8 @@ metadata:
 
 #### Create StorageClass, PVC, and Pod
 
-```bash=
-$cat <<EOF | kubectl apply -f -
+```bash
+[🎩︎]mrajanna@fedora $]cat <<EOF | kubectl apply -f -
 allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -419,15 +422,15 @@ EOF
 storageclass.storage.k8s.io/rook-blockpool-radosnamespace created
 ```
 
-```bash=
-[🎩︎]mrajanna@fedora rbd $]kubectl create -f pvc.yaml
+```bash
+[🎩︎]mrajanna@fedora $]kubectl create -f pvc.yaml
 persistentvolumeclaim/rbd-radosnamespace-pvc created
-[🎩︎]mrajanna@fedora rbd $]kubectl get pvc
+[🎩︎]mrajanna@fedora $]kubectl get pvc
 NAME                     STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                    AGE
 rbd-radosnamespace-pvc   Bound    pvc-e664ea28-c625-41d3-aa81-aead7449e989   1Gi        RWO            rook-blockpool-radosnamespace   3s
-[🎩︎]mrajanna@fedora rbd $]kubectl create -f pod.yaml
+[🎩︎]mrajanna@fedora $]kubectl create -f pod.yaml
 pod/csirbd-namespace-demo-pod created
-[🎩︎]mrajanna@fedora rbd $]kubectl get po
+[🎩︎]mrajanna@fedora $]kubectl get po
 NAME                        READY   STATUS    RESTARTS   AGE
 csirbd-namespace-demo-pod   1/1     Running   0          26s
 
@@ -439,8 +442,8 @@ RadosNamespace storageClass
 Let's verify we have the rbd image created in the specified radosnamespace in
 the ceph cluster.
 
-```bash=
-sh-4.4$ rbd ls replicapool/testnamespace
+```bash
+[🎩︎]mrajanna@fedora $]rbd ls replicapool/testnamespace
 csi-vol-3ca55f72-e89a-11ec-bbf0-9a1ab8207c3a
 ```
 
