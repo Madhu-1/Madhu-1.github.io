@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2021-06-25T10:39:52+05:30</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">DR failover and failback for RBD Async mirroring with minikube</title><link href="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/" rel="alternate" type="text/html" title="DR failover and failback for RBD Async mirroring with minikube" /><published>2021-05-04T00:00:00+05:30</published><updated>2021-05-04T00:00:00+05:30</updated><id>https://mrajanna.com/rbd-async-mirroring-dr-with-rook</id><content type="html" xml:base="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/">&lt;p&gt;This doc assumes that you already set up the rbd mirroring between two clusters.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2022-06-10T15:11:29+05:30</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">DR failover and failback for RBD Async mirroring with minikube</title><link href="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/" rel="alternate" type="text/html" title="DR failover and failback for RBD Async mirroring with minikube" /><published>2021-05-04T00:00:00+05:30</published><updated>2021-05-04T00:00:00+05:30</updated><id>https://mrajanna.com/rbd-async-mirroring-dr-with-rook</id><content type="html" xml:base="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/">&lt;p&gt;This doc assumes that you already set up the rbd mirroring between two clusters.&lt;/p&gt;
 
 &lt;p&gt;Please refer to &lt;a href=&quot;../setup-rbd-async-mirroring-with-rook&quot;&gt;doc&lt;/a&gt; on how
 to setup RBD mirroring.&lt;/p&gt;
@@ -248,7 +248,7 @@ rook-ceph-tools-78cdfd976c-jrhjm   1/1     Running   0          3m53s
 &lt;p&gt;Verify that mirroring enabled on the image&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
-rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+rbd image &apos;csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004&apos;:
     size 1 GiB in 256 objects
     order 22 (4 MiB objects)
     snapshot_count: 1
@@ -281,7 +281,7 @@ rook-ceph-tools-78cdfd976c-2566m   1/1     Running   0          3m53s
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl exec --context=cluster2 -nrook-ceph rook-ceph-tools-78cdfd976c-2566m -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
-rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+rbd image &apos;csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004&apos;:
     size 1 GiB in 256 objects
     order 22 (4 MiB objects)
     snapshot_count: 1
@@ -460,7 +460,7 @@ the ceph cluster from all provisioner pods.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;[🎩︎]mrajanna@localhost $]cat &amp;lt; /dev/tcp/10.111.136.166/6789
-ceph v027���'e����'^C
+ceph v027���&apos;e����&apos;^C
 [🎩︎]mrajanna@localhost $] cat &amp;lt; /dev/tcp/10.111.136.166/3300
 ceph v2
 ^C
@@ -960,10 +960,10 @@ $virsh -c qemu:///system reboot --domain &quot;cluster1&quot;
 &lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$minikube ssh --profile=cluster1
                          _             _
             _         _ ( )           ( )
-  ___ ___  (_)  ___  (_)| |/')  _   _ | |_      __
-/' _ ` _ `\| |/' _ `\| || , &amp;lt;  ( ) ( )| '_`\  /'__`\
+  ___ ___  (_)  ___  (_)| |/&apos;)  _   _ | |_      __
+/&apos; _ ` _ `\| |/&apos; _ `\| || , &amp;lt;  ( ) ( )| &apos;_`\  /&apos;__`\
 | ( ) ( ) || || ( ) || || |\`\ | (_) || |_) )(  ___/
-(_) (_) (_)(_)(_) (_)(_)(_) (_)`\___/'(_,__/'`\____)
+(_) (_) (_)(_)(_) (_)(_)(_) (_)`\___/&apos;(_,__/&apos;`\____)
 
 $ ls /dev/vd
 vda   vda1  vdb
@@ -1107,13 +1107,13 @@ EOF
 
 &lt;p&gt;Once mirroring is enabled, Rook will by default create its own bootstrap peer token so that it can be used by another cluster. The bootstrap peer token can be found in a Kubernetes Secret. The name of the Secret is present in the Status field of the CephBlockPool CR:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.info}'
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath=&apos;{.status.info}&apos;
 {&quot;rbdMirrorBootstrapPeerSecretName&quot;:&quot;pool-peer-token-replicapool&quot;}
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;This secret can then be fetched like so:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath=&apos;{.data.token}&apos;|base64 -d
 eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0=
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1127,13 +1127,13 @@ eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoi
 
 &lt;h5 id=&quot;get-site_name-from-the-cluster2&quot;&gt;Get site_name from the cluster2&lt;/h5&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath='{.status.mirroringInfo.summary.summary.site_name}'
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath=&apos;{.status.mirroringInfo.summary.summary.site_name}&apos;
 e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h5 id=&quot;get-token-from-the-cluster2&quot;&gt;Get token from the cluster2&lt;/h5&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster2 -o jsonpath='{.data.token}'|base64 -d
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster2 -o jsonpath=&apos;{.data.token}&apos;|base64 -d
 eyJmc2lkIjoiZTE4NzdhOTctNjYwNy00YmFhLWI0NzctNjRiMGM2MWYyNjhmIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFCZ1U3dGZydUh5THhBQVBMRE9EajJRMEcybjRCd2tDbmxLQUE9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuMTYwOjMzMDAsdjE6MTkyLjE2OC4zOS4xNjA6Njc4OV0ifQ==
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1201,7 +1201,7 @@ rook-ceph-rbd-mirror-a-6cbdcd6cc9-cfsj2         1/1     Running     0          6
 
 &lt;h6 id=&quot;check-blockpool-mirroring-status&quot;&gt;Check blockpool mirroring status&lt;/h6&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.mirroringStatus.summary.summary}'
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath=&apos;{.status.mirroringStatus.summary.summary}&apos;
 {&quot;daemon_health&quot;:&quot;OK&quot;,&quot;health&quot;:&quot;OK&quot;,&quot;image_health&quot;:&quot;OK&quot;,&quot;states&quot;:{}}
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1217,13 +1217,13 @@ rook-ceph-rbd-mirror-a-6cbdcd6cc9-cfsj2         1/1     Running     0          6
 
 &lt;h5 id=&quot;get-site_name-from-the-cluster1&quot;&gt;Get site_name from the cluster1&lt;/h5&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.mirroringInfo.summary.summary.site_name}'
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath=&apos;{.status.mirroringInfo.summary.summary.site_name}&apos;
 f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h5 id=&quot;get-token-from-the-cluster1&quot;&gt;Get token from the cluster1&lt;/h5&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath=&apos;{.data.token}&apos;|base64 -d
 eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0=
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1289,7 +1289,7 @@ rook-ceph-rbd-mirror-a-7c6d49f67c-b2vd2         1/1     Running     0          8
 
 &lt;h6 id=&quot;check-blockpool-mirroring-status-1&quot;&gt;Check blockpool mirroring status&lt;/h6&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath='{.status.mirroringStatus.summary.summary}'
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath=&apos;{.status.mirroringStatus.summary.summary}&apos;
 {&quot;daemon_health&quot;:&quot;OK&quot;,&quot;health&quot;:&quot;OK&quot;,&quot;image_health&quot;:&quot;OK&quot;,&quot;states&quot;:{}}
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1359,7 +1359,7 @@ rbd-pvc   Bound    pvc-57cfca36-cb76-4d79-b258-a107bc5c4d15   1Gi        RWO    
 
 &lt;p&gt;Get the RBD image name created for this PVC&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get pv --context=cluster1 $(kubectl get pvc rbd-pvc  --context=cluster1 -o jsonpath='{.spec.volumeName}') -o jsonpath='{.spec.csi.volumeAttributes.imageName}'
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl get pv --context=cluster1 $(kubectl get pvc rbd-pvc  --context=cluster1 -o jsonpath=&apos;{.spec.volumeName}&apos;) -o jsonpath=&apos;{.spec.csi.volumeAttributes.imageName}&apos;
 csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -1371,7 +1371,7 @@ rook-ceph-tools-78cdfd976c-jrhjm   1/1     Running   0          3m53s
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
-rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+rbd image &apos;csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004&apos;:
 	size 1 GiB in 256 objects
 	order 22 (4 MiB objects)
 	snapshot_count: 0
@@ -1393,7 +1393,7 @@ Mirroring enabled
 &lt;p&gt;Verify that mirroring enabled on the image&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
-rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+rbd image &apos;csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004&apos;:
 	size 1 GiB in 256 objects
 	order 22 (4 MiB objects)
 	snapshot_count: 1
@@ -1422,7 +1422,7 @@ rook-ceph-tools-78cdfd976c-2566m   1/1     Running   0          3m53s
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$kubectl exec --context=cluster2 -nrook-ceph rook-ceph-tools-78cdfd976c-2566m -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
-rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
+rbd image &apos;csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004&apos;:
 	size 1 GiB in 256 objects
 	order 22 (4 MiB objects)
 	snapshot_count: 1
@@ -1455,7 +1455,7 @@ Rook for ceph&lt;/p&gt;
 &lt;h2 id=&quot;check-network-connectivity-on-your-kubernetes-nodes&quot;&gt;Check network connectivity on your kubernetes nodes&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;[🎩︎]mrajanna@localhost $]cat &amp;lt; /dev/tcp/192.168.39.101/6789
-ceph v027���'e����'^C
+ceph v027���&apos;e����&apos;^C
 [🎩︎]mrajanna@localhost $] cat &amp;lt; /dev/tcp/192.168.39.101/3300
 ceph v2
 ^C
@@ -1556,6 +1556,7 @@ ceph cluster CRD.&lt;/p&gt;
     &lt;span class=&quot;na&quot;&gt;enable&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; -&amp;gt; set this to &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; if you want Rook to manage your external ceph cluster&lt;/span&gt;
   &lt;span class=&quot;na&quot;&gt;dataDirHostPath&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/var/lib/rook&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;# providing an image is required, if you want to create other CRs (rgw, mds, nfs)&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# In latest Rook release we dont need to provide cephVersion we can skip this one.&lt;/span&gt;
   &lt;span class=&quot;na&quot;&gt;cephVersion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ceph/ceph:v14.2.12&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Should match external cluster version&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -1689,7 +1690,7 @@ rados omap for RBD&lt;/p&gt;
 stores the omap data. let’s first get the pool name which is stored in PV CSI
 spec&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;[🎩︎]mrajanna@ceph $]kubectl get pv pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1 -o jsonpath='{.spec.csi}'
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;[🎩︎]mrajanna@ceph $]kubectl get pv pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1 -o jsonpath=&apos;{.spec.csi}&apos;
 {
 	&quot;controllerExpandSecretRef&quot;: {
 		&quot;name&quot;: &quot;rook-csi-rbd-provisioner&quot;,
@@ -1817,7 +1818,7 @@ to track the CephFS rados omap data&lt;/p&gt;
 cephcsi stores the omap data. Let’s get the filesystem name which is
 stored in PV CSI spec&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;[🎩︎]mrajanna@ceph $]kubectl get pv pvc-88919d42-ecdf-4737-a805-065eacdfd34f -o jsonpath='{.spec.csi}'
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;[🎩︎]mrajanna@ceph $]kubectl get pv pvc-88919d42-ecdf-4737-a805-065eacdfd34f -o jsonpath=&apos;{.spec.csi}&apos;
 {
 	&quot;controllerExpandSecretRef&quot;: {
 		&quot;name&quot;: &quot;rook-csi-cephfs-provisioner&quot;,
@@ -1979,7 +1980,7 @@ localted at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;c
 
 &lt;p&gt;To have a complete ceph cluster, we need to install below yaml files&lt;/p&gt;
 
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;common.yaml         ----&amp;gt; CRD's and RBAC's required for operator
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;common.yaml         ----&amp;gt; CRD&apos;s and RBAC&apos;s required for operator
 operator.yaml       ----&amp;gt; Operator deployment
 cluster-test.yaml   ----&amp;gt; The ceph cluster CRD
 pool-test.yaml      ----&amp;gt; block pool CRD
