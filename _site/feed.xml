@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2023-02-21T13:50:45+01:00</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">Consuming Storage From external ceph cluster in Rook</title><link href="https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook/" rel="alternate" type="text/html" title="Consuming Storage From external ceph cluster in Rook" /><published>2022-06-10T00:00:00+02:00</published><updated>2022-06-10T00:00:00+02:00</updated><id>https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook</id><content type="html" xml:base="https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook/">&lt;p&gt;This blog will help you to Understand how to consume storage from external ceph
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2023-02-21T14:12:31+01:00</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">Consuming Storage From external ceph cluster in Rook</title><link href="https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook/" rel="alternate" type="text/html" title="Consuming Storage From external ceph cluster in Rook" /><published>2022-06-10T00:00:00+02:00</published><updated>2022-06-10T00:00:00+02:00</updated><id>https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook</id><content type="html" xml:base="https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook/">&lt;p&gt;This blog will help you to Understand how to consume storage from external ceph
 cluster in Rook and how to create and consume Below listed resources in the
 ceph cluster.&lt;/p&gt;
 
@@ -1033,7 +1033,7 @@ of the csi-provisioner sidecar container.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
@@ -1052,7 +1052,7 @@ csi-resizer sidecar container.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-resizer
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-resizer
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
@@ -1104,7 +1104,7 @@ you may manually install these
 &lt;p&gt;If any issue exists in the snapshot Create/Delete operation you can check the
 logs of the csi-snapshotter sidecar container.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-snapshotter
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-snapshotter
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;blockquote&gt;
@@ -1118,6 +1118,33 @@ logs of the csi-snapshotter sidecar container.&lt;/p&gt;
 &lt;span class=&quot;n&quot;&gt;restarting&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;csi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rbdplugin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xxxxx&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RBD&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;issue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;csi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cephfsplugin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xxxxx&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pod&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CephFS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;issue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;helps&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sometimes&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;always&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;IF the restarting didnt help you can execute below commands from the cephfs/rbd
+provisioner pods&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;For RBD provisioner pod&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$kubectl&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; csi-rbdplugin-provisioner &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; csi-rbdplugin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; rbd create &lt;span class=&quot;nt&quot;&gt;--size&lt;/span&gt; 1024 pool-name/testimage101 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.11.111.11:6789 &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi-rbd-provisioner &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--debug_ms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20 &lt;span class=&quot;nt&quot;&gt;--debug_rbd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20
+
+&lt;span class=&quot;nv&quot;&gt;$kubectl&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; csi-rbdplugin-provisioner &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; csi-rbdplugin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; rados setomapval &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;testkey testval &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; poolname &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.11.111.11:6789 &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi-rbd-provisioner &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;xx/xxx+MSr6O5ZMarRHw==&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note:- update monitor IP, csi-rbdplugin-provisioner pod name, pool-name and
+key in above command&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;For CephFS provisioner pod&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$kubectl&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; csi-cephfsplugin-provisioner &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; csi-cephfsplugin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; ceph fs subvolume &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &amp;lt;fs-name&amp;gt; csi &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.11.111.11:6789 &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi-cephfs-provisioner &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--debug_ms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20
+
+&lt;span class=&quot;nv&quot;&gt;$kubectl&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; csi-cephfsplugin-provisioner &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; csi-cephfsplugin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; rados setomapval &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;testkey testval &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; myfs-metadata &lt;span class=&quot;nt&quot;&gt;--namespace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.11.111.11:6789 &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi-cephfs-provisioner &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;xx/xxx+MSr6O5ZMarRHw==&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note:- update monitor IP, csi-cephfsplugin-provisioner pod name,filesystem name, pool-name and
+key in above command&lt;/p&gt;
 
 &lt;h2 id=&quot;issue-in-mounting-the-pvc-to-application-pods&quot;&gt;Issue in Mounting the pvc to application pods&lt;/h2&gt;
 
@@ -1280,7 +1307,7 @@ ceph health, and slow ops.&lt;/p&gt;
 csi-rbdplugin container of the csi-rbdplugin-xxxx pod on that node always
 helps.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$ dmesg
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;dmesg
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
@@ -1288,13 +1315,49 @@ helps.&lt;/p&gt;
 run it manually inside provisioner or plugin pod&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;$ rbd ls --id=csi-rbd-node -m=10.111.136.166:6789 --key=AQDpIQhg+v83EhAAgLboWIbl+FL/nThJzoI3Fg==
+&lt;pre&gt;&lt;code class=&quot;language-bash=&quot;&gt;rbd ls --id=csi-rbd-node -m=10.111.136.166:6789 --key=AQDpIQhg+v83EhAAgLboWIbl+FL/nThJzoI3Fg==
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Need to pass the exact user ID, key and monitor IP’s and port when executing
 the command.&lt;/p&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><summary type="html">The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen for Many reasons like Network connectivity between csi pods and ceph, cluster health issue,Slow operations, kubernetes issue, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues.</summary></entry><entry><title type="html">Play with RBD Async mirroring with minikube</title><link href="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/" rel="alternate" type="text/html" title="Play with RBD Async mirroring with minikube" /><published>2020-11-23T00:00:00+01:00</published><updated>2020-11-23T00:00:00+01:00</updated><id>https://mrajanna.com/setup-rbd-async-mirroring-with-rook</id><content type="html" xml:base="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/">&lt;p&gt;This doc assumes that you already have a minikube &lt;a href=&quot;https://minikube.sigs.k8s.io/docs/start/&quot;&gt;installed&lt;/a&gt;, minikube is configured to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kvm2&lt;/code&gt; to create a virtual machine. You can refer &lt;a href=&quot;https://minikube.sigs.k8s.io/docs/drivers/kvm2/&quot;&gt;kvm2&lt;/a&gt; to install the required prerequisites.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If you see error like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GRPC error: rpc error: code = Aborted desc = an operation with the given Volume ID 0001-0009-rook-ceph-0000000000000001-8d0ba728-0e17-11eb-a680-ce6eecc894de already exists&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;The&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;issue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mostly&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exists&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ceph&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cluster&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;network&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connectivity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;If&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;issue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mounting&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PVC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;restarting&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;csi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rbdplugin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xxxxx&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RBD&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;issue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;csi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cephfsplugin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xxxxx&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pod&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CephFS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;issue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;helps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;IF the restarting didnt help you can execute below commands from the cephfs/rbd
+plugin pod where you are seeing above error message&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;For RBD plugin pod&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$kubectl&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; csi-rbdplugin-xxx &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; csi-rbdplugin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; rbd &lt;span class=&quot;nb&quot;&gt;ls &lt;/span&gt;pool-name &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.11.111.11:6789 &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi-rbd-node &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--debug_ms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20 &lt;span class=&quot;nt&quot;&gt;--debug_rbd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20
+
+&lt;span class=&quot;nv&quot;&gt;$kubectl&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; csi-rbdplugin-xxxx &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; csi-rbdplugin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; rados listomapvals &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; replicapool &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.11.111.11:6789 &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi-rbd-node &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;xx/xxx+MSr6O5ZMarRHw==&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note:- update monitor IP, csi-rbdplugin pod name, pool-name and
+key in above command&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;For CephFS plugin pod&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$kubectl&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; csi-cephfsplugin-xxx &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; csi-cephfsplugin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; ceph fs subvolume &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &amp;lt;fs-name&amp;gt; csi &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.11.111.11:6789 &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi-cephfs-node &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--debug_ms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20
+
+&lt;span class=&quot;nv&quot;&gt;$kubectl&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; csi-cephfsplugin-xxx &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; csi-cephfsplugin &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; rados getomapvals &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; poolname &lt;span class=&quot;nt&quot;&gt;--namespace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.11.111.11:6789 &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;csi-cephfs-node &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;xx/xxx+MSr6O5ZMarRHw==&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note:- update monitor IP, csi-cephfsplugin pod name,filesystem name, pool-name and
+key in above command&lt;/p&gt;</content><author><name></name></author><summary type="html">The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen for Many reasons like Network connectivity between csi pods and ceph, cluster health issue,Slow operations, kubernetes issue, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues.</summary></entry><entry><title type="html">Play with RBD Async mirroring with minikube</title><link href="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/" rel="alternate" type="text/html" title="Play with RBD Async mirroring with minikube" /><published>2020-11-23T00:00:00+01:00</published><updated>2020-11-23T00:00:00+01:00</updated><id>https://mrajanna.com/setup-rbd-async-mirroring-with-rook</id><content type="html" xml:base="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/">&lt;p&gt;This doc assumes that you already have a minikube &lt;a href=&quot;https://minikube.sigs.k8s.io/docs/start/&quot;&gt;installed&lt;/a&gt;, minikube is configured to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kvm2&lt;/code&gt; to create a virtual machine. You can refer &lt;a href=&quot;https://minikube.sigs.k8s.io/docs/drivers/kvm2/&quot;&gt;kvm2&lt;/a&gt; to install the required prerequisites.&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Install &lt;a href=&quot;https://kubernetes.io/docs/tasks/tools/install-kubectl/&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl&lt;/code&gt;&lt;/a&gt; on the machine where you want to create kubernetes clusters and from where you want to access kubernetes

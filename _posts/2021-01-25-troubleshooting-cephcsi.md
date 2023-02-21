@@ -179,7 +179,7 @@ provisioner pods.
   of the csi-provisioner sidecar container.
 
 ```bash=
-$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
+kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
 ```
 
 * **csi-resizer**
@@ -195,7 +195,7 @@ $ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
   csi-resizer sidecar container.
 
 ```bash=
-$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-resizer
+kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-resizer
 ```
 
 * **csi-snapshotter**
@@ -239,7 +239,7 @@ If any issue exists in the snapshot Create/Delete operation you can check the
 logs of the csi-snapshotter sidecar container.
 
 ```bash=
-$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-snapshotter
+kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-snapshotter
 ```
 
 > If you see error like `GRPC error: rpc error: code = Aborted desc = an operation with the given Volume ID 0001-0009-rook-ceph-0000000000000001-8d0ba728-0e17-11eb-a680-ce6eecc894de already exists`.
@@ -252,6 +252,31 @@ restart `csi-cephfsplugin-provisioner-xxxxxx` CephFS Provisioner. For RBD, resta
 restarting the csi-rbdplugin-xxxxx for RBD issue and csi-cephfsplugin-xxxxx pod
 for CephFS issue helps sometimes not always.
 ```
+
+IF the restarting didnt help you can execute below commands from the cephfs/rbd
+provisioner pods
+
+* For RBD provisioner pod
+
+```bash
+$kubectl exec -t csi-rbdplugin-provisioner -c csi-rbdplugin -- rbd create --size 1024 pool-name/testimage101 -m=10.11.111.11:6789 --user=csi-rbd-provisioner --key="AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==" --debug_ms=20 --debug_rbd=20
+
+$kubectl exec -t csi-rbdplugin-provisioner -c csi-rbdplugin -- rados setomapval test testkey testval -p poolname -m=10.11.111.11:6789 --user=csi-rbd-provisioner --key="xx/xxx+MSr6O5ZMarRHw=="
+```
+
+Note:- update monitor IP, csi-rbdplugin-provisioner pod name, pool-name and
+key in above command
+
+* For CephFS provisioner pod
+
+```bash
+$kubectl exec -t csi-cephfsplugin-provisioner -c csi-cephfsplugin -- ceph fs subvolume ls <fs-name> csi -m=10.11.111.11:6789 --user=csi-cephfs-provisioner --key="AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==" --debug_ms=20
+
+$kubectl exec -t csi-cephfsplugin-provisioner -c csi-cephfsplugin -- rados setomapval test testkey testval -p myfs-metadata --namespace=csi -m=10.11.111.11:6789 --user=csi-cephfs-provisioner --key="xx/xxx+MSr6O5ZMarRHw=="
+```
+
+Note:- update monitor IP, csi-cephfsplugin-provisioner pod name,filesystem name, pool-name and
+key in above command
 
 ## Issue in Mounting the pvc to application pods
 
@@ -398,15 +423,48 @@ csi-rbdplugin container of the csi-rbdplugin-xxxx pod on that node always
 helps.
 
 ```bash=
-$ dmesg
+dmesg
 ```
 
 * If nothing helps get the last executed command from the cephcsi pod logs and
   run it manually inside provisioner or plugin pod
 
 ```bash=
-$ rbd ls --id=csi-rbd-node -m=10.111.136.166:6789 --key=AQDpIQhg+v83EhAAgLboWIbl+FL/nThJzoI3Fg==
+rbd ls --id=csi-rbd-node -m=10.111.136.166:6789 --key=AQDpIQhg+v83EhAAgLboWIbl+FL/nThJzoI3Fg==
 ```
 
 > Need to pass the exact user ID, key and monitor IP's and port when executing
 > the command.
+
+> If you see error like `GRPC error: rpc error: code = Aborted desc = an operation with the given Volume ID 0001-0009-rook-ceph-0000000000000001-8d0ba728-0e17-11eb-a680-ce6eecc894de already exists`.
+
+```go
+The issue mostly exists in ceph cluster or network connectivity.
+If the issue is in mounting the PVC, restarting the csi-rbdplugin-xxxxx
+for RBD issue and csi-cephfsplugin-xxxxx pod for CephFS issue helps.
+```
+
+IF the restarting didnt help you can execute below commands from the cephfs/rbd
+plugin pod where you are seeing above error message
+
+* For RBD plugin pod
+
+```bash
+$kubectl exec -t csi-rbdplugin-xxx -c csi-rbdplugin -- rbd ls pool-name -m=10.11.111.11:6789 --user=csi-rbd-node --key="AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==" --debug_ms=20 --debug_rbd=20
+
+$kubectl exec -t csi-rbdplugin-xxxx -c csi-rbdplugin -- rados listomapvals test -p replicapool -m=10.11.111.11:6789 --user=csi-rbd-node --key="xx/xxx+MSr6O5ZMarRHw=="
+```
+
+Note:- update monitor IP, csi-rbdplugin pod name, pool-name and
+key in above command
+
+* For CephFS plugin pod
+
+```bash
+$kubectl exec -t csi-cephfsplugin-xxx -c csi-cephfsplugin -- ceph fs subvolume ls <fs-name> csi -m=10.11.111.11:6789 --user=csi-cephfs-node --key="AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==" --debug_ms=20
+
+$kubectl exec -t csi-cephfsplugin-xxx -c csi-cephfsplugin -- rados getomapvals test -p poolname --namespace=csi -m=10.11.111.11:6789 --user=csi-cephfs-node --key="xx/xxx+MSr6O5ZMarRHw=="
+```
+
+Note:- update monitor IP, csi-cephfsplugin pod name,filesystem name, pool-name and
+key in above command

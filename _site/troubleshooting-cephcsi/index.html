@@ -319,7 +319,7 @@ of the csi-provisioner sidecar container.</p>
   </li>
 </ul>
 
-<pre><code class="language-bash=">$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
+<pre><code class="language-bash=">kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
 </code></pre>
 
 <ul>
@@ -338,7 +338,7 @@ csi-resizer sidecar container.</p>
   </li>
 </ul>
 
-<pre><code class="language-bash=">$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-resizer
+<pre><code class="language-bash=">kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-resizer
 </code></pre>
 
 <ul>
@@ -390,7 +390,7 @@ you may manually install these
 <p>If any issue exists in the snapshot Create/Delete operation you can check the
 logs of the csi-snapshotter sidecar container.</p>
 
-<pre><code class="language-bash=">$ kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-snapshotter
+<pre><code class="language-bash=">kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-snapshotter
 </code></pre>
 
 <blockquote>
@@ -404,6 +404,33 @@ logs of the csi-snapshotter sidecar container.</p>
 <span class="n">restarting</span> <span class="n">the</span> <span class="n">csi</span><span class="o">-</span><span class="n">rbdplugin</span><span class="o">-</span><span class="n">xxxxx</span> <span class="k">for</span> <span class="n">RBD</span> <span class="n">issue</span> <span class="n">and</span> <span class="n">csi</span><span class="o">-</span><span class="n">cephfsplugin</span><span class="o">-</span><span class="n">xxxxx</span> <span class="n">pod</span>
 <span class="k">for</span> <span class="n">CephFS</span> <span class="n">issue</span> <span class="n">helps</span> <span class="n">sometimes</span> <span class="n">not</span> <span class="n">always</span><span class="o">.</span>
 </code></pre></div></div>
+
+<p>IF the restarting didnt help you can execute below commands from the cephfs/rbd
+provisioner pods</p>
+
+<ul>
+  <li>For RBD provisioner pod</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-rbdplugin-provisioner <span class="nt">-c</span> csi-rbdplugin <span class="nt">--</span> rbd create <span class="nt">--size</span> 1024 pool-name/testimage101 <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-rbd-provisioner <span class="nt">--key</span><span class="o">=</span><span class="s2">"AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw=="</span> <span class="nt">--debug_ms</span><span class="o">=</span>20 <span class="nt">--debug_rbd</span><span class="o">=</span>20
+
+<span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-rbdplugin-provisioner <span class="nt">-c</span> csi-rbdplugin <span class="nt">--</span> rados setomapval <span class="nb">test </span>testkey testval <span class="nt">-p</span> poolname <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-rbd-provisioner <span class="nt">--key</span><span class="o">=</span><span class="s2">"xx/xxx+MSr6O5ZMarRHw=="</span>
+</code></pre></div></div>
+
+<p>Note:- update monitor IP, csi-rbdplugin-provisioner pod name, pool-name and
+key in above command</p>
+
+<ul>
+  <li>For CephFS provisioner pod</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-cephfsplugin-provisioner <span class="nt">-c</span> csi-cephfsplugin <span class="nt">--</span> ceph fs subvolume <span class="nb">ls</span> &lt;fs-name&gt; csi <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-cephfs-provisioner <span class="nt">--key</span><span class="o">=</span><span class="s2">"AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw=="</span> <span class="nt">--debug_ms</span><span class="o">=</span>20
+
+<span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-cephfsplugin-provisioner <span class="nt">-c</span> csi-cephfsplugin <span class="nt">--</span> rados setomapval <span class="nb">test </span>testkey testval <span class="nt">-p</span> myfs-metadata <span class="nt">--namespace</span><span class="o">=</span>csi <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-cephfs-provisioner <span class="nt">--key</span><span class="o">=</span><span class="s2">"xx/xxx+MSr6O5ZMarRHw=="</span>
+</code></pre></div></div>
+
+<p>Note:- update monitor IP, csi-cephfsplugin-provisioner pod name,filesystem name, pool-name and
+key in above command</p>
 
 <h2 id="issue-in-mounting-the-pvc-to-application-pods">Issue in Mounting the pvc to application pods</h2>
 
@@ -566,7 +593,7 @@ ceph health, and slow ops.</p>
 csi-rbdplugin container of the csi-rbdplugin-xxxx pod on that node always
 helps.</p>
 
-<pre><code class="language-bash=">$ dmesg
+<pre><code class="language-bash=">dmesg
 </code></pre>
 
 <ul>
@@ -574,13 +601,49 @@ helps.</p>
 run it manually inside provisioner or plugin pod</li>
 </ul>
 
-<pre><code class="language-bash=">$ rbd ls --id=csi-rbd-node -m=10.111.136.166:6789 --key=AQDpIQhg+v83EhAAgLboWIbl+FL/nThJzoI3Fg==
+<pre><code class="language-bash=">rbd ls --id=csi-rbd-node -m=10.111.136.166:6789 --key=AQDpIQhg+v83EhAAgLboWIbl+FL/nThJzoI3Fg==
 </code></pre>
 
 <blockquote>
   <p>Need to pass the exact user ID, key and monitor IP’s and port when executing
 the command.</p>
 </blockquote>
+
+<blockquote>
+  <p>If you see error like <code class="language-plaintext highlighter-rouge">GRPC error: rpc error: code = Aborted desc = an operation with the given Volume ID 0001-0009-rook-ceph-0000000000000001-8d0ba728-0e17-11eb-a680-ce6eecc894de already exists</code>.</p>
+</blockquote>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">The</span> <span class="n">issue</span> <span class="n">mostly</span> <span class="n">exists</span> <span class="n">in</span> <span class="n">ceph</span> <span class="n">cluster</span> <span class="n">or</span> <span class="n">network</span> <span class="n">connectivity</span><span class="o">.</span>
+<span class="n">If</span> <span class="n">the</span> <span class="n">issue</span> <span class="n">is</span> <span class="n">in</span> <span class="n">mounting</span> <span class="n">the</span> <span class="n">PVC</span><span class="p">,</span> <span class="n">restarting</span> <span class="n">the</span> <span class="n">csi</span><span class="o">-</span><span class="n">rbdplugin</span><span class="o">-</span><span class="n">xxxxx</span>
+<span class="k">for</span> <span class="n">RBD</span> <span class="n">issue</span> <span class="n">and</span> <span class="n">csi</span><span class="o">-</span><span class="n">cephfsplugin</span><span class="o">-</span><span class="n">xxxxx</span> <span class="n">pod</span> <span class="k">for</span> <span class="n">CephFS</span> <span class="n">issue</span> <span class="n">helps</span><span class="o">.</span>
+</code></pre></div></div>
+
+<p>IF the restarting didnt help you can execute below commands from the cephfs/rbd
+plugin pod where you are seeing above error message</p>
+
+<ul>
+  <li>For RBD plugin pod</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-rbdplugin-xxx <span class="nt">-c</span> csi-rbdplugin <span class="nt">--</span> rbd <span class="nb">ls </span>pool-name <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-rbd-node <span class="nt">--key</span><span class="o">=</span><span class="s2">"AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw=="</span> <span class="nt">--debug_ms</span><span class="o">=</span>20 <span class="nt">--debug_rbd</span><span class="o">=</span>20
+
+<span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-rbdplugin-xxxx <span class="nt">-c</span> csi-rbdplugin <span class="nt">--</span> rados listomapvals <span class="nb">test</span> <span class="nt">-p</span> replicapool <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-rbd-node <span class="nt">--key</span><span class="o">=</span><span class="s2">"xx/xxx+MSr6O5ZMarRHw=="</span>
+</code></pre></div></div>
+
+<p>Note:- update monitor IP, csi-rbdplugin pod name, pool-name and
+key in above command</p>
+
+<ul>
+  <li>For CephFS plugin pod</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-cephfsplugin-xxx <span class="nt">-c</span> csi-cephfsplugin <span class="nt">--</span> ceph fs subvolume <span class="nb">ls</span> &lt;fs-name&gt; csi <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-cephfs-node <span class="nt">--key</span><span class="o">=</span><span class="s2">"AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw=="</span> <span class="nt">--debug_ms</span><span class="o">=</span>20
+
+<span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-cephfsplugin-xxx <span class="nt">-c</span> csi-cephfsplugin <span class="nt">--</span> rados getomapvals <span class="nb">test</span> <span class="nt">-p</span> poolname <span class="nt">--namespace</span><span class="o">=</span>csi <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-cephfs-node <span class="nt">--key</span><span class="o">=</span><span class="s2">"xx/xxx+MSr6O5ZMarRHw=="</span>
+</code></pre></div></div>
+
+<p>Note:- update monitor IP, csi-cephfsplugin pod name,filesystem name, pool-name and
+key in above command</p>
 
   </div>
 
