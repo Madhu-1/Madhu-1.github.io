@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Adding Support for Custom `clusterID` in Rook Ceph CSI – Madhu Rajanna – Senior Software Engineer at RedHat</title>
+    <title>Adding Support for Custom clusterID in Rook Ceph CSI – Madhu Rajanna – Senior Software Engineer at RedHat</title>
 
         <meta charset="utf-8" />
     <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
@@ -9,16 +9,16 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
 
     
-    <meta name="description" content="Rook Now Supports Custom clusterID for CSI
+    <meta name="description" content="In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the clusterID when creating CephBlockPoolRadosNamespace and CephFilesystemSubVolumeGroup custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.
 " />
-    <meta property="og:description" content="Rook Now Supports Custom clusterID for CSI
+    <meta property="og:description" content="In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the clusterID when creating CephBlockPoolRadosNamespace and CephFilesystemSubVolumeGroup custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.
 " />
     
     <meta name="author" content="Madhu Rajanna" />
 
     
-    <meta property="og:title" content="Adding Support for Custom `clusterID` in Rook Ceph CSI" />
-    <meta property="twitter:title" content="Adding Support for Custom `clusterID` in Rook Ceph CSI" />
+    <meta property="og:title" content="Adding Support for Custom clusterID in Rook Ceph CSI" />
+    <meta property="twitter:title" content="Adding Support for Custom clusterID in Rook Ceph CSI" />
     
     <head>
   <meta charset="utf-8">
@@ -28,8 +28,8 @@
 <meta name="generator" content="Jekyll v4.4.1" />
 <meta property="og:title" content="Adding Support for Custom clusterID in Rook Ceph CSI" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Rook Now Supports Custom clusterID for CSI" />
-<meta property="og:description" content="Rook Now Supports Custom clusterID for CSI" />
+<meta name="description" content="In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the clusterID when creating CephBlockPoolRadosNamespace and CephFilesystemSubVolumeGroup custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver." />
+<meta property="og:description" content="In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the clusterID when creating CephBlockPoolRadosNamespace and CephFilesystemSubVolumeGroup custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver." />
 <link rel="canonical" href="https://mrajanna.com/custom-clusterID-in-rook/" />
 <meta property="og:url" content="https://mrajanna.com/custom-clusterID-in-rook/" />
 <meta property="og:site_name" content="Madhu Rajanna" />
@@ -38,7 +38,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Adding Support for Custom clusterID in Rook Ceph CSI" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-07-10T00:00:00+02:00","datePublished":"2025-07-10T00:00:00+02:00","description":"Rook Now Supports Custom clusterID for CSI","headline":"Adding Support for Custom clusterID in Rook Ceph CSI","mainEntityOfPage":{"@type":"WebPage","@id":"https://mrajanna.com/custom-clusterID-in-rook/"},"url":"https://mrajanna.com/custom-clusterID-in-rook/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-07-10T00:00:00+02:00","datePublished":"2025-07-10T00:00:00+02:00","description":"In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the clusterID when creating CephBlockPoolRadosNamespace and CephFilesystemSubVolumeGroup custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.","headline":"Adding Support for Custom clusterID in Rook Ceph CSI","mainEntityOfPage":{"@type":"WebPage","@id":"https://mrajanna.com/custom-clusterID-in-rook/"},"url":"https://mrajanna.com/custom-clusterID-in-rook/"}</script>
 <!-- End Jekyll SEO tag -->
 <meta name="google-site-verification" content="qrFYIlFxt1yD_oRmFPV2ZpEOYn46EXVxnRpg2HhMaUU" />
   <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://mrajanna.com/feed.xml" title="Madhu Rajanna" />
@@ -52,7 +52,7 @@
 		ga('create', 'qrFYIlFxt1yD_oRmFPV2ZpEOYn46EXVxnRpg2HhMaUU', 'auto');
 		ga('send', 'pageview', {
 		  'page': '/custom-clusterID-in-rook/',
-		  'title': 'Adding Support for Custom `clusterID` in Rook Ceph CSI'
+		  'title': 'Adding Support for Custom clusterID in Rook Ceph CSI'
 		});
 	</script>
 	<!-- End Google Analytics -->
@@ -96,12 +96,10 @@
 
     <div id="main" role="main" class="container">
       <article class="post">
-  <h1>Adding Support for Custom `clusterID` in Rook Ceph CSI</h1>
+  <h1>Adding Support for Custom clusterID in Rook Ceph CSI</h1>
 
   <div class="entry">
-    <h2 id="rook-now-supports-custom-clusterid-for-csi">Rook Now Supports Custom clusterID for CSI</h2>
-
-<p>In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the <code class="language-plaintext highlighter-rouge">clusterID</code> when creating <code class="language-plaintext highlighter-rouge">CephBlockPoolRadosNamespace</code> and <code class="language-plaintext highlighter-rouge">CephFilesystemSubVolumeGroup</code> custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.</p>
+    <p>In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the <code class="language-plaintext highlighter-rouge">clusterID</code> when creating <code class="language-plaintext highlighter-rouge">CephBlockPoolRadosNamespace</code> and <code class="language-plaintext highlighter-rouge">CephFilesystemSubVolumeGroup</code> custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.</p>
 
 <h2 id="-why-this-feature-matters">🚨 Why This Feature Matters</h2>
 
@@ -251,7 +249,7 @@ the clusterID specified in the spec field.</p>
 		ga('create', 'qrFYIlFxt1yD_oRmFPV2ZpEOYn46EXVxnRpg2HhMaUU', 'auto');
 		ga('send', 'pageview', {
 		  'page': '/custom-clusterID-in-rook/',
-		  'title': 'Adding Support for Custom `clusterID` in Rook Ceph CSI'
+		  'title': 'Adding Support for Custom clusterID in Rook Ceph CSI'
 		});
 	</script>
 	<!-- End Google Analytics -->

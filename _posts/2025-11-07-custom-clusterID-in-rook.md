@@ -1,13 +1,11 @@
 ---
 layout: post
-title: "Adding Support for Custom `clusterID` in Rook Ceph CSI"
+title: "Adding Support for Custom clusterID in Rook Ceph CSI"
 date: 2025-07-10
 categories: [ceph, rook, storage]
 tags: [rook, ceph, kubernetes, storage, csi]
 comments: true
 ---
-
-## Rook Now Supports Custom clusterID for CSI
 
 In the latest enhancement to Rook's Ceph operator, users can now explicitly specify the `clusterID` when creating `CephBlockPoolRadosNamespace` and `CephFilesystemSubVolumeGroup` custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.
 
