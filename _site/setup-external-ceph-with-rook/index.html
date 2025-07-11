@@ -11,11 +11,9 @@
     
     <meta name="description" content="This blog will help you out understand the various configuration we need to do
 to manage the external ceph cluster with Rook.
-
 " />
     <meta property="og:description" content="This blog will help you out understand the various configuration we need to do
 to manage the external ceph cluster with Rook.
-
 " />
     
     <meta name="author" content="Madhu Rajanna" />
@@ -29,7 +27,7 @@ to manage the external ceph cluster with Rook.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Set up external ceph cluster with Rook | Madhu Rajanna</title>
-<meta name="generator" content="Jekyll v3.9.2" />
+<meta name="generator" content="Jekyll v4.4.1" />
 <meta property="og:title" content="Set up external ceph cluster with Rook" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="This blog will help you out understand the various configuration we need to do to manage the external ceph cluster with Rook." />
@@ -217,7 +215,7 @@ ceph cluster CRD.</p>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">rook-ceph-external</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">external</span><span class="pi">:</span>
-    <span class="na">enable</span><span class="pi">:</span> <span class="no">true</span><span class="s"> -&gt; set this to </span><span class="no">false</span><span class="s"> if you want Rook to manage your external ceph cluster</span>
+    <span class="na">enable</span><span class="pi">:</span> <span class="kc">true</span><span class="s"> -&gt; set this to </span><span class="kc">false</span><span class="s"> if you want Rook to manage your external ceph cluster</span>
   <span class="na">dataDirHostPath</span><span class="pi">:</span> <span class="s">/var/lib/rook</span>
   <span class="c1"># providing an image is required, if you want to create other CRs (rgw, mds, nfs)</span>
   <span class="c1"># In latest Rook release we dont need to provide cephVersion we can skip this one.</span>
