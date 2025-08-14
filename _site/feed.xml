@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2025-07-11T10:38:38+02:00</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">Adding Support for Custom clusterID in Rook Ceph CSI</title><link href="https://mrajanna.com/custom-clusterID-in-rook/" rel="alternate" type="text/html" title="Adding Support for Custom clusterID in Rook Ceph CSI" /><published>2025-07-10T00:00:00+02:00</published><updated>2025-07-10T00:00:00+02:00</updated><id>https://mrajanna.com/custom-clusterID-in-rook</id><content type="html" xml:base="https://mrajanna.com/custom-clusterID-in-rook/"><![CDATA[<p>In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the <code class="language-plaintext highlighter-rouge">clusterID</code> when creating <code class="language-plaintext highlighter-rouge">CephBlockPoolRadosNamespace</code> and <code class="language-plaintext highlighter-rouge">CephFilesystemSubVolumeGroup</code> custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://mrajanna.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mrajanna.com/" rel="alternate" type="text/html" /><updated>2025-08-14T12:01:17+02:00</updated><id>https://mrajanna.com/feed.xml</id><title type="html">Madhu Rajanna</title><subtitle>Senior Software Engineer at RedHat</subtitle><entry><title type="html">Adding Support for Custom clusterID in Rook Ceph CSI</title><link href="https://mrajanna.com/custom-clusterID-in-rook/" rel="alternate" type="text/html" title="Adding Support for Custom clusterID in Rook Ceph CSI" /><published>2025-07-10T00:00:00+02:00</published><updated>2025-07-10T00:00:00+02:00</updated><id>https://mrajanna.com/custom-clusterID-in-rook</id><content type="html" xml:base="https://mrajanna.com/custom-clusterID-in-rook/"><![CDATA[<p>In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the <code class="language-plaintext highlighter-rouge">clusterID</code> when creating <code class="language-plaintext highlighter-rouge">CephBlockPoolRadosNamespace</code> and <code class="language-plaintext highlighter-rouge">CephFilesystemSubVolumeGroup</code> custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.</p>
 
 <h2 id="-why-this-feature-matters">🚨 Why This Feature Matters</h2>
 
@@ -88,214 +88,204 @@ the clusterID specified in the spec field.</p>
 
 <p>This new clusterID support puts control back into the hands of cluster administrators. It simplifies CSI integration, makes configurations more predictable.</p>
 
-<p>Try it out and structure your CSI configuration the way you want it!</p>]]></content><author><name></name></author><category term="ceph" /><category term="rook" /><category term="storage" /><category term="rook" /><category term="ceph" /><category term="kubernetes" /><category term="storage" /><category term="csi" /><summary type="html"><![CDATA[In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the clusterID when creating CephBlockPoolRadosNamespace and CephFilesystemSubVolumeGroup custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.]]></summary></entry><entry><title type="html">Consuming Storage From external ceph cluster in Rook</title><link href="https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook/" rel="alternate" type="text/html" title="Consuming Storage From external ceph cluster in Rook" /><published>2022-06-10T00:00:00+02:00</published><updated>2022-06-10T00:00:00+02:00</updated><id>https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook</id><content type="html" xml:base="https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook/"><![CDATA[This blog will help you to Understand how to consume storage from external ceph
+<p>Try it out and structure your CSI configuration the way you want it!</p>]]></content><author><name></name></author><category term="ceph" /><category term="rook" /><category term="storage" /><category term="rook" /><category term="ceph" /><category term="kubernetes" /><category term="storage" /><category term="csi" /><summary type="html"><![CDATA[In the latest enhancement to Rook’s Ceph operator, users can now explicitly specify the clusterID when creating CephBlockPoolRadosNamespace and CephFilesystemSubVolumeGroup custom resources. This update gives users more control and flexibility over how storage clusters are identified and referenced by the CSI driver.]]></summary></entry><entry><title type="html">Consuming Storage From external ceph cluster in Rook</title><link href="https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook/" rel="alternate" type="text/html" title="Consuming Storage From external ceph cluster in Rook" /><published>2022-06-10T00:00:00+02:00</published><updated>2022-06-10T00:00:00+02:00</updated><id>https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook</id><content type="html" xml:base="https://mrajanna.com/Consuming-storage-from-exteranal-ceph-in-rook/"><![CDATA[<p>This blog will help you to Understand how to consume storage from external ceph
 cluster in Rook and how to create and consume Below listed resources in the
-ceph cluster.
+ceph cluster.</p>
 
-This doc assumes that you already set up the Rook with an external ceph cluster.
+<p>This doc assumes that you already set up the Rook with an external ceph cluster.</p>
 
-Please refer to [doc](../setup-external-ceph-cluster-with-rook) on how to setup
-external ceph cluster with Rook.
+<p>Please refer to <a href="../setup-external-ceph-with-rook">doc</a> on how to setup
+external ceph cluster with Rook.</p>
 
-* CephBlockPool
-* CephFileSystem
-* SubvolumeGroup
-* RadosNamespace
+<ul>
+  <li>CephBlockPool</li>
+  <li>CephFileSystem</li>
+  <li>SubvolumeGroup</li>
+  <li>RadosNamespace</li>
+</ul>
 
-## Create resources specified above in the ceph cluster
+<h2 id="create-resources-specified-above-in-the-ceph-cluster">Create resources specified above in the ceph cluster</h2>
 
-**Note** You can skip this step and create the ceph resources with Rook CRs if
-you are using the ceph cluster deployed with Rook.
+<p><strong>Note</strong> You can skip this step and create the ceph resources with Rook CRs if
+you are using the ceph cluster deployed with Rook.</p>
 
-### Create RBD Pool
+<h3 id="create-rbd-pool">Create RBD Pool</h3>
 
-```bash
-[🎩︎]mrajanna@fedora $]ceph osd pool create replicapool 128
-[🎩︎]mrajanna@fedora $]rbd pool init
-[🎩︎]mrajanna@fedora $]ceph osd pool set replicapool size 1 --yes-i-really-mean-it
-```
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>ceph osd pool create replicapool 128
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>rbd pool init
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>ceph osd pool <span class="nb">set </span>replicapool size 1 <span class="nt">--yes-i-really-mean-it</span>
+</code></pre></div></div>
 
-### Create CephFS Filesystem
+<h3 id="create-cephfs-filesystem">Create CephFS Filesystem</h3>
 
-```bash
-[🎩︎]mrajanna@fedora $]ceph osd pool create myfs-metadata 128
-[🎩︎]mrajanna@fedora $]ceph osd pool create myfs-data 124
-[🎩︎]mrajanna@fedora $]ceph fs new myfs myfs-metadata myfs-data
-```
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>ceph osd pool create myfs-metadata 128
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>ceph osd pool create myfs-data 124
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>ceph fs new myfs myfs-metadata myfs-data
+</code></pre></div></div>
 
-### Create SubVolumeGroup
+<h3 id="create-subvolumegroup">Create SubVolumeGroup</h3>
 
-Let's create a SubVolumeGroup in the Filesystem `myfs` created above
+<p>Let’s create a SubVolumeGroup in the Filesystem <code class="language-plaintext highlighter-rouge">myfs</code> created above</p>
 
-```bash
-[🎩︎]mrajanna@fedora $]ceph fs subvolumegroup create myfs volgroup
-```
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>ceph fs subvolumegroup create myfs volgroup
+</code></pre></div></div>
 
-### Create RadosNamespace
+<h3 id="create-radosnamespace">Create RadosNamespace</h3>
 
-Let's create a RadosNamespace in the BlockPool `replicapool` created above
+<p>Let’s create a RadosNamespace in the BlockPool <code class="language-plaintext highlighter-rouge">replicapool</code> created above</p>
 
-```bash
-[🎩︎]mrajanna@fedora $]rbd namespace create replicapool/testnamespace
-```
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>rbd namespace create replicapool/testnamespace
+</code></pre></div></div>
 
-## checkout Rook v1.9.5 Repository
+<h2 id="checkout-rook-v195-repository">checkout Rook v1.9.5 Repository</h2>
 
-```bash
-[🎩︎]mrajanna@fedora $]git clone https://github.com/rook/rook.git
-[🎩︎]mrajanna@fedora $]git checkout v1.9.5
-[🎩︎]mrajanna@fedora $]cd rook/deploy/examples
-```
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>git clone https://github.com/rook/rook.git
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>git checkout v1.9.5
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span><span class="nb">cd </span>rook/deploy/examples
+</code></pre></div></div>
 
-## Consume above created ceph resources in kubernetes cluster
+<h2 id="consume-above-created-ceph-resources-in-kubernetes-cluster">Consume above created ceph resources in kubernetes cluster</h2>
 
-### CephBlockPool
+<h3 id="cephblockpool">CephBlockPool</h3>
 
-To create RBD PVC, we need to first have the RBD pool created in the ceph
+<p>To create RBD PVC, we need to first have the RBD pool created in the ceph
 cluster and ceph users to access the pool and a StorageClass to point to the
-Pool where to create the PVC.
+Pool where to create the PVC.</p>
 
-*Note* Above create a pool with the name `replicapool` with  PG Num `128` and
-setting replica size to `1` As I have only one OSD. If you have a minimum `3`
-OSD please set it to `3`.
+<p><em>Note</em> Above create a pool with the name <code class="language-plaintext highlighter-rouge">replicapool</code> with  PG Num <code class="language-plaintext highlighter-rouge">128</code> and
+setting replica size to <code class="language-plaintext highlighter-rouge">1</code> As I have only one OSD. If you have a minimum <code class="language-plaintext highlighter-rouge">3</code>
+OSD please set it to <code class="language-plaintext highlighter-rouge">3</code>.</p>
 
-As this ceph cluster is deployed in the `rook-ceph-external` namespace, we need
-to update a few details in RBD storageclass
+<p>As this ceph cluster is deployed in the <code class="language-plaintext highlighter-rouge">rook-ceph-external</code> namespace, we need
+to update a few details in RBD storageclass</p>
 
-```bash
-[🎩︎]mrajanna@fedora $] cd csi/rbd
-[🎩︎]mrajanna@fedora $] cat storageclass-test.yaml
-allowVolumeExpansion: true
-apiVersion: storage.k8s.io/v1
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span> <span class="nb">cd </span>csi/rbd
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span> <span class="nb">cat </span>storageclass-test.yaml
+allowVolumeExpansion: <span class="nb">true
+</span>apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: rook-ceph-block
 parameters:
-  clusterID: rook-ceph-external  # Namespace where ceph cluster is deployed
+  clusterID: rook-ceph-external  <span class="c"># Namespace where ceph cluster is deployed</span>
   csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
-  csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph-external  # Namespace where ceph cluster is deployed
+  csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph-external  <span class="c"># Namespace where ceph cluster is deployed</span>
   csi.storage.k8s.io/fstype: ext4
   csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
-  csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph-external  # Namespace where ceph cluster is deployed
+  csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph-external  <span class="c"># Namespace where ceph cluster is deployed</span>
   csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
-  csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph-external  # Namespace where ceph cluster is deployed
+  csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph-external  <span class="c"># Namespace where ceph cluster is deployed</span>
   imageFeatures: layering
-  imageFormat: "2"
+  imageFormat: <span class="s2">"2"</span>
   pool: replicapool
 provisioner: rook-ceph.rbd.csi.ceph.com
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
-```
+</code></pre></div></div>
 
-change the above parameters in the rbd storageclass-test.yaml and keep all
+<p>change the above parameters in the rbd storageclass-test.yaml and keep all
 other configurations as it is (Dont forget to remove pool.yaml from
-storageclass-test.yaml).
+storageclass-test.yaml).</p>
 
-Let's create RBD storageclass, PVC, Pod and verify it on the ceph cluster.
+<p>Let’s create RBD storageclass, PVC, Pod and verify it on the ceph cluster.</p>
 
-```bash
-[🎩︎]mrajanna@fedora $]kubectl create -f storageclass-test.yaml
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create <span class="nt">-f</span> storageclass-test.yaml
 storageclass.storage.k8s.io/rook-ceph-block created
-[🎩︎]mrajanna@fedora $]kubectl create -f pvc.yaml
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create <span class="nt">-f</span> pvc.yaml
 persistentvolumeclaim/rbd-pvc created
-[🎩︎]mrajanna@fedora $]kubectl get pvc
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get pvc
 NAME      STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
 rbd-pvc   Bound    pvc-a1a802fd-a577-45e4-b52d-687b8333cbef   1Gi        RWO            rook-ceph-block   4s
-[🎩︎]mrajanna@fedora $]kubectl create -f pod.yaml
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create <span class="nt">-f</span> pod.yaml
 pod/csirbd-demo-pod created
-[🎩︎]mrajanna@fedora $]kubectl get po
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get po
 NAME              READY   STATUS    RESTARTS   AGE
 csirbd-demo-pod   1/1     Running   0          43s
-```
+</code></pre></div></div>
 
-Let's verify we have the rbd image in the ceph cluster.
+<p>Let’s verify we have the rbd image in the ceph cluster.</p>
 
-```bash
-[🎩︎]mrajanna@fedora $] rbd ls replicapool
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span> rbd <span class="nb">ls </span>replicapool
 csi-vol-9475df3e-e895-11ec-bbf0-9a1ab8207c3a
-```
+</code></pre></div></div>
 
-### CephFilesystem
+<h3 id="cephfilesystem">CephFilesystem</h3>
 
-To create CephFS PVC, we need to first have the CephFS Filesystem created in
+<p>To create CephFS PVC, we need to first have the CephFS Filesystem created in
 the ceph cluster and ceph users to access the Filesystem and a StorageClass to
-point to the Filesystem where to create the PVC.
+point to the Filesystem where to create the PVC.</p>
 
-*Note* Above a Filesystem with the name `myfs`, let's use the same for testing
+<p><em>Note</em> Above a Filesystem with the name <code class="language-plaintext highlighter-rouge">myfs</code>, let’s use the same for testing</p>
 
-As this ceph cluster is deployed in the `rook-ceph-external` namespace, we need
-to update a few details in CephFS storageclass
+<p>As this ceph cluster is deployed in the <code class="language-plaintext highlighter-rouge">rook-ceph-external</code> namespace, we need
+to update a few details in CephFS storageclass</p>
 
-```bash
-[🎩︎]mrajanna@fedora $] cd csi/cephfs
-[🎩︎]mrajanna@fedora $] cat storageclass.yaml
-allowVolumeExpansion: true
-apiVersion: storage.k8s.io/v1
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span> <span class="nb">cd </span>csi/cephfs
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span> <span class="nb">cat </span>storageclass.yaml
+allowVolumeExpansion: <span class="nb">true
+</span>apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: rook-cephfs
 parameters:
-  clusterID: rook-ceph-external # Namespace where ceph cluster is deployed
+  clusterID: rook-ceph-external <span class="c"># Namespace where ceph cluster is deployed</span>
   csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-  csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph-external # Namespace where ceph cluster is deployed
+  csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph-external <span class="c"># Namespace where ceph cluster is deployed</span>
   csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-  csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph-external # Namespace where ceph cluster is deployed
+  csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph-external <span class="c"># Namespace where ceph cluster is deployed</span>
   csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-  csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph-external # Namespace where ceph cluster is deployed
+  csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph-external <span class="c"># Namespace where ceph cluster is deployed</span>
   fsName: myfs
   pool: myfs-data
 provisioner: rook-ceph.cephfs.csi.ceph.com
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
-```
+</code></pre></div></div>
 
-change the above parameters in the cephfs storageclass.yaml and keep all other
-configurations as it is.
+<p>change the above parameters in the cephfs storageclass.yaml and keep all other
+configurations as it is.</p>
 
-Let's create CephFS storageclass, PVC, Pod and verify it on the ceph cluster.
+<p>Let’s create CephFS storageclass, PVC, Pod and verify it on the ceph cluster.</p>
 
-```bash
-[🎩︎]mrajanna@fedora $]kubectl create  -f cephfs/storageclass.yaml
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create  <span class="nt">-f</span> cephfs/storageclass.yaml
 storageclass.storage.k8s.io/rook-cephfs created
-[🎩︎]mrajanna@fedora $]kubectl create -f pvc.yaml
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create <span class="nt">-f</span> pvc.yaml
 persistentvolumeclaim/cephfs-pvc created
-[🎩︎]mrajanna@fedora $]kubectl get pvc
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get pvc
 NAME         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
 cephfs-pvc   Bound    pvc-52186bd0-92dd-433c-af00-e0a60baf71a1   1Gi        RWO            rook-cephfs       2s
-[🎩︎]mrajanna@fedora $]kubectl create -f pod.yaml
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create <span class="nt">-f</span> pod.yaml
 pod/csicephfs-demo-pod created
-[🎩︎]mrajanna@fedora $]kubectl get po
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get po
 NAME                 READY   STATUS    RESTARTS   AGE
 csicephfs-demo-pod   1/1     Running   0          24s
-```
+</code></pre></div></div>
 
-Let's verify we have cephfs Subvolume created in the ceph cluster.
+<p>Let’s verify we have cephfs Subvolume created in the ceph cluster.</p>
 
-```bash
-[🎩︎]mrajanna@fedora $] ceph fs subvolume ls myfs --group_name=csi
-[
-    {
-        "name": "csi-vol-9bcadef0-e896-11ec-93d2-8a68b48559cc"
-    }
-]
-```
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span> ceph fs subvolume <span class="nb">ls </span>myfs <span class="nt">--group_name</span><span class="o">=</span>csi
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">"name"</span>: <span class="s2">"csi-vol-9bcadef0-e896-11ec-93d2-8a68b48559cc"</span>
+    <span class="o">}</span>
+<span class="o">]</span>
+</code></pre></div></div>
 
-**Note** `csi` is the default subvolumegroup cephcsi creates.
+<p><strong>Note</strong> <code class="language-plaintext highlighter-rouge">csi</code> is the default subvolumegroup cephcsi creates.</p>
 
-### SubvolumeGroup
+<h3 id="subvolumegroup">SubvolumeGroup</h3>
 
-To create CephFS PVC in a subvolumeGroup, we need to first have subvolumegroup
+<p>To create CephFS PVC in a subvolumeGroup, we need to first have subvolumegroup
 created in the CephFS Filesystem created in the ceph cluster and ceph users to
 access the subvolumegroup and a StorageClass to point to the clusterID of
-subvolumegroup where to create the PVC.
+subvolumegroup where to create the PVC.</p>
 
-*Note* Above we have subvolumegroup with name `volgroup` in `myfs` Filesystem,
-Let's use the same for testing
+<p><em>Note</em> Above we have subvolumegroup with name <code class="language-plaintext highlighter-rouge">volgroup</code> in <code class="language-plaintext highlighter-rouge">myfs</code> Filesystem,
+Let’s use the same for testing</p>
 
-#### Create SubVolumeGroup CR
+<h4 id="create-subvolumegroup-cr">Create SubVolumeGroup CR</h4>
 
-```bash
-[🎩︎]mrajanna@fedora $]cat <<EOFcat <<EOF | kubectl apply -f -
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOFcat</span><span class="sh"> &lt;&lt;EOF | kubectl apply -f -
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephFilesystemSubVolumeGroup
@@ -306,55 +296,52 @@ spec:
   filesystemName: myfs
 EOF
 cephfilesystemsubvolumegroup.ceph.rook.io/volgroup created
-```
+</span></code></pre></div></div>
 
-**Note** We are creating SubVolumeGroup CR to generate the SubVolumeGroup Name
-and ClusterID mapping, it won't create SubVolumeGroup in the Ceph cluster.
+<p><strong>Note</strong> We are creating SubVolumeGroup CR to generate the SubVolumeGroup Name
+and ClusterID mapping, it won’t create SubVolumeGroup in the Ceph cluster.</p>
 
-#### Check SubVolumeGroup details
+<h4 id="check-subvolumegroup-details">Check SubVolumeGroup details</h4>
 
-```bash
-[🎩︎]mrajanna@fedora $]kubectl get cephfilesystemsubvolumegroup.ceph.rook.io/volgroup -nrook-ceph-external
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get cephfilesystemsubvolumegroup.ceph.rook.io/volgroup <span class="nt">-nrook-ceph-external</span>
 NAME       PHASE
 volgroup   Ready
-[🎩︎]mrajanna@fedora $]kubectl get cephfilesystemsubvolumegroup.ceph.rook.io/volgroup -nrook-ceph-external -o jsonpath='{.status.info}'
-{"clusterID":"728ed87ac1a8809431b4549f4a4897aa"}
-```
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get cephfilesystemsubvolumegroup.ceph.rook.io/volgroup <span class="nt">-nrook-ceph-external</span> <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.info}'</span>
+<span class="o">{</span><span class="s2">"clusterID"</span>:<span class="s2">"728ed87ac1a8809431b4549f4a4897aa"</span><span class="o">}</span>
+</code></pre></div></div>
 
-The above clusterID `728ed87ac1a8809431b4549f4a4897aa` is the one we need to
-use it in subvolumegroup storageclass.
+<p>The above clusterID <code class="language-plaintext highlighter-rouge">728ed87ac1a8809431b4549f4a4897aa</code> is the one we need to
+use it in subvolumegroup storageclass.</p>
 
-The reason we have a new clusterID for subvolumegroup is we cannot specify
+<p>The reason we have a new clusterID for subvolumegroup is we cannot specify
 subvolumegroup name in the storageclass, This clusterID has the mapping to the
-subvolumegroup
+subvolumegroup</p>
 
-#### Check mapping between clusterID and SubVolumeGroup
+<h4 id="check-mapping-between-clusterid-and-subvolumegroup">Check mapping between clusterID and SubVolumeGroup</h4>
 
-```bash
-[🎩︎]mrajanna@fedora $]kubectl get cm rook-ceph-csi-config -nrook-ceph -oyaml
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get cm rook-ceph-csi-config <span class="nt">-nrook-ceph</span> <span class="nt">-oyaml</span>
 apiVersion: v1
 data:
-  csi-cluster-config-json: '[{"clusterID":"rook-ceph-external","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external"},{"clusterID":"728ed87ac1a8809431b4549f4a4897aa","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external","cephFS":{"subvolumeGroup":"volgroup"}}]'
+  csi-cluster-config-json: <span class="s1">'[{"clusterID":"rook-ceph-external","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external"},{"clusterID":"728ed87ac1a8809431b4549f4a4897aa","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external","cephFS":{"subvolumeGroup":"volgroup"}}]'</span>
 kind: ConfigMap
 metadata:
-  creationTimestamp: "2022-06-10T07:57:13Z"
+  creationTimestamp: <span class="s2">"2022-06-10T07:57:13Z"</span>
   name: rook-ceph-csi-config
   namespace: rook-ceph
   ownerReferences:
   - apiVersion: apps/v1
-    blockOwnerDeletion: false
-    controller: true
-    kind: Deployment
+    blockOwnerDeletion: <span class="nb">false
+    </span>controller: <span class="nb">true
+    </span>kind: Deployment
     name: rook-ceph-operator
     uid: 5c8f3d9a-d973-4b65-b3f3-edbee10cd6b3
-  resourceVersion: "5973"
+  resourceVersion: <span class="s2">"5973"</span>
   uid: 7ac9d0d9-a9ef-4e04-b322-63d01513c072
-```
+</code></pre></div></div>
 
-#### Create StorageClass, PVC and Pod
+<h4 id="create-storageclass-pvc-and-pod">Create StorageClass, PVC and Pod</h4>
 
-```bash
-[🎩︎]mrajanna@fedora $]cat <<EOF | kubectl apply -f -
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | kubectl apply -f -
 allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -373,54 +360,51 @@ parameters:
 provisioner: rook-ceph.cephfs.csi.ceph.com
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
-EOF
-storageclass.storage.k8s.io/rook-cephfs-subvol-group created
-```
+</span><span class="no">EOF
+</span>storageclass.storage.k8s.io/rook-cephfs-subvol-group created
+</code></pre></div></div>
 
-```bash
-[🎩︎]mrajanna@fedora $]kubectl create -f pvc.yaml
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create <span class="nt">-f</span> pvc.yaml
 persistentvolumeclaim/cephfs-subvol-pvc created
-[🎩︎]mrajanna@fedora $]kubectl get pvc
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get pvc
 NAME                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS               AGE
 cephfs-subvol-pvc   Bound    pvc-556acc86-ba24-43d6-ae19-85fa21a046a4   1Gi        RWO            rook-cephfs-subvol-group   2s
-[🎩︎]mrajanna@fedora $]kubectl create -f pod.yaml
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create <span class="nt">-f</span> pod.yaml
 pod/csicephfssubvol-demo-pod created
-[🎩︎]mrajanna@fedora $]kubectl get po
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get po
 NAME                       READY   STATUS    RESTARTS   AGE
 csicephfssubvol-demo-pod   1/1     Running   0          70s
-```
+</code></pre></div></div>
 
-**Note**. Dont forget to change storageclass in the PVC yaml to point to
-subvolumegroup storageClass
+<p><strong>Note</strong>. Dont forget to change storageclass in the PVC yaml to point to
+subvolumegroup storageClass</p>
 
-Let's verify we have cephfs Subvolume in the specified group created in the
-ceph cluster.
+<p>Let’s verify we have cephfs Subvolume in the specified group created in the
+ceph cluster.</p>
 
-```bash
-[🎩︎]mrajanna@fedora $]ceph fs subvolume ls myfs --group_name=volgroup
-[
-    {
-        "name": "csi-vol-e0905660-e898-11ec-93d2-8a68b48559cc"
-    }
-]
-```
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>ceph fs subvolume <span class="nb">ls </span>myfs <span class="nt">--group_name</span><span class="o">=</span>volgroup
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">"name"</span>: <span class="s2">"csi-vol-e0905660-e898-11ec-93d2-8a68b48559cc"</span>
+    <span class="o">}</span>
+<span class="o">]</span>
+</code></pre></div></div>
 
-**Note** `volgroup` is the SubVolumeGroup we created.
+<p><strong>Note</strong> <code class="language-plaintext highlighter-rouge">volgroup</code> is the SubVolumeGroup we created.</p>
 
-## RadosNamespaces
+<h2 id="radosnamespaces">RadosNamespaces</h2>
 
-To create RBD PVC in a RadosNamespaces, we need to first have RadosNamespaces
+<p>To create RBD PVC in a RadosNamespaces, we need to first have RadosNamespaces
 created in the RBD Pool created in the ceph cluster and ceph users to access
 the RadosNamespaces and a StorageClass to point to the clusterID of
-RadosNamespaces where to create the PVC.
+RadosNamespaces where to create the PVC.</p>
 
-*Note* Above we have RadosNamespaces with the name `testnamespace` in the
-`replicapool` Pool, Let's use the same for testing
+<p><em>Note</em> Above we have RadosNamespaces with the name <code class="language-plaintext highlighter-rouge">testnamespace</code> in the
+<code class="language-plaintext highlighter-rouge">replicapool</code> Pool, Let’s use the same for testing</p>
 
-### Create RadosNamespaces CR
+<h3 id="create-radosnamespaces-cr">Create RadosNamespaces CR</h3>
 
-```bash
-[🎩︎]mrajanna@fedora $]cat <<EOF | kubectl apply -f -
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | kubectl apply -f -
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPoolRadosNamespace
@@ -429,58 +413,55 @@ metadata:
   namespace: rook-ceph-external
 spec:
   blockPoolName: replicapool
-EOF
-cephblockpoolradosnamespace.ceph.rook.io/testnamespace created
-```
+</span><span class="no">EOF
+</span>cephblockpoolradosnamespace.ceph.rook.io/testnamespace created
+</code></pre></div></div>
 
-**Note** We are creating RadosNamespace CR to generate the RadosNamespace Name
-and ClusterID mapping, it won't create RadosNamespace in the Ceph cluster.
+<p><strong>Note</strong> We are creating RadosNamespace CR to generate the RadosNamespace Name
+and ClusterID mapping, it won’t create RadosNamespace in the Ceph cluster.</p>
 
-#### Get RadosNamespaces details
+<h4 id="get-radosnamespaces-details">Get RadosNamespaces details</h4>
 
-```bash
-[🎩︎]mrajanna@fedora $]kubectl get cephblockcephblockpoolradosnamespace.ceph.rook.io/testnamespace -nrook-ceph-external
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get cephblockcephblockpoolradosnamespace.ceph.rook.io/testnamespace <span class="nt">-nrook-ceph-external</span>
 NAME            AGE
 testnamespace   28s
-[🎩︎]mrajanna@fedora $]kubectl get cephblockpoolradosnamespace.ceph.rook.io/testnamespace -nrook-ceph-external -o jsonpath='{.status.info}'
-{"clusterID":"6165a9e9a61346a8b8e629bdfb583414"}
-```
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get cephblockpoolradosnamespace.ceph.rook.io/testnamespace <span class="nt">-nrook-ceph-external</span> <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.info}'</span>
+<span class="o">{</span><span class="s2">"clusterID"</span>:<span class="s2">"6165a9e9a61346a8b8e629bdfb583414"</span><span class="o">}</span>
+</code></pre></div></div>
 
-The above clusterID `6165a9e9a61346a8b8e629bdfb583414` is the one we need to
-use it in RadosNamespace storageclass.
+<p>The above clusterID <code class="language-plaintext highlighter-rouge">6165a9e9a61346a8b8e629bdfb583414</code> is the one we need to
+use it in RadosNamespace storageclass.</p>
 
-The reason we have a new clusterID for RadosNamespace is we cannot specify
+<p>The reason we have a new clusterID for RadosNamespace is we cannot specify
 RadosNamespace name in the storageclass, This clusterID has the mapping to the
-RadosNamespace
+RadosNamespace</p>
 
-#### Check mapping between clusterID and RadosNamespace
+<h4 id="check-mapping-between-clusterid-and-radosnamespace">Check mapping between clusterID and RadosNamespace</h4>
 
-```bash
-[🎩︎]mrajanna@fedora $]kubectl get cm rook-ceph-csi-config -nrook-ceph -oyaml
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get cm rook-ceph-csi-config <span class="nt">-nrook-ceph</span> <span class="nt">-oyaml</span>
 apiVersion: v1
 data:
-  csi-cluster-config-json: '[{"clusterID":"rook-ceph-external","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external"},{"clusterID":"728ed87ac1a8809431b4549f4a4897aa","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external","cephFS":{"subvolumeGroup":"volgroup"}},{"clusterID":"6165a9e9a61346a8b8e629bdfb583414","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external","rbd":{"radosNamespace":"testnamespace"}}]'
+  csi-cluster-config-json: <span class="s1">'[{"clusterID":"rook-ceph-external","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external"},{"clusterID":"728ed87ac1a8809431b4549f4a4897aa","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external","cephFS":{"subvolumeGroup":"volgroup"}},{"clusterID":"6165a9e9a61346a8b8e629bdfb583414","monitors":["192.168.122.243:6789"],"namespace":"rook-ceph-external","rbd":{"radosNamespace":"testnamespace"}}]'</span>
 kind: ConfigMap
 metadata:
-  creationTimestamp: "2022-06-10T07:57:13Z"
+  creationTimestamp: <span class="s2">"2022-06-10T07:57:13Z"</span>
   name: rook-ceph-csi-config
   namespace: rook-ceph
   ownerReferences:
   - apiVersion: apps/v1
-    blockOwnerDeletion: false
-    controller: true
-    kind: Deployment
+    blockOwnerDeletion: <span class="nb">false
+    </span>controller: <span class="nb">true
+    </span>kind: Deployment
     name: rook-ceph-operator
     uid: 5c8f3d9a-d973-4b65-b3f3-edbee10cd6b3
-  resourceVersion: "7913"
+  resourceVersion: <span class="s2">"7913"</span>
   uid: 7ac9d0d9-a9ef-4e04-b322-63d01513c072
 
-```
+</code></pre></div></div>
 
-#### Create StorageClass, PVC, and Pod
+<h4 id="create-storageclass-pvc-and-pod-1">Create StorageClass, PVC, and Pod</h4>
 
-```bash
-[🎩︎]mrajanna@fedora $]cat <<EOF | kubectl apply -f -
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | kubectl apply -f -
 allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -501,96 +482,98 @@ parameters:
 provisioner: rook-ceph.rbd.csi.ceph.com
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
-EOF
-storageclass.storage.k8s.io/rook-blockpool-radosnamespace created
-```
+</span><span class="no">EOF
+</span>storageclass.storage.k8s.io/rook-blockpool-radosnamespace created
+</code></pre></div></div>
 
-```bash
-[🎩︎]mrajanna@fedora $]kubectl create -f pvc.yaml
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create <span class="nt">-f</span> pvc.yaml
 persistentvolumeclaim/rbd-radosnamespace-pvc created
-[🎩︎]mrajanna@fedora $]kubectl get pvc
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get pvc
 NAME                     STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                    AGE
 rbd-radosnamespace-pvc   Bound    pvc-e664ea28-c625-41d3-aa81-aead7449e989   1Gi        RWO            rook-blockpool-radosnamespace   3s
-[🎩︎]mrajanna@fedora $]kubectl create -f pod.yaml
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl create <span class="nt">-f</span> pod.yaml
 pod/csirbd-namespace-demo-pod created
-[🎩︎]mrajanna@fedora $]kubectl get po
+<span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>kubectl get po
 NAME                        READY   STATUS    RESTARTS   AGE
 csirbd-namespace-demo-pod   1/1     Running   0          26s
 
-```
+</code></pre></div></div>
 
-**Note**. Dont forget to change storageclass in the PVC yaml to point to
-RadosNamespace storageClass
+<p><strong>Note</strong>. Dont forget to change storageclass in the PVC yaml to point to
+RadosNamespace storageClass</p>
 
-Let's verify we have the rbd image created in the specified radosnamespace in
-the ceph cluster.
+<p>Let’s verify we have the rbd image created in the specified radosnamespace in
+the ceph cluster.</p>
 
-```bash
-[🎩︎]mrajanna@fedora $]rbd ls replicapool/testnamespace
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>🎩︎]mrajanna@fedora <span class="nv">$]</span>rbd <span class="nb">ls </span>replicapool/testnamespace
 csi-vol-3ca55f72-e89a-11ec-bbf0-9a1ab8207c3a
-```
+</code></pre></div></div>
 
-Yay!, We have created StorageClass's, PVC's, Pod's and verfied for all the ceph
-resources listed above.]]></content><author><name></name></author><summary type="html"><![CDATA[This blog will help you to Understand how to consume storage from external ceph cluster in Rook and how to create and consume Below listed resources in the ceph cluster.]]></summary></entry><entry><title type="html">DR failover and failback for RBD Async mirroring with minikube</title><link href="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/" rel="alternate" type="text/html" title="DR failover and failback for RBD Async mirroring with minikube" /><published>2021-05-04T00:00:00+02:00</published><updated>2021-05-04T00:00:00+02:00</updated><id>https://mrajanna.com/rbd-async-mirroring-dr-with-rook</id><content type="html" xml:base="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/"><![CDATA[This doc assumes that you already set up the rbd mirroring between two clusters.
+<p>Yay!, We have created StorageClass’s, PVC’s, Pod’s and verfied for all the ceph
+resources listed above.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[This blog will help you to Understand how to consume storage from external ceph cluster in Rook and how to create and consume Below listed resources in the ceph cluster.]]></summary></entry><entry><title type="html">DR failover and failback for RBD Async mirroring with minikube</title><link href="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/" rel="alternate" type="text/html" title="DR failover and failback for RBD Async mirroring with minikube" /><published>2021-05-04T00:00:00+02:00</published><updated>2021-05-04T00:00:00+02:00</updated><id>https://mrajanna.com/rbd-async-mirroring-dr-with-rook</id><content type="html" xml:base="https://mrajanna.com/rbd-async-mirroring-dr-with-rook/"><![CDATA[<p>This doc assumes that you already set up the rbd mirroring between two clusters.</p>
 
-Please refer to [doc](../setup-rbd-async-mirroring-with-rook) on how
-to setup RBD mirroring.
+<p>Please refer to <a href="../setup-rbd-async-mirroring-with-rook">doc</a> on how
+to setup RBD mirroring.</p>
 
-## Set up initial DR components
+<h2 id="set-up-initial-dr-components">Set up initial DR components</h2>
 
-we need to Enable two new sidecar deployment in the RBD provisioner pods which
-will help in achieving rbd mirroring
+<p>we need to Enable two new sidecar deployment in the RBD provisioner pods which
+will help in achieving rbd mirroring</p>
 
-* OMAP Regenerator -> This is a cephcsi component that regenerates the
-  required OMAP data for cephcsi to perform CSI operations after failover.
+<ul>
+  <li>
+    <p>OMAP Regenerator -&gt; This is a cephcsi component that regenerates the
+required OMAP data for cephcsi to perform CSI operations after failover.</p>
+  </li>
+  <li>
+    <p>Volume Replication operator -&gt; Volume replication operator which exposes
+Replication CRD to perform the RBD async operations like enable and disable mirroring,
+promote, demote, force promote, and resync. Refer <a href="https://github.com/csi-addons/volume-replication-operator">operator</a> for more details about it.</p>
+  </li>
+</ul>
 
-* Volume Replication operator -> Volume replication operator which exposes
-  Replication CRD to perform the RBD async operations like enable and disable mirroring,
-  promote, demote, force promote, and resync. Refer [operator](https://github.com/csi-addons/volume-replication-operator) for more details about it.
+<h3 id="enable-dr-components">Enable DR components</h3>
 
-### Enable DR components
+<h4 id="upgrade-to-rook-v160">Upgrade to Rook v1.6.0+</h4>
 
-#### Upgrade to Rook v1.6.0+
-
-Rook [v1.6.0](https://github.com/rook/rook/releases/tag/v1.6.0) comes with the
+<p>Rook <a href="https://github.com/rook/rook/releases/tag/v1.6.0">v1.6.0</a> comes with the
 new volume replication support and also cephcsi v3.3.0, Install/Upgrade to Rook
-v1.6.0 or higher versions.
+v1.6.0 or higher versions.</p>
 
-#### Re-apply the common.yaml and crds.yaml
+<h4 id="re-apply-the-commonyaml-and-crdsyaml">Re-apply the common.yaml and crds.yaml</h4>
 
-```bash=
-kubectl apply -f crds.yaml common.yaml
-```
+<pre><code class="language-bash=">kubectl apply -f crds.yaml common.yaml
+</code></pre>
 
-> Once we reapply/create the crds.yaml we should see two new CRD's related to
-> volume replication
+<blockquote>
+  <p>Once we reapply/create the crds.yaml we should see two new CRD’s related to
+volume replication</p>
+</blockquote>
 
-```bash=
-$ kubectl get crd |grep volumereplication
+<pre><code class="language-bash=">$ kubectl get crd |grep volumereplication
 volumereplicationclasses.replication.storage.openshift.io   2021-04-28T05:57:57Z
 volumereplications.replication.storage.openshift.io         2021-04-28T05:57:57Z
-```
+</code></pre>
 
-As we need to provide Edit `rook-ceph-operator-config` configmap and add below
-two configurations to the list
+<p>As we need to provide Edit <code class="language-plaintext highlighter-rouge">rook-ceph-operator-config</code> configmap and add below
+two configurations to the list</p>
 
-```yaml
-apiVersion: v1
-data:
-  CSI_ENABLE_OMAP_GENERATOR: "true"
-  CSI_ENABLE_VOLUME_REPLICATION: "true"
-```
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">CSI_ENABLE_OMAP_GENERATOR</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+  <span class="na">CSI_ENABLE_VOLUME_REPLICATION</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+</code></pre></div></div>
 
-```bash=
-$kubectl edit cm rook-ceph-operator-config  -nrook-ceph
-```
+<pre><code class="language-bash=">$kubectl edit cm rook-ceph-operator-config  -nrook-ceph
+</code></pre>
 
-> Once you edit and save the configmap you will see that CSI pods are getting
-> recreated, just wait until you see 8 containers in `csi-rbdplugin-provisioner-xxx`
-> pod.
+<blockquote>
+  <p>Once you edit and save the configmap you will see that CSI pods are getting
+recreated, just wait until you see 8 containers in <code class="language-plaintext highlighter-rouge">csi-rbdplugin-provisioner-xxx</code>
+pod.</p>
+</blockquote>
 
-```bash=
-kubectl get po -nrook-ceph
+<pre><code class="language-bash=">kubectl get po -nrook-ceph
 NAME                                            READY   STATUS      RESTARTS   AGE
 csi-cephfsplugin-bkgkt                          3/3     Running     0          5d23h
 csi-cephfsplugin-provisioner-6544c5b576-ndf58   6/6     Running     0          5d23h
@@ -603,29 +586,29 @@ rook-ceph-osd-0-b99c76b7b-6cbnk                 1/1     Running     0          6
 rook-ceph-osd-prepare-minicluster2-57552        0/1     Completed   0          6d
 rook-ceph-rbd-mirror-a-d449c66db-2c4hr          1/1     Running     0          5d23h
 rook-ceph-tools-78cdfd976c-nm2jx                1/1     Running     0          6d
-```
+</code></pre>
 
-```bash=
-kubectl logs po/csi-rbdplugin-provisioner-7465df5764-5g8mj -nrook-ceph
+<pre><code class="language-bash=">kubectl logs po/csi-rbdplugin-provisioner-7465df5764-5g8mj -nrook-ceph
 error: a container name must be specified for pod csi-rbdplugin-provisioner-7465df5764-5g8mj, choose one of: [csi-provisioner csi-resizer csi-attacher csi-snapshotter csi-omap-generator volume-replication csi-rbdplugin liveness-prometheus]
-```
+</code></pre>
 
-> In the above logs we can see that `csi-omap-generator` and
-> `volume-replication` containers got created in
-> `csi-rbdplugin-provisioner-xxx` pods.
+<blockquote>
+  <p>In the above logs we can see that <code class="language-plaintext highlighter-rouge">csi-omap-generator</code> and
+<code class="language-plaintext highlighter-rouge">volume-replication</code> containers got created in
+<code class="language-plaintext highlighter-rouge">csi-rbdplugin-provisioner-xxx</code> pods.</p>
+</blockquote>
 
-**Note** The above steps need to be done on both clusters.
+<p><strong>Note</strong> The above steps need to be done on both clusters.</p>
 
-Now the initial bootstrapping is completed.
+<p>Now the initial bootstrapping is completed.</p>
 
-## Provision storage on cluster1
+<h2 id="provision-storage-on-cluster1">Provision storage on cluster1</h2>
 
-Create a `storageclass` and `PVC`
+<p>Create a <code class="language-plaintext highlighter-rouge">storageclass</code> and <code class="language-plaintext highlighter-rouge">PVC</code></p>
 
-### Create storageclass on cluster1
+<h3 id="create-storageclass-on-cluster1">Create storageclass on cluster1</h3>
 
-```bash=
-$cat <<EOF | kubectl --context=cluster1 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -646,15 +629,16 @@ parameters:
 reclaimPolicy: Retain
 EOF
 storageclass.storage.k8s.io/rook-ceph-block created
-```
+</code></pre>
 
-> Create a storageclass with `Retain` `reclaimPolicy` so that we can use static binding for
-DR.
+<blockquote>
+  <p>Create a storageclass with <code class="language-plaintext highlighter-rouge">Retain</code> <code class="language-plaintext highlighter-rouge">reclaimPolicy</code> so that we can use static binding for
+DR.</p>
+</blockquote>
 
-### Create PersistentVolumeClaim on cluster1
+<h3 id="create-persistentvolumeclaim-on-cluster1">Create PersistentVolumeClaim on cluster1</h3>
 
-```bash=
-$cat <<EOF | kubectl --context=cluster1 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -667,20 +651,18 @@ spec:
       storage: 1Gi
   storageClassName: rook-ceph-block
 EOF
-```
+</code></pre>
 
-Check PVC is in bound state
+<p>Check PVC is in bound state</p>
 
-```bash=
-$kubectl get pvc --context=cluster1
+<pre><code class="language-bash=">$kubectl get pvc --context=cluster1
 NAME      STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
 rbd-pvc   Bound    pvc-57cfca36-cb76-4d79-b258-a107bc5c4d15   1Gi        RWO            rook-ceph-block   44s
-```
+</code></pre>
 
-### Create Volume Replication class on cluster1
+<h3 id="create-volume-replication-class-on-cluster1">Create Volume Replication class on cluster1</h3>
 
-```bash=
-$cat <<EOF | kubectl --context=cluster1 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
 apiVersion: replication.storage.openshift.io/v1alpha1
 kind: VolumeReplicationClass
 metadata:
@@ -692,15 +674,16 @@ spec:
     replication.storage.openshift.io/replication-secret-name: rook-csi-rbd-provisioner
     replication.storage.openshift.io/replication-secret-namespace: rook-ceph
 EOF
-```
+</code></pre>
 
-> The volume replication class holds the storage admin information required
-for the volume replication operator.
+<blockquote>
+  <p>The volume replication class holds the storage admin information required
+for the volume replication operator.</p>
+</blockquote>
 
-### Create Volume Replication for PVC on cluster1
+<h3 id="create-volume-replication-for-pvc-on-cluster1">Create Volume Replication for PVC on cluster1</h3>
 
-```bash=
-$cat <<EOF | kubectl --context=cluster1 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
 apiVersion: replication.storage.openshift.io/v1alpha1
 kind: VolumeReplication
 metadata:
@@ -713,20 +696,25 @@ spec:
     kind: PersistentVolumeClaim
     name: rbd-pvc # Name of the PVC to which mirroring to be enabled.
 EOF
-```
+</code></pre>
 
->`replicationState` is the state of the volume being referenced.
-  Possible values are `primary`, `secondary`, and `resync`.
-* `primary` denotes that the volume is primary
-* `secondary` denotes that the volume is secondary
-* `resync` denotes that the volume needs to be resynced
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">replicationState</code> is the state of the volume being referenced.
+  Possible values are <code class="language-plaintext highlighter-rouge">primary</code>, <code class="language-plaintext highlighter-rouge">secondary</code>, and <code class="language-plaintext highlighter-rouge">resync</code>.</p>
+  <ul>
+    <li><code class="language-plaintext highlighter-rouge">primary</code> denotes that the volume is primary</li>
+    <li><code class="language-plaintext highlighter-rouge">secondary</code> denotes that the volume is secondary</li>
+    <li><code class="language-plaintext highlighter-rouge">resync</code> denotes that the volume needs to be resynced</li>
+  </ul>
+</blockquote>
 
-> Note the `VolumeReplication` is a namespace scoped object it should be in the namespace as of PVC.
+<blockquote>
+  <p>Note the <code class="language-plaintext highlighter-rouge">VolumeReplication</code> is a namespace scoped object it should be in the namespace as of PVC.</p>
+</blockquote>
 
-Check VolumeReplication CR status
+<p>Check VolumeReplication CR status</p>
 
-```bash=
-$ kubectl get volumereplication pvc-volumereplication -oyaml
+<pre><code class="language-bash=">$ kubectl get volumereplication pvc-volumereplication -oyaml
 ...
 spec:
   dataSource:
@@ -760,20 +748,18 @@ status:
   message: volume is marked primary
   observedGeneration: 1
   state: Primary
-```
+</code></pre>
 
-Run commands on toolbox pod on cluster1 to check to mirror is enabled on ceph block pool
+<p>Run commands on toolbox pod on cluster1 to check to mirror is enabled on ceph block pool</p>
 
-```bash=
-$kubectl get po --context=cluster1 -nrook-ceph -l  app=rook-ceph-tools
+<pre><code class="language-bash=">$kubectl get po --context=cluster1 -nrook-ceph -l  app=rook-ceph-tools
 NAME                               READY   STATUS    RESTARTS   AGE
 rook-ceph-tools-78cdfd976c-jrhjm   1/1     Running   0          3m53s
-```
+</code></pre>
 
-Verify that mirroring enabled on the image
+<p>Verify that mirroring enabled on the image</p>
 
-```bash=
-$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+<pre><code class="language-bash=">$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
 rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
     size 1 GiB in 256 objects
     order 22 (4 MiB objects)
@@ -791,22 +777,22 @@ rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
     mirroring mode: snapshot
     mirroring global id: 7da10ec2-aa67-4b05-86f0-487b4fa9fdbb
     mirroring primary: true
-```
+</code></pre>
 
-> You can get the RBD image name from the PV object.
+<blockquote>
+  <p>You can get the RBD image name from the PV object.</p>
+</blockquote>
 
-#### Verify that the image is mirrored on the secondary cluster
+<h4 id="verify-that-the-image-is-mirrored-on-the-secondary-cluster">Verify that the image is mirrored on the secondary cluster</h4>
 
-Run commands on toolbox pod on cluster2
+<p>Run commands on toolbox pod on cluster2</p>
 
-```bash=
-$kubectl get po --context=cluster2 -nrook-ceph -l  app=rook-ceph-tools
+<pre><code class="language-bash=">$kubectl get po --context=cluster2 -nrook-ceph -l  app=rook-ceph-tools
 NAME                               READY   STATUS    RESTARTS   AGE
 rook-ceph-tools-78cdfd976c-2566m   1/1     Running   0          3m53s
-```
+</code></pre>
 
-```bash=
-$kubectl exec --context=cluster2 -nrook-ceph rook-ceph-tools-78cdfd976c-2566m -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+<pre><code class="language-bash=">$kubectl exec --context=cluster2 -nrook-ceph rook-ceph-tools-78cdfd976c-2566m -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
 rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
     size 1 GiB in 256 objects
     order 22 (4 MiB objects)
@@ -824,24 +810,21 @@ rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
     mirroring mode: snapshot
     mirroring global id: 7da10ec2-aa67-4b05-86f0-487b4fa9fdbb
     mirroring primary: false
-```
+</code></pre>
 
-### Take a backup of PVC and PV object on cluster1
+<h3 id="take-a-backup-of-pvc-and-pv-object-on-cluster1">Take a backup of PVC and PV object on cluster1</h3>
 
-```bash=
-kubectl get pvc rbd-pvc -oyaml >pvc-bkp.yaml
-```
+<pre><code class="language-bash=">kubectl get pvc rbd-pvc -oyaml &gt;pvc-bkp.yaml
+</code></pre>
 
-```bash=
-kubectl get pv/pvc-0b93de3a-3946-4909-a189-f44dba0abc76 -oyaml >pv_bkp.yaml
-```
+<pre><code class="language-bash=">kubectl get pv/pvc-0b93de3a-3946-4909-a189-f44dba0abc76 -oyaml &gt;pv_bkp.yaml
+</code></pre>
 
-#### Remove the claimRef on the backed up PV objects in  yaml files
+<h4 id="remove-the-claimref-on-the-backed-up-pv-objects-in--yaml-files">Remove the claimRef on the backed up PV objects in  yaml files</h4>
 
-sample claimRef in PV object
+<p>sample claimRef in PV object</p>
 
-```yaml=
-apiVersion: v1
+<pre><code class="language-yaml=">apiVersion: v1
 kind: PersistentVolume
 metadata:
   ...
@@ -858,75 +841,93 @@ spec:
     resourceVersion: "2512"
     uid: 0b93de3a-3946-4909-a189-f44dba0abc76
  ...
-```
+</code></pre>
 
-> Remove the claimRef in all PV backup's
+<blockquote>
+  <p>Remove the claimRef in all PV backup’s</p>
+</blockquote>
 
-```bash=
-vi pv_bkp.yaml
-```
+<pre><code class="language-bash=">vi pv_bkp.yaml
+</code></pre>
 
-## Planned Storage Migration
+<h2 id="planned-storage-migration">Planned Storage Migration</h2>
 
-### Failover
+<h3 id="failover">Failover</h3>
 
-Follow the Below steps for planned migration when you want to move the workload from one cluster to another cluster
+<p>Follow the Below steps for planned migration when you want to move the workload from one cluster to another cluster</p>
 
-* Scale down all the application pods which are using the mirrored PVC
-* Take a back up of PVC and PV object from the cluster1
-  * This can be done using some backup tools like velero also
-* update replicationState to secondary in VolumeReplication CR at Primary Site. When the operator sees this change, it will pass the information down to the driver via GRPC request to mark the dataSource as secondary.
-* If you are manually recreating the PVC and PV on the secondary cluster. remove the claimRef section in the PV objects.
-* Recreate the storageclass, PVC, and PV objects on the cluster2
-  * As you are creating the static binding between PVC and PV, a new PV won't be created here, the PVC will get bind to the existing PV.
-* Create the VolumeReplicationClass on the cluster2
-* Create the VolumeReplications for all the PVC's for which mirroring is enabled
-  * `replicationState` should be `primary` for all the PVC's on the cluster1
-* Check whether the image is primary on cluster2 by looking at toolbox or VolumeReplication CR status
-* Once the Image is marked as Primary create the application to use the PVC
-In the case of planned migration,
+<ul>
+  <li>Scale down all the application pods which are using the mirrored PVC</li>
+  <li>Take a back up of PVC and PV object from the cluster1
+    <ul>
+      <li>This can be done using some backup tools like velero also</li>
+    </ul>
+  </li>
+  <li>update replicationState to secondary in VolumeReplication CR at Primary Site. When the operator sees this change, it will pass the information down to the driver via GRPC request to mark the dataSource as secondary.</li>
+  <li>If you are manually recreating the PVC and PV on the secondary cluster. remove the claimRef section in the PV objects.</li>
+  <li>Recreate the storageclass, PVC, and PV objects on the cluster2
+    <ul>
+      <li>As you are creating the static binding between PVC and PV, a new PV won’t be created here, the PVC will get bind to the existing PV.</li>
+    </ul>
+  </li>
+  <li>Create the VolumeReplicationClass on the cluster2</li>
+  <li>Create the VolumeReplications for all the PVC’s for which mirroring is enabled
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">replicationState</code> should be <code class="language-plaintext highlighter-rouge">primary</code> for all the PVC’s on the cluster1</li>
+    </ul>
+  </li>
+  <li>Check whether the image is primary on cluster2 by looking at toolbox or VolumeReplication CR status</li>
+  <li>Once the Image is marked as Primary create the application to use the PVC
+In the case of planned migration,</li>
+</ul>
 
-#### Failback
+<h4 id="failback">Failback</h4>
 
-Once the planned work is done and you want to failback, follow the above Failover steps again. the only difference, in this case, is we don't need to recreate anything we just need to change `replicationState` from `secondary` to `primary` in current cluster1.
+<p>Once the planned work is done and you want to failback, follow the above Failover steps again. the only difference, in this case, is we don’t need to recreate anything we just need to change <code class="language-plaintext highlighter-rouge">replicationState</code> from <code class="language-plaintext highlighter-rouge">secondary</code> to <code class="language-plaintext highlighter-rouge">primary</code> in current cluster1.</p>
 
-## Storage Disaster Recovery
+<h2 id="storage-disaster-recovery">Storage Disaster Recovery</h2>
 
-### Failover
+<h3 id="failover-1">Failover</h3>
 
-In case of disaster recovery, create VolumeReplication CR at the Secondary Site. Since the connection to the Primary Site is lost, the operator automatically sends a GRPC request down to the driver to forcefully mark the dataSource as primary.
+<p>In case of disaster recovery, create VolumeReplication CR at the Secondary Site. Since the connection to the Primary Site is lost, the operator automatically sends a GRPC request down to the driver to forcefully mark the dataSource as primary.</p>
 
-* If you are manually recreating the PVC and PV on the secondary cluster. remove the claimRef section in the PV objects.
-* Recreate the storageclass, PVC, and PV objects on the cluster2
-  * As you are creating the static binding between PVC and PV, a new PV won't be created here, the PVC will get bind to the existing PV.
-* Create the VolumeReplicationClass and VolumeReplication CR on the cluster2
-* Check whether the image is primary on cluster2 by looking at toolbox or VolumeReplication CR status
-* Once the Image is marked as Primary create the application to use the PVC
-In the case of planned migration,
+<ul>
+  <li>If you are manually recreating the PVC and PV on the secondary cluster. remove the claimRef section in the PV objects.</li>
+  <li>Recreate the storageclass, PVC, and PV objects on the cluster2
+    <ul>
+      <li>As you are creating the static binding between PVC and PV, a new PV won’t be created here, the PVC will get bind to the existing PV.</li>
+    </ul>
+  </li>
+  <li>Create the VolumeReplicationClass and VolumeReplication CR on the cluster2</li>
+  <li>Check whether the image is primary on cluster2 by looking at toolbox or VolumeReplication CR status</li>
+  <li>Once the Image is marked as Primary create the application to use the PVC
+In the case of planned migration,</li>
+</ul>
 
-### Failback
+<h3 id="failback-1">Failback</h3>
 
-Once the failed cluster is recovered and you want to failback, follow the below steps
+<p>Once the failed cluster is recovered and you want to failback, follow the below steps</p>
 
-* Update the VolumeReplication CR `replicationState` state from `primary` to `secondary` in cluster1
-* Scale down the applications on the cluster2
-* Update the VolumeReplication CR `replicationState` state from `primary` to `secondary` in cluster2
-* On the cluster1 verify that the VR status is marked as volume ready to use
-* Once the volume is marked to ready to use, change the `replicationState` state from `secondary` to `primary` in cluster1
-* Scale up the applications again on cluster1]]></content><author><name></name></author><summary type="html"><![CDATA[This doc assumes that you already set up the rbd mirroring between two clusters.]]></summary></entry><entry><title type="html">Troubleshooting Cephcsi</title><link href="https://mrajanna.com/troubleshooting-cephcsi/" rel="alternate" type="text/html" title="Troubleshooting Cephcsi" /><published>2021-01-25T00:00:00+01:00</published><updated>2021-01-25T00:00:00+01:00</updated><id>https://mrajanna.com/troubleshooting-cephcsi</id><content type="html" xml:base="https://mrajanna.com/troubleshooting-cephcsi/"><![CDATA[The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to
-application pods can happen for Many reasons like **`Network connectivity
-between csi pods and ceph`**, **`cluster health issue`**,**`Slow operations`**,
-**`kubernetes issue`**, etc. Even the issue can be at the Ceph-CSI layer
+<ul>
+  <li>Update the VolumeReplication CR <code class="language-plaintext highlighter-rouge">replicationState</code> state from <code class="language-plaintext highlighter-rouge">primary</code> to <code class="language-plaintext highlighter-rouge">secondary</code> in cluster1</li>
+  <li>Scale down the applications on the cluster2</li>
+  <li>Update the VolumeReplication CR <code class="language-plaintext highlighter-rouge">replicationState</code> state from <code class="language-plaintext highlighter-rouge">primary</code> to <code class="language-plaintext highlighter-rouge">secondary</code> in cluster2</li>
+  <li>On the cluster1 verify that the VR status is marked as volume ready to use</li>
+  <li>Once the volume is marked to ready to use, change the <code class="language-plaintext highlighter-rouge">replicationState</code> state from <code class="language-plaintext highlighter-rouge">secondary</code> to <code class="language-plaintext highlighter-rouge">primary</code> in cluster1</li>
+  <li>Scale up the applications again on cluster1</li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[This doc assumes that you already set up the rbd mirroring between two clusters.]]></summary></entry><entry><title type="html">Troubleshooting Cephcsi</title><link href="https://mrajanna.com/troubleshooting-cephcsi/" rel="alternate" type="text/html" title="Troubleshooting Cephcsi" /><published>2021-01-25T00:00:00+01:00</published><updated>2021-01-25T00:00:00+01:00</updated><id>https://mrajanna.com/troubleshooting-cephcsi</id><content type="html" xml:base="https://mrajanna.com/troubleshooting-cephcsi/"><![CDATA[<p>The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to
+application pods can happen for Many reasons like <strong><code class="language-plaintext highlighter-rouge">Network connectivity
+between csi pods and ceph</code></strong>, <strong><code class="language-plaintext highlighter-rouge">cluster health issue</code></strong>,<strong><code class="language-plaintext highlighter-rouge">Slow operations</code></strong>,
+<strong><code class="language-plaintext highlighter-rouge">kubernetes issue</code></strong>, etc. Even the issue can be at the Ceph-CSI layer
 itself. Hope the below-documented steps might help you to understand and Debug
-the cephcsi issues.
+the cephcsi issues.</p>
 
-## How to identify network issues
+<h2 id="how-to-identify-network-issues">How to identify network issues</h2>
 
-Get the monitor IP from the configmap you have created when starting the
-cephcsi pods or from the ceph cluster.
+<p>Get the monitor IP from the configmap you have created when starting the
+cephcsi pods or from the ceph cluster.</p>
 
-```bash=
-sh-4.4# ceph mon dump
+<pre><code class="language-bash=">sh-4.4# ceph mon dump
 dumped monmap epoch 1
 epoch 1
 fsid ba41ac93-3b55-4f32-9e06-d3d8c6ff7334
@@ -934,383 +935,442 @@ last_changed 2021-01-20T12:28:37.972517+0000
 created 2021-01-20T12:28:37.972517+0000
 min_mon_release 15 (octopus)
 0: [v2:10.111.136.166:3300/0,v1:10.111.136.166:6789/0] mon.a
-```
+</code></pre>
 
-**Note:-** `10.111.136.166`is the Monitor IP and `6789` is the monitor port
-that will be used by CephCSI to connect to the ceph cluster.
+<p><strong>Note:-</strong> <code class="language-plaintext highlighter-rouge">10.111.136.166</code>is the Monitor IP and <code class="language-plaintext highlighter-rouge">6789</code> is the monitor port
+that will be used by CephCSI to connect to the ceph cluster.</p>
 
-> Ceph Monitors normally listen on port 3300 for the new v2 protocol, and 6789
-> for the old v1 protocol. Check if your cluster is listening on v2 or v1
-> protocol.
+<blockquote>
+  <p>Ceph Monitors normally listen on port 3300 for the new v2 protocol, and 6789
+for the old v1 protocol. Check if your cluster is listening on v2 or v1
+protocol.</p>
+</blockquote>
 
-### Check network connectivity on your kubernetes nodes
+<h3 id="check-network-connectivity-on-your-kubernetes-nodes">Check network connectivity on your kubernetes nodes</h3>
 
-If you are seeing the issue in Provisioning the PVC then you need to check the
-network connectivity from the Provisioner pods.
+<p>If you are seeing the issue in Provisioning the PVC then you need to check the
+network connectivity from the Provisioner pods.</p>
 
-* CephFS
+<ul>
+  <li>CephFS</li>
+</ul>
 
-If it's **CephFS PVC** then you need to check network connectivity from the
-**csi-cephfsplugin** container of the **csi-cephfsplugin-provisioner** Pods.
+<p>If it’s <strong>CephFS PVC</strong> then you need to check network connectivity from the
+<strong>csi-cephfsplugin</strong> container of the <strong>csi-cephfsplugin-provisioner</strong> Pods.</p>
 
-* RBD
+<ul>
+  <li>RBD</li>
+</ul>
 
-If it's **RBD PVC** then you need to check network connectivity from the
-**csi-rbdplugin** container of the **csi-rbdplugin-provisioner** Pods.
+<p>If it’s <strong>RBD PVC</strong> then you need to check network connectivity from the
+<strong>csi-rbdplugin</strong> container of the <strong>csi-rbdplugin-provisioner</strong> Pods.</p>
 
-> Based on the kubernetes nodes count or the configuration there might be 1 or
-> more provisioner pods will be running. It's good to validate you can check
-> the ceph cluster from all provisioner pods.
+<blockquote>
+  <p>Based on the kubernetes nodes count or the configuration there might be 1 or
+more provisioner pods will be running. It’s good to validate you can check
+the ceph cluster from all provisioner pods.</p>
+</blockquote>
 
-```bash=
-[🎩︎]mrajanna@localhost $]cat < /dev/tcp/10.111.136.166/6789
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]cat &lt; /dev/tcp/10.111.136.166/6789
 ceph v027���'e����'^C
-[🎩︎]mrajanna@localhost $] cat < /dev/tcp/10.111.136.166/3300
+[🎩︎]mrajanna@localhost $] cat &lt; /dev/tcp/10.111.136.166/3300
 ceph v2
 ^C
-```
+</code></pre>
 
-> If you have multiple monitors make sure you check network connectivity for
-> all monitor IP's and ports which are passed to cephcsi.
+<blockquote>
+  <p>If you have multiple monitors make sure you check network connectivity for
+all monitor IP’s and ports which are passed to cephcsi.</p>
+</blockquote>
 
-> If the above commands do not return any response then it will be a network
-> issue to connect to the ceph cluster.
+<blockquote>
+  <p>If the above commands do not return any response then it will be a network
+issue to connect to the ceph cluster.</p>
+</blockquote>
 
-## check ceph cluster is healhty
+<h2 id="check-ceph-cluster-is-healhty">check ceph cluster is healhty</h2>
 
-Sometimes unhealthy ceph cluster can contribute to the issues in Creating or
-mounting the pvc. Please make sure your ceph cluster is healthy
+<p>Sometimes unhealthy ceph cluster can contribute to the issues in Creating or
+mounting the pvc. Please make sure your ceph cluster is healthy</p>
 
-```bash=
-sh-4.4# ceph health detail
+<pre><code class="language-bash=">sh-4.4# ceph health detail
 HEALTH_OK
-```
+</code></pre>
 
-## check for slow ops
+<h2 id="check-for-slow-ops">check for slow ops</h2>
 
-Even slow ops in the ceph cluster can contribute to the issues. Please make
-sure that No slow Ops are present and the ceph cluster is healthy
+<p>Even slow ops in the ceph cluster can contribute to the issues. Please make
+sure that No slow Ops are present and the ceph cluster is healthy</p>
 
-```bash=
-sh-4.4# ceph -s
+<pre><code class="language-bash=">sh-4.4# ceph -s
   cluster:
     id:     ba41ac93-3b55-4f32-9e06-d3d8c6ff7334
     health: HEALTH_WARN
             30 slow ops, oldest one blocked for 10624 sec, mon.a has slow ops
-```
+</code></pre>
 
-Some tips on what to check.
+<p>Some tips on what to check.</p>
 
-* Look in the monitor logs
-* Look in the OSD logs
-  * Check Disk Health
-* Check Network Health
+<ul>
+  <li>Look in the monitor logs</li>
+  <li>Look in the OSD logs
+    <ul>
+      <li>Check Disk Health</li>
+    </ul>
+  </li>
+  <li>Check Network Health</li>
+</ul>
 
-> How to debug different issues in the ceph cluster is documented at [**ceph
-> troubleshooting**](https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/4/html/troubleshooting_guide/index)
+<blockquote>
+  <p>How to debug different issues in the ceph cluster is documented at <a href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/4/html/troubleshooting_guide/index"><strong>ceph
+troubleshooting</strong></a></p>
+</blockquote>
 
-## Pool or subvolumegroup exists in the ceph cluster
+<h2 id="pool-or-subvolumegroup-exists-in-the-ceph-cluster">Pool or subvolumegroup exists in the ceph cluster</h2>
 
-* RBD
+<ul>
+  <li>RBD</li>
+</ul>
 
-Make sure the pool you have specified in the
-[storageclass.yaml](https://github.com/rook/rook/blob/master/cluster/examples/kubernetes/ceph/csi/rbd/storageclass.yaml#L34)
-Exists in the ceph cluster.
+<p>Make sure the pool you have specified in the
+<a href="https://github.com/rook/rook/blob/master/cluster/examples/kubernetes/ceph/csi/rbd/storageclass.yaml#L34">storageclass.yaml</a>
+Exists in the ceph cluster.</p>
 
-Suppose the pool name is mentioned in the storageclass.yaml is replicapool. It
-can be verified as below.
+<p>Suppose the pool name is mentioned in the storageclass.yaml is replicapool. It
+can be verified as below.</p>
 
-```bash=
-sh-4.4# ceph osd lspools
+<pre><code class="language-bash=">sh-4.4# ceph osd lspools
 1 device_health_metrics
 2 replicapool
-```
+</code></pre>
 
->**If the pool does not exists make sure you create the pool before proceeding.**
+<blockquote>
+  <p><strong>If the pool does not exists make sure you create the pool before proceeding.</strong></p>
+</blockquote>
 
-* CephFS
+<ul>
+  <li>CephFS</li>
+</ul>
 
-Make sure the filesystem and pool you have specified in the
-[storageclass.yaml](https://github.com/rook/rook/blob/master/cluster/examples/kubernetes/ceph/csi/cephfs/storageclass.yaml)
-Exist in the ceph cluster.
+<p>Make sure the filesystem and pool you have specified in the
+<a href="https://github.com/rook/rook/blob/master/cluster/examples/kubernetes/ceph/csi/cephfs/storageclass.yaml">storageclass.yaml</a>
+Exist in the ceph cluster.</p>
 
-Suppose the filesystem name mentioned in the storageclass.yaml is `myfs`. It
-can be verified as below.
+<p>Suppose the filesystem name mentioned in the storageclass.yaml is <code class="language-plaintext highlighter-rouge">myfs</code>. It
+can be verified as below.</p>
 
-```bash=
-sh-4.4# ceph fs ls
+<pre><code class="language-bash=">sh-4.4# ceph fs ls
 name: myfs, metadata pool: myfs-metadata, data pools: [myfs-data0 ]
-```
+</code></pre>
 
-> In case, if you have a specified pool name make sure it is available in the
-> above data pools list.
+<blockquote>
+  <p>In case, if you have a specified pool name make sure it is available in the
+above data pools list.</p>
+</blockquote>
 
-## Check cephcsi can create subvolumegroup
+<h2 id="check-cephcsi-can-create-subvolumegroup">Check cephcsi can create subvolumegroup</h2>
 
-If the subvolumegroup is not specified in the cephcsi configmap (where you have
+<p>If the subvolumegroup is not specified in the cephcsi configmap (where you have
 passed the ceph monitor information). cephcsi creates the default
-subvolumegroup when name `csi`.
+subvolumegroup when name <code class="language-plaintext highlighter-rouge">csi</code>.</p>
 
-```bash=
-sh-4.4# ceph fs subvolumegroup ls myfs
+<pre><code class="language-bash=">sh-4.4# ceph fs subvolumegroup ls myfs
 [
     {
         "name": "csi"
     }
 ]
-```
+</code></pre>
 
-> **This is not applicable for Rook Users.**
+<blockquote>
+  <p><strong>This is not applicable for Rook Users.</strong></p>
+</blockquote>
 
-Couple for cephfs issue which might help  to debug cephfs network issue
-[4251](https://github.com/rook/rook/issues/4251),[6183](https://github.com/rook/rook/issues/6183)
-If you don't have any issues with your ceph cluster, we can start debugging the
-issue from the CSI side.
+<p>Couple for cephfs issue which might help  to debug cephfs network issue
+<a href="https://github.com/rook/rook/issues/4251">4251</a>,<a href="https://github.com/rook/rook/issues/6183">6183</a>
+If you don’t have any issues with your ceph cluster, we can start debugging the
+issue from the CSI side.</p>
 
-## Issue in Provisioning Volume
+<h2 id="issue-in-provisioning-volume">Issue in Provisioning Volume</h2>
 
-Most of the time the issue can also exist in the cephcsi or the sidecar
-containers we are using in cephcsi.
+<p>Most of the time the issue can also exist in the cephcsi or the sidecar
+containers we are using in cephcsi.</p>
 
-For CephFS or RBD cephcsi has included number of sidecar containers in the
-provisioner pods example **`csi-attacher` `csi-resizer` `csi-provisioner`
-`csi-cephfsplugin` `csi-snapshotter` `liveness-prometheus`**
+<p>For CephFS or RBD cephcsi has included number of sidecar containers in the
+provisioner pods example <strong><code class="language-plaintext highlighter-rouge">csi-attacher</code> <code class="language-plaintext highlighter-rouge">csi-resizer</code> <code class="language-plaintext highlighter-rouge">csi-provisioner</code>
+<code class="language-plaintext highlighter-rouge">csi-cephfsplugin</code> <code class="language-plaintext highlighter-rouge">csi-snapshotter</code> <code class="language-plaintext highlighter-rouge">liveness-prometheus</code></strong></p>
 
-> If it's a CephFS provisioner pod you will see `csi-cephfsplugin` as one of
-> the container names. If its an RBD provisioner you will see `csi-rbdplugin`
-> as the container name
+<blockquote>
+  <p>If it’s a CephFS provisioner pod you will see <code class="language-plaintext highlighter-rouge">csi-cephfsplugin</code> as one of
+the container names. If its an RBD provisioner you will see <code class="language-plaintext highlighter-rouge">csi-rbdplugin</code>
+as the container name</p>
+</blockquote>
 
-Let us see the functionality of the sidecar containers we use in cephcsi
-provisioner pods.
+<p>Let us see the functionality of the sidecar containers we use in cephcsi
+provisioner pods.</p>
 
-* **csi-provisioner**
+<ul>
+  <li>
+    <p><strong>csi-provisioner</strong></p>
 
-  The external-provisioner is a sidecar container that dynamically provisions
-  volumes by calling ControllerCreateVolume and ControllerDeleteVolume
-  functions of CSI drivers. More details about external-provisioner can be
-  found [here](https://github.com/kubernetes-csi/external-provisioner).
+    <p>The external-provisioner is a sidecar container that dynamically provisions
+volumes by calling ControllerCreateVolume and ControllerDeleteVolume
+functions of CSI drivers. More details about external-provisioner can be
+found <a href="https://github.com/kubernetes-csi/external-provisioner">here</a>.</p>
 
-  If any issue exists in PVC create or Delete operation you can check the logs
-  of the csi-provisioner sidecar container.
+    <p>If any issue exists in PVC create or Delete operation you can check the logs
+of the csi-provisioner sidecar container.</p>
+  </li>
+</ul>
 
-```bash=
-kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
-```
+<pre><code class="language-bash=">kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-provisioner
+</code></pre>
 
-* **csi-resizer**
+<ul>
+  <li>
+    <p><strong>csi-resizer</strong></p>
 
-  The CSI external-resizer is a sidecar container that watches the Kubernetes
-  API server for PersistentVolumeClaim updates and triggers
-  **ControllerExpandVolume** operations against a CSI endpoint if the user
-  requested more storage on the PersistentVolumeClaim object. More details
-  about external-provisioner can be found
-  [here](https://github.com/kubernetes-csi/external-resizer).
+    <p>The CSI external-resizer is a sidecar container that watches the Kubernetes
+API server for PersistentVolumeClaim updates and triggers
+<strong>ControllerExpandVolume</strong> operations against a CSI endpoint if the user
+requested more storage on the PersistentVolumeClaim object. More details
+about external-provisioner can be found
+<a href="https://github.com/kubernetes-csi/external-resizer">here</a>.</p>
 
-  If any issue exists in PVC expansion you can check the logs of the
-  csi-resizer sidecar container.
+    <p>If any issue exists in PVC expansion you can check the logs of the
+csi-resizer sidecar container.</p>
+  </li>
+</ul>
 
-```bash=
-kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-resizer
-```
+<pre><code class="language-bash=">kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-resizer
+</code></pre>
 
-* **csi-snapshotter**
+<ul>
+  <li>
+    <p><strong>csi-snapshotter</strong></p>
 
-  The CSI external-snapshotter sidecar only watches for VolumeSnapshotContent
-  create/update/delete events. It will talk to cephcsi containers to create or
-  delete snapshots. More details about external-snapshotter can be found
-  [here](https://github.com/kubernetes-csi/external-snapshotter).
+    <p>The CSI external-snapshotter sidecar only watches for VolumeSnapshotContent
+create/update/delete events. It will talk to cephcsi containers to create or
+delete snapshots. More details about external-snapshotter can be found
+<a href="https://github.com/kubernetes-csi/external-snapshotter">here</a>.</p>
+  </li>
+</ul>
 
-> In Kubernetes 1.17 when the volume snapshot feature is promoted to beta. In
-> Kubernetes 1.20, the feature gate is enabled by default on standard
-> Kubernetes deployments and cannot be turned off.
+<blockquote>
+  <p>In Kubernetes 1.17 when the volume snapshot feature is promoted to beta. In
+Kubernetes 1.20, the feature gate is enabled by default on standard
+Kubernetes deployments and cannot be turned off.</p>
+</blockquote>
 
-Make sure you have installed the right snapshotter CRD version.
+<p>Make sure you have installed the right snapshotter CRD version.</p>
 
-```bash=
-kubectl get crd |grep snapshot
+<pre><code class="language-bash=">kubectl get crd |grep snapshot
 volumesnapshotclasses.snapshot.storage.k8s.io    2021-01-25T11:19:38Z
 volumesnapshotcontents.snapshot.storage.k8s.io   2021-01-25T11:19:39Z
 volumesnapshots.snapshot.storage.k8s.io          2021-01-25T11:19:40Z
-```
+</code></pre>
 
-Check above CRD's is having Right version and you are using the Correct Version
-in your **snapshotclass.yaml** or **snapshot.yaml** as well. Or else
-**VolumeSnapshot** and **VolumesnapshotContent** might not get created.
+<p>Check above CRD’s is having Right version and you are using the Correct Version
+in your <strong>snapshotclass.yaml</strong> or <strong>snapshot.yaml</strong> as well. Or else
+<strong>VolumeSnapshot</strong> and <strong>VolumesnapshotContent</strong> might not get created.</p>
 
-The snapshot controller is responsible for creating both VolumeSnapshot and
+<p>The snapshot controller is responsible for creating both VolumeSnapshot and
 VolumesnapshotContent object. If the objects are not getting created, You may
-need to check the logs of the snapshot-controller pod.
+need to check the logs of the snapshot-controller pod.</p>
 
-> **Rook** only installs the snapshotter sidecar container, not the
-> controller. It is strongly recommended that Kubernetes distributors bundle
-> and deploy the controller and CRDs as part of their Kubernetes cluster
-> management process (independent of any CSI Driver).
+<blockquote>
+  <p><strong>Rook</strong> only installs the snapshotter sidecar container, not the
+controller. It is strongly recommended that Kubernetes distributors bundle
+and deploy the controller and CRDs as part of their Kubernetes cluster
+management process (independent of any CSI Driver).</p>
+</blockquote>
 
-> If your Kubernetes distribution does not bundle the snapshot controller,
-> you may manually install these
-> [components](https://github.com/kubernetes-csi/external-snapshotter#usage)
+<blockquote>
+  <p>If your Kubernetes distribution does not bundle the snapshot controller,
+you may manually install these
+<a href="https://github.com/kubernetes-csi/external-snapshotter#usage">components</a></p>
+</blockquote>
 
-If any issue exists in the snapshot Create/Delete operation you can check the
-logs of the csi-snapshotter sidecar container.
+<p>If any issue exists in the snapshot Create/Delete operation you can check the
+logs of the csi-snapshotter sidecar container.</p>
 
-```bash=
-kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-snapshotter
-```
+<pre><code class="language-bash=">kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-snapshotter
+</code></pre>
 
-> If you see error like `GRPC error: rpc error: code = Aborted desc = an operation with the given Volume ID 0001-0009-rook-ceph-0000000000000001-8d0ba728-0e17-11eb-a680-ce6eecc894de already exists`.
+<blockquote>
+  <p>If you see error like <code class="language-plaintext highlighter-rouge">GRPC error: rpc error: code = Aborted desc = an operation with the given Volume ID 0001-0009-rook-ceph-0000000000000001-8d0ba728-0e17-11eb-a680-ce6eecc894de already exists</code>.</p>
+</blockquote>
 
-```go
-The issue mostly exists in ceph cluster or network connectivity. If the issue is
-in Provisioning the PVC Restarting the Provisioner pods help(for CephFS issue
-restart `csi-cephfsplugin-provisioner-xxxxxx` CephFS Provisioner. For RBD, restart
-`csi-rbdplugin-provisioner-xxxxxx` pod. If the issue is in mounting the PVC,
-restarting the csi-rbdplugin-xxxxx for RBD issue and csi-cephfsplugin-xxxxx pod
-for CephFS issue helps sometimes not always.
-```
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">The</span> <span class="n">issue</span> <span class="n">mostly</span> <span class="n">exists</span> <span class="n">in</span> <span class="n">ceph</span> <span class="n">cluster</span> <span class="n">or</span> <span class="n">network</span> <span class="n">connectivity</span><span class="o">.</span> <span class="n">If</span> <span class="n">the</span> <span class="n">issue</span> <span class="n">is</span>
+<span class="n">in</span> <span class="n">Provisioning</span> <span class="n">the</span> <span class="n">PVC</span> <span class="n">Restarting</span> <span class="n">the</span> <span class="n">Provisioner</span> <span class="n">pods</span> <span class="n">help</span><span class="p">(</span><span class="k">for</span> <span class="n">CephFS</span> <span class="n">issue</span>
+<span class="n">restart</span> <span class="s">`csi-cephfsplugin-provisioner-xxxxxx`</span> <span class="n">CephFS</span> <span class="n">Provisioner</span><span class="o">.</span> <span class="n">For</span> <span class="n">RBD</span><span class="p">,</span> <span class="n">restart</span>
+<span class="s">`csi-rbdplugin-provisioner-xxxxxx`</span> <span class="n">pod</span><span class="o">.</span> <span class="n">If</span> <span class="n">the</span> <span class="n">issue</span> <span class="n">is</span> <span class="n">in</span> <span class="n">mounting</span> <span class="n">the</span> <span class="n">PVC</span><span class="p">,</span>
+<span class="n">restarting</span> <span class="n">the</span> <span class="n">csi</span><span class="o">-</span><span class="n">rbdplugin</span><span class="o">-</span><span class="n">xxxxx</span> <span class="k">for</span> <span class="n">RBD</span> <span class="n">issue</span> <span class="n">and</span> <span class="n">csi</span><span class="o">-</span><span class="n">cephfsplugin</span><span class="o">-</span><span class="n">xxxxx</span> <span class="n">pod</span>
+<span class="k">for</span> <span class="n">CephFS</span> <span class="n">issue</span> <span class="n">helps</span> <span class="n">sometimes</span> <span class="n">not</span> <span class="n">always</span><span class="o">.</span>
+</code></pre></div></div>
 
-IF the restarting didnt help you can execute below commands from the cephfs/rbd
-provisioner pods
+<p>IF the restarting didnt help you can execute below commands from the cephfs/rbd
+provisioner pods</p>
 
-* For RBD provisioner pod
+<ul>
+  <li>For RBD provisioner pod</li>
+</ul>
 
-```bash
-$kubectl exec -t csi-rbdplugin-provisioner -c csi-rbdplugin -- rbd create --size 1024 pool-name/testimage101 -m=10.11.111.11:6789 --user=csi-rbd-provisioner --key="AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==" --debug_ms=20 --debug_rbd=20
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-rbdplugin-provisioner <span class="nt">-c</span> csi-rbdplugin <span class="nt">--</span> rbd create <span class="nt">--size</span> 1024 pool-name/testimage101 <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-rbd-provisioner <span class="nt">--key</span><span class="o">=</span><span class="s2">"AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw=="</span> <span class="nt">--debug_ms</span><span class="o">=</span>20 <span class="nt">--debug_rbd</span><span class="o">=</span>20
 
-$kubectl exec -t csi-rbdplugin-provisioner -c csi-rbdplugin -- rados setomapval test testkey testval -p poolname -m=10.11.111.11:6789 --user=csi-rbd-provisioner --key="xx/xxx+MSr6O5ZMarRHw=="
-```
+<span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-rbdplugin-provisioner <span class="nt">-c</span> csi-rbdplugin <span class="nt">--</span> rados setomapval <span class="nb">test </span>testkey testval <span class="nt">-p</span> poolname <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-rbd-provisioner <span class="nt">--key</span><span class="o">=</span><span class="s2">"xx/xxx+MSr6O5ZMarRHw=="</span>
+</code></pre></div></div>
 
-Note:- update monitor IP, csi-rbdplugin-provisioner pod name, pool-name and
-key in above command
+<p>Note:- update monitor IP, csi-rbdplugin-provisioner pod name, pool-name and
+key in above command</p>
 
-* For CephFS provisioner pod
+<ul>
+  <li>For CephFS provisioner pod</li>
+</ul>
 
-```bash
-$kubectl exec -t csi-cephfsplugin-provisioner -c csi-cephfsplugin -- ceph fs subvolume ls <fs-name> csi -m=10.11.111.11:6789 --user=csi-cephfs-provisioner --key="AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==" --debug_ms=20
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-cephfsplugin-provisioner <span class="nt">-c</span> csi-cephfsplugin <span class="nt">--</span> ceph fs subvolume <span class="nb">ls</span> &lt;fs-name&gt; csi <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-cephfs-provisioner <span class="nt">--key</span><span class="o">=</span><span class="s2">"AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw=="</span> <span class="nt">--debug_ms</span><span class="o">=</span>20
 
-$kubectl exec -t csi-cephfsplugin-provisioner -c csi-cephfsplugin -- rados setomapval test testkey testval -p myfs-metadata --namespace=csi -m=10.11.111.11:6789 --user=csi-cephfs-provisioner --key="xx/xxx+MSr6O5ZMarRHw=="
-```
+<span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-cephfsplugin-provisioner <span class="nt">-c</span> csi-cephfsplugin <span class="nt">--</span> rados setomapval <span class="nb">test </span>testkey testval <span class="nt">-p</span> myfs-metadata <span class="nt">--namespace</span><span class="o">=</span>csi <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-cephfs-provisioner <span class="nt">--key</span><span class="o">=</span><span class="s2">"xx/xxx+MSr6O5ZMarRHw=="</span>
+</code></pre></div></div>
 
-Note:- update monitor IP, csi-cephfsplugin-provisioner pod name,filesystem name, pool-name and
-key in above command
+<p>Note:- update monitor IP, csi-cephfsplugin-provisioner pod name,filesystem name, pool-name and
+key in above command</p>
 
-## Issue in Mounting the pvc to application pods
+<h2 id="issue-in-mounting-the-pvc-to-application-pods">Issue in Mounting the pvc to application pods</h2>
 
-When a user requests to create the application pod with PVC. It's a three-step
-process
+<p>When a user requests to create the application pod with PVC. It’s a three-step
+process</p>
 
-* csi-driver Registration
-* Create volume attachment object
-* Stage and Publish Volume.
+<ul>
+  <li>csi-driver Registration</li>
+  <li>Create volume attachment object</li>
+  <li>Stage and Publish Volume.</li>
+</ul>
 
-### csi-driver registration
+<h3 id="csi-driver-registration">csi-driver registration</h3>
 
-`csi-cephfsplugin-xxxx` or `csi-rbdplugin-xxxx` is a daemonset pod running on
+<p><code class="language-plaintext highlighter-rouge">csi-cephfsplugin-xxxx</code> or <code class="language-plaintext highlighter-rouge">csi-rbdplugin-xxxx</code> is a daemonset pod running on
 all the nodes where your application gets scheduled. If the plugin pods are not
 running on the node where your application is scheduled might cause the issue,
-Make sure plugin pods are always running.
+Make sure plugin pods are always running.</p>
 
-Each plugin pod has 2 important container one is `driver-registrar` and
-`csi-rbdplugin` or `csi-cephfsplugin`. sometimes we also deploy a
-`liveness-prometheus` container.
+<p>Each plugin pod has 2 important container one is <code class="language-plaintext highlighter-rouge">driver-registrar</code> and
+<code class="language-plaintext highlighter-rouge">csi-rbdplugin</code> or <code class="language-plaintext highlighter-rouge">csi-cephfsplugin</code>. sometimes we also deploy a
+<code class="language-plaintext highlighter-rouge">liveness-prometheus</code> container.</p>
 
-* **driver-registrar**
+<ul>
+  <li>
+    <p><strong>driver-registrar</strong></p>
 
-  The node-driver-registrar is a sidecar container that registers the CSI
-  driver with Kubelet. More datils can be found
-  [here](https://github.com/kubernetes-csi/node-driver-registrar)
+    <p>The node-driver-registrar is a sidecar container that registers the CSI
+driver with Kubelet. More datils can be found
+<a href="https://github.com/kubernetes-csi/node-driver-registrar">here</a></p>
+  </li>
+</ul>
 
-If any issue exists in attaching the PVC to the application pod check logs from
-*driver-registrar* sidecar container in plugin pod where your application pod
-is scheduled.
+<p>If any issue exists in attaching the PVC to the application pod check logs from
+<em>driver-registrar</em> sidecar container in plugin pod where your application pod
+is scheduled.</p>
 
-```bash=
-$ kubectl logs po/csi-rbdplugin-vh8d5 -c driver-registrar
+<pre><code class="language-bash=">$ kubectl logs po/csi-rbdplugin-vh8d5 -c driver-registrar
 I0120 12:28:34.231761  124018 main.go:112] Version: v2.0.1
 I0120 12:28:34.233910  124018 connection.go:151] Connecting to unix:///csi/csi.sock
 I0120 12:28:35.242469  124018 node_register.go:55] Starting Registration Server at: /registration/rook-ceph.rbd.csi.ceph.com-reg.sock
 I0120 12:28:35.243364  124018 node_register.go:64] Registration Server started at: /registration/rook-ceph.rbd.csi.ceph.com-reg.sock
 I0120 12:28:35.243673  124018 node_register.go:86] Skipping healthz server because port set to: 0
-I0120 12:28:36.318482  124018 main.go:79] Received GetInfo call: &InfoRequest{}
-I0120 12:28:37.455211  124018 main.go:89] Received NotifyRegistrationStatus call: &RegistrationStatus{PluginRegistered:true,Error:,}
+I0120 12:28:36.318482  124018 main.go:79] Received GetInfo call: &amp;InfoRequest{}
+I0120 12:28:37.455211  124018 main.go:89] Received NotifyRegistrationStatus call: &amp;RegistrationStatus{PluginRegistered:true,Error:,}
 E0121 05:19:28.658390  124018 connection.go:129] Lost connection to unix:///csi/csi.sock.
 E0125 07:11:42.926133  124018 connection.go:129] Lost connection to unix:///csi/csi.sock.
-```
+</code></pre>
 
-> You should see `RegistrationStatus{PluginRegistered:true,Error:,}` response
-> in the logs to confirm that plugin is registered with kubelet.
+<blockquote>
+  <p>You should see <code class="language-plaintext highlighter-rouge">RegistrationStatus{PluginRegistered:true,Error:,}</code> response
+in the logs to confirm that plugin is registered with kubelet.</p>
+</blockquote>
 
-> If you see a driver not found an error in the application pod describe
-> output. restarting the csi-xxxxplugin-xxx pod on the node helps sometimes.
+<blockquote>
+  <p>If you see a driver not found an error in the application pod describe
+output. restarting the csi-xxxxplugin-xxx pod on the node helps sometimes.</p>
+</blockquote>
 
-### Check Issue in Volume attachment
+<h3 id="check-issue-in-volume-attachment">Check Issue in Volume attachment</h3>
 
-Each provisioner pod also consists of a sidecar container called csi-attacher.
+<p>Each provisioner pod also consists of a sidecar container called csi-attacher.</p>
 
-* **csi-attacher**
+<ul>
+  <li>
+    <p><strong>csi-attacher</strong></p>
 
-  The external-attacher is a sidecar container that attaches volumes to nodes
-  by calling ControllerPublish and ControllerUnpublish functions of CSI
-  drivers. It is necessary because the internal Attach/Detach controller
-  running in Kubernetes controller-manager does not have any direct interfaces
-  to CSI drivers. More datils can be found
-  [here](https://github.com/kubernetes-csi/external-attacher)
+    <p>The external-attacher is a sidecar container that attaches volumes to nodes
+by calling ControllerPublish and ControllerUnpublish functions of CSI
+drivers. It is necessary because the internal Attach/Detach controller
+running in Kubernetes controller-manager does not have any direct interfaces
+to CSI drivers. More datils can be found
+<a href="https://github.com/kubernetes-csi/external-attacher">here</a></p>
+  </li>
+</ul>
 
-If any issue exists in attaching the PVC to the application pod first check the
-`volumettachment` object created and also log from *csi-attacher* sidecar
-container in provisioner pod.
+<p>If any issue exists in attaching the PVC to the application pod first check the
+<code class="language-plaintext highlighter-rouge">volumettachment</code> object created and also log from <em>csi-attacher</em> sidecar
+container in provisioner pod.</p>
 
-```bash=
-$ kubectl get volumeattachment
+<pre><code class="language-bash=">$ kubectl get volumeattachment
 NAME                                                                   ATTACHER                        PV                                         NODE       ATTACHED   AGE
 csi-75903d8a902744853900d188f12137ea1cafb6c6f922ebc1c116fd58e950fc92   rook-ceph.cephfs.csi.ceph.com   pvc-5c547d2a-fdb8-4cb2-b7fe-e0f30b88d454   minikube   true       4m26s
-```
+</code></pre>
 
-```bash=
-kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-attacher
-```
+<pre><code class="language-bash=">kubectl logs po/csi-rbdplugin-provisioner-d857bfb5f-ddctl -c csi-attacher
+</code></pre>
 
-### How to identify stale operations
+<h3 id="how-to-identify-stale-operations">How to identify stale operations</h3>
 
-* CephFS Check for any stale mount commands on the csi-cephfsplugin-xxxx pod on
-  the node where your application pod is scheduled.
+<ul>
+  <li>CephFS Check for any stale mount commands on the csi-cephfsplugin-xxxx pod on
+the node where your application pod is scheduled.</li>
+</ul>
 
-You need to exec in the `csi-cephfsplugin-xxxx` pod and grep for stale `mount`
-operators.
+<p>You need to exec in the <code class="language-plaintext highlighter-rouge">csi-cephfsplugin-xxxx</code> pod and grep for stale <code class="language-plaintext highlighter-rouge">mount</code>
+operators.</p>
 
-> Identify the csi-cephfsplugin-xxxx pod running on the node where your
-> application is scheduled with `kubectl get po -owide` and match the node
-> names.
+<blockquote>
+  <p>Identify the csi-cephfsplugin-xxxx pod running on the node where your
+application is scheduled with <code class="language-plaintext highlighter-rouge">kubectl get po -owide</code> and match the node
+names.</p>
+</blockquote>
 
-```bash=
-$ kubectl exec -it csi-cephfsplugin-tfk2g -c csi-cephfsplugin -- sh
+<pre><code class="language-bash=">$ kubectl exec -it csi-cephfsplugin-tfk2g -c csi-cephfsplugin -- sh
 sh-4.4# ps -ef |grep mount
 root          67      60  0 11:55 pts/0    00:00:00 grep mount
 sh-4.4# ps -ef |grep ceph
 root           1       0  0 Jan20 ?        00:00:26 /usr/local/bin/cephcsi --nodeid=minikube --type=cephfs --endpoint=unix:///csi/csi.sock --v=0 --nodeserver=true --drivername=rook-ceph.cephfs.csi.ceph.com --pidlimit=-1 --metricsport=9091 --forcecephkernelclient=true --metricspath=/metrics --enablegrpcmetrics=true
 root          69      60  0 11:55 pts/0    00:00:00 grep ceph
-```
+</code></pre>
 
-If any commands are stuck check the **`dmesg`** logs from the node, Restarting
-the csi-cephfsplugin pod also might work sometime.
+<p>If any commands are stuck check the <strong><code class="language-plaintext highlighter-rouge">dmesg</code></strong> logs from the node, Restarting
+the csi-cephfsplugin pod also might work sometime.</p>
 
-If you don't see any stuck command, Make sure about network connectivity and
-ceph health, and slow ops.
+<p>If you don’t see any stuck command, Make sure about network connectivity and
+ceph health, and slow ops.</p>
 
-* RBD
+<ul>
+  <li>RBD</li>
+</ul>
 
-Check for any stale map/mkfs/mount commands on the csi-rbdplugin-xxxx pod on
-the node where your application pod is scheduled.
+<p>Check for any stale map/mkfs/mount commands on the csi-rbdplugin-xxxx pod on
+the node where your application pod is scheduled.</p>
 
-You need to exec in the `csi-rbdplugin-xxxx` pod and grep for stale operators
-like (**`rbd map`**, **`rbd unmap`**, **`mkfs`**, **`mount`** and
-**`umount`**).
+<p>You need to exec in the <code class="language-plaintext highlighter-rouge">csi-rbdplugin-xxxx</code> pod and grep for stale operators
+like (<strong><code class="language-plaintext highlighter-rouge">rbd map</code></strong>, <strong><code class="language-plaintext highlighter-rouge">rbd unmap</code></strong>, <strong><code class="language-plaintext highlighter-rouge">mkfs</code></strong>, <strong><code class="language-plaintext highlighter-rouge">mount</code></strong> and
+<strong><code class="language-plaintext highlighter-rouge">umount</code></strong>).</p>
 
-> Identify the csi-rbdplugin-xxxx pod running on the node where your
-> application is scheduled with `kubectl get po -owide` and match the node
-> names.
+<blockquote>
+  <p>Identify the csi-rbdplugin-xxxx pod running on the node where your
+application is scheduled with <code class="language-plaintext highlighter-rouge">kubectl get po -owide</code> and match the node
+names.</p>
+</blockquote>
 
-```bash=
-$ kubectl exec -it csi-rbdplugin-vh8d5 -c csi-rbdplugin -- sh
+<pre><code class="language-bash=">$ kubectl exec -it csi-rbdplugin-vh8d5 -c csi-rbdplugin -- sh
 sh-4.4# ps -ef |grep map
 root     1297024 1296907  0 12:00 pts/0    00:00:00 grep map
 sh-4.4# ps -ef |grep mount
@@ -1323,76 +1383,82 @@ sh-4.4# ps -ef |grep umount
 root     1298500 1296907  0 12:01 pts/0    00:00:00 grep umount
 sh-4.4# ps -ef |grep unmap
 root     1298578 1296907  0 12:01 pts/0    00:00:00 grep unmap
-```
+</code></pre>
 
-If any commands are stuck check the **`dmesg`** logs from the node, Restarting
-the csi-rbdplugin pod also might work sometime.
+<p>If any commands are stuck check the <strong><code class="language-plaintext highlighter-rouge">dmesg</code></strong> logs from the node, Restarting
+the csi-rbdplugin pod also might work sometime.</p>
 
-If you don't see any stuck command, Make sure about network connectivity and
-ceph health, and slow ops.
+<p>If you don’t see any stuck command, Make sure about network connectivity and
+ceph health, and slow ops.</p>
 
-### How to check dmesg logs
+<h3 id="how-to-check-dmesg-logs">How to check dmesg logs</h3>
 
-Checking the *dmesg* logs on the node where pvc mounting is failing or the
+<p>Checking the <em>dmesg</em> logs on the node where pvc mounting is failing or the
 csi-rbdplugin container of the csi-rbdplugin-xxxx pod on that node always
-helps.
+helps.</p>
 
-```bash=
-dmesg
-```
+<pre><code class="language-bash=">dmesg
+</code></pre>
 
-* If nothing helps get the last executed command from the cephcsi pod logs and
-  run it manually inside provisioner or plugin pod
+<ul>
+  <li>If nothing helps get the last executed command from the cephcsi pod logs and
+run it manually inside provisioner or plugin pod</li>
+</ul>
 
-```bash=
-rbd ls --id=csi-rbd-node -m=10.111.136.166:6789 --key=AQDpIQhg+v83EhAAgLboWIbl+FL/nThJzoI3Fg==
-```
+<pre><code class="language-bash=">rbd ls --id=csi-rbd-node -m=10.111.136.166:6789 --key=AQDpIQhg+v83EhAAgLboWIbl+FL/nThJzoI3Fg==
+</code></pre>
 
-> Need to pass the exact user ID, key and monitor IP's and port when executing
-> the command.
+<blockquote>
+  <p>Need to pass the exact user ID, key and monitor IP’s and port when executing
+the command.</p>
+</blockquote>
 
-> If you see error like `GRPC error: rpc error: code = Aborted desc = an operation with the given Volume ID 0001-0009-rook-ceph-0000000000000001-8d0ba728-0e17-11eb-a680-ce6eecc894de already exists`.
+<blockquote>
+  <p>If you see error like <code class="language-plaintext highlighter-rouge">GRPC error: rpc error: code = Aborted desc = an operation with the given Volume ID 0001-0009-rook-ceph-0000000000000001-8d0ba728-0e17-11eb-a680-ce6eecc894de already exists</code>.</p>
+</blockquote>
 
-```go
-The issue mostly exists in ceph cluster or network connectivity.
-If the issue is in mounting the PVC, restarting the csi-rbdplugin-xxxxx
-for RBD issue and csi-cephfsplugin-xxxxx pod for CephFS issue helps.
-```
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">The</span> <span class="n">issue</span> <span class="n">mostly</span> <span class="n">exists</span> <span class="n">in</span> <span class="n">ceph</span> <span class="n">cluster</span> <span class="n">or</span> <span class="n">network</span> <span class="n">connectivity</span><span class="o">.</span>
+<span class="n">If</span> <span class="n">the</span> <span class="n">issue</span> <span class="n">is</span> <span class="n">in</span> <span class="n">mounting</span> <span class="n">the</span> <span class="n">PVC</span><span class="p">,</span> <span class="n">restarting</span> <span class="n">the</span> <span class="n">csi</span><span class="o">-</span><span class="n">rbdplugin</span><span class="o">-</span><span class="n">xxxxx</span>
+<span class="k">for</span> <span class="n">RBD</span> <span class="n">issue</span> <span class="n">and</span> <span class="n">csi</span><span class="o">-</span><span class="n">cephfsplugin</span><span class="o">-</span><span class="n">xxxxx</span> <span class="n">pod</span> <span class="k">for</span> <span class="n">CephFS</span> <span class="n">issue</span> <span class="n">helps</span><span class="o">.</span>
+</code></pre></div></div>
 
-IF the restarting didnt help you can execute below commands from the cephfs/rbd
-plugin pod where you are seeing above error message
+<p>IF the restarting didnt help you can execute below commands from the cephfs/rbd
+plugin pod where you are seeing above error message</p>
 
-* For RBD plugin pod
+<ul>
+  <li>For RBD plugin pod</li>
+</ul>
 
-```bash
-$kubectl exec -t csi-rbdplugin-xxx -c csi-rbdplugin -- rbd ls pool-name -m=10.11.111.11:6789 --user=csi-rbd-node --key="AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==" --debug_ms=20 --debug_rbd=20
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-rbdplugin-xxx <span class="nt">-c</span> csi-rbdplugin <span class="nt">--</span> rbd <span class="nb">ls </span>pool-name <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-rbd-node <span class="nt">--key</span><span class="o">=</span><span class="s2">"AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw=="</span> <span class="nt">--debug_ms</span><span class="o">=</span>20 <span class="nt">--debug_rbd</span><span class="o">=</span>20
 
-$kubectl exec -t csi-rbdplugin-xxxx -c csi-rbdplugin -- rados listomapvals test -p replicapool -m=10.11.111.11:6789 --user=csi-rbd-node --key="xx/xxx+MSr6O5ZMarRHw=="
-```
+<span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-rbdplugin-xxxx <span class="nt">-c</span> csi-rbdplugin <span class="nt">--</span> rados listomapvals <span class="nb">test</span> <span class="nt">-p</span> replicapool <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-rbd-node <span class="nt">--key</span><span class="o">=</span><span class="s2">"xx/xxx+MSr6O5ZMarRHw=="</span>
+</code></pre></div></div>
 
-Note:- update monitor IP, csi-rbdplugin pod name, pool-name and
-key in above command
+<p>Note:- update monitor IP, csi-rbdplugin pod name, pool-name and
+key in above command</p>
 
-* For CephFS plugin pod
+<ul>
+  <li>For CephFS plugin pod</li>
+</ul>
 
-```bash
-$kubectl exec -t csi-cephfsplugin-xxx -c csi-cephfsplugin -- ceph fs subvolume ls <fs-name> csi -m=10.11.111.11:6789 --user=csi-cephfs-node --key="AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw==" --debug_ms=20
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-cephfsplugin-xxx <span class="nt">-c</span> csi-cephfsplugin <span class="nt">--</span> ceph fs subvolume <span class="nb">ls</span> &lt;fs-name&gt; csi <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-cephfs-node <span class="nt">--key</span><span class="o">=</span><span class="s2">"AQC+t/5fqCS2DhAAqheqlRIIMz6mjWQ4g8mUnw=="</span> <span class="nt">--debug_ms</span><span class="o">=</span>20
 
-$kubectl exec -t csi-cephfsplugin-xxx -c csi-cephfsplugin -- rados getomapvals test -p poolname --namespace=csi -m=10.11.111.11:6789 --user=csi-cephfs-node --key="xx/xxx+MSr6O5ZMarRHw=="
-```
+<span class="nv">$kubectl</span> <span class="nb">exec</span> <span class="nt">-t</span> csi-cephfsplugin-xxx <span class="nt">-c</span> csi-cephfsplugin <span class="nt">--</span> rados getomapvals <span class="nb">test</span> <span class="nt">-p</span> poolname <span class="nt">--namespace</span><span class="o">=</span>csi <span class="nt">-m</span><span class="o">=</span>10.11.111.11:6789 <span class="nt">--user</span><span class="o">=</span>csi-cephfs-node <span class="nt">--key</span><span class="o">=</span><span class="s2">"xx/xxx+MSr6O5ZMarRHw=="</span>
+</code></pre></div></div>
 
-Note:- update monitor IP, csi-cephfsplugin pod name,filesystem name, pool-name and
-key in above command]]></content><author><name></name></author><summary type="html"><![CDATA[The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen for Many reasons like Network connectivity between csi pods and ceph, cluster health issue,Slow operations, kubernetes issue, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues.]]></summary></entry><entry><title type="html">Play with RBD Async mirroring with minikube</title><link href="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/" rel="alternate" type="text/html" title="Play with RBD Async mirroring with minikube" /><published>2020-11-23T00:00:00+01:00</published><updated>2020-11-23T00:00:00+01:00</updated><id>https://mrajanna.com/setup-rbd-async-mirroring-with-rook</id><content type="html" xml:base="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/"><![CDATA[This doc assumes that you already have a minikube [installed](https://minikube.sigs.k8s.io/docs/start/), minikube is configured to use `kvm2` to create a virtual machine. You can refer [kvm2](https://minikube.sigs.k8s.io/docs/drivers/kvm2/) to install the required prerequisites.
+<p>Note:- update monitor IP, csi-cephfsplugin pod name,filesystem name, pool-name and
+key in above command</p>]]></content><author><name></name></author><summary type="html"><![CDATA[The issue in Provisioning the CephFS/RBD PVC or Mounting the CephFS/RBD PVC to application pods can happen for Many reasons like Network connectivity between csi pods and ceph, cluster health issue,Slow operations, kubernetes issue, etc. Even the issue can be at the Ceph-CSI layer itself. Hope the below-documented steps might help you to understand and Debug the cephcsi issues.]]></summary></entry><entry><title type="html">Play with RBD Async mirroring with minikube</title><link href="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/" rel="alternate" type="text/html" title="Play with RBD Async mirroring with minikube" /><published>2020-11-23T00:00:00+01:00</published><updated>2020-11-23T00:00:00+01:00</updated><id>https://mrajanna.com/setup-rbd-async-mirroring-with-rook</id><content type="html" xml:base="https://mrajanna.com/setup-rbd-async-mirroring-with-rook/"><![CDATA[<p>This doc assumes that you already have a minikube <a href="https://minikube.sigs.k8s.io/docs/start/">installed</a>, minikube is configured to use <code class="language-plaintext highlighter-rouge">kvm2</code> to create a virtual machine. You can refer <a href="https://minikube.sigs.k8s.io/docs/drivers/kvm2/">kvm2</a> to install the required prerequisites.</p>
 
-> Install [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/) on the machine where you want to create kubernetes clusters and from where you want to access kubernetes
-To Play with RBD async mirroring we need to have two kubernetes/OCP clusters as it's for just let's use minikube to create 2 kubernetes clusters.
+<blockquote>
+  <p>Install <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/"><code class="language-plaintext highlighter-rouge">kubectl</code></a> on the machine where you want to create kubernetes clusters and from where you want to access kubernetes
+To Play with RBD async mirroring we need to have two kubernetes/OCP clusters as it’s for just let’s use minikube to create 2 kubernetes clusters.</p>
+</blockquote>
 
-## Create Kubernetes cluster
+<h2 id="create-kubernetes-cluster">Create Kubernetes cluster</h2>
 
-### Create kubernetes cluster1
+<h3 id="create-kubernetes-cluster1">Create kubernetes cluster1</h3>
 
-```bash=
-$minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true" --profile="cluster1"
+<pre><code class="language-bash=">$minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true" --profile="cluster1"
 😄  [cluster1] minikube v1.14.0 on Fedora 32
 ❗  minikube skips various validations when --force is supplied; this may lead to unexpected behavior
 ✨  Using the kvm2 driver based on user configuration
@@ -1405,16 +1471,17 @@ $minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-versi
 🔎  Verifying Kubernetes components...
 🌟  Enabled addons: storage-provisioner, default-storageclass
 🏄  Done! kubectl is now configured to use "cluster1" by default
-```
+</code></pre>
 
->Note:- `--profile` is the name of the minikube VM being used. This can be set to allow having multiple instances of minikube independently. (default "minikube, so we are going to set it to `cluster1` as we are planning to create 2 minikube clusters
+<blockquote>
+  <p>Note:- <code class="language-plaintext highlighter-rouge">--profile</code> is the name of the minikube VM being used. This can be set to allow having multiple instances of minikube independently. (default “minikube, so we are going to set it to <code class="language-plaintext highlighter-rouge">cluster1</code> as we are planning to create 2 minikube clusters</p>
+</blockquote>
 
-### Create kubernetes cluster2
+<h3 id="create-kubernetes-cluster2">Create kubernetes cluster2</h3>
 
-We are going to use the same `minikube start` command to create kubernetes cluster but we are going to change the `--profile` name.
+<p>We are going to use the same <code class="language-plaintext highlighter-rouge">minikube start</code> command to create kubernetes cluster but we are going to change the <code class="language-plaintext highlighter-rouge">--profile</code> name.</p>
 
-```bash=
-$minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true" --profile="cluster2"
+<pre><code class="language-bash=">$minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true" --profile="cluster2"
 😄  [cluster2] minikube v1.14.0 on Fedora 32
 ❗  minikube skips various validations when --force is supplied; this may lead to unexpected behavior
 ✨  Using the kvm2 driver based on user configuration
@@ -1427,49 +1494,49 @@ $minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-versi
 🔎  Verifying Kubernetes components...
 🌟  Enabled addons: storage-provisioner, default-storageclass
 🏄  Done! kubectl is now configured to use "cluster2" by default
-```
+</code></pre>
 
-### Verify kubernetes clusters
+<h3 id="verify-kubernetes-clusters">Verify kubernetes clusters</h3>
 
-As we have created the 2 kubernetes clusters, Let's verify it. Am going to use `--context` with kubectl to talk to different clusters
+<p>As we have created the 2 kubernetes clusters, Let’s verify it. Am going to use <code class="language-plaintext highlighter-rouge">--context</code> with kubectl to talk to different clusters</p>
 
-```bash=
-[root@dhcp53-215 ~]$ kubectl get nodes --context=cluster1
+<pre><code class="language-bash=">[root@dhcp53-215 ~]$ kubectl get nodes --context=cluster1
 NAME       STATUS   ROLES    AGE     VERSION
 cluster1   Ready    master   8m14s   v1.19.2
 [root@dhcp53-215 $ kubectl get nodes --context=cluster2
 NAME       STATUS   ROLES    AGE     VERSION
 cluster2   Ready    master   3m19s   v1.19.2
-```
+</code></pre>
 
-> The value  for the `--context` will be the name we passed in `--profile` when creating kubernetes clusters
+<blockquote>
+  <p>The value  for the <code class="language-plaintext highlighter-rouge">--context</code> will be the name we passed in <code class="language-plaintext highlighter-rouge">--profile</code> when creating kubernetes clusters</p>
+</blockquote>
 
-As we got the kubernetes cluster, we need to add a disk to minikube VM as Rook needs a raw device to create ceph OSD and also we need to create a directory that is required to store monitor details.
+<p>As we got the kubernetes cluster, we need to add a disk to minikube VM as Rook needs a raw device to create ceph OSD and also we need to create a directory that is required to store monitor details.</p>
 
-### Add Device to minikube VM's
+<h3 id="add-device-to-minikube-vms">Add Device to minikube VM’s</h3>
 
-```bash=
-minikube ssh "sudo mkdir -p /mnt/vda1/var/lib/rook;sudo ln -s /mnt/vda1/var/lib/rook /var/lib/rook" --profile="cluster1"
-```
+<pre><code class="language-bash=">minikube ssh "sudo mkdir -p /mnt/vda1/var/lib/rook;sudo ln -s /mnt/vda1/var/lib/rook /var/lib/rook" --profile="cluster1"
+</code></pre>
 
-> Repeat the same step for cluster2 minikube VM also just change the `--profile` value to `cluster2`
+<blockquote>
+  <p>Repeat the same step for cluster2 minikube VM also just change the <code class="language-plaintext highlighter-rouge">--profile</code> value to <code class="language-plaintext highlighter-rouge">cluster2</code></p>
+</blockquote>
 
-Now let's add a device to minikube vm's
+<p>Now let’s add a device to minikube vm’s</p>
 
-```bash=
-$sudo -S qemu-img create -f raw /var/lib/libvirt/images/minikube-box2-vm-disk-"cluster1"-50G 50G
+<pre><code class="language-bash=">$sudo -S qemu-img create -f raw /var/lib/libvirt/images/minikube-box2-vm-disk-"cluster1"-50G 50G
 $virsh -c qemu:///system attach-disk "cluster1" --source /var/lib/libvirt/images/minikube-box2-vm-disk-"cluster1"-50G --target vdb --cache none
 $virsh -c qemu:///system reboot --domain "cluster1"
-```
+</code></pre>
 
-### Verify that thedevice is present in the minikube VM
+<h3 id="verify-that-thedevice-is-present-in-the-minikube-vm">Verify that thedevice is present in the minikube VM</h3>
 
-```bash=
-$minikube ssh --profile=cluster1
+<pre><code class="language-bash=">$minikube ssh --profile=cluster1
                          _             _
             _         _ ( )           ( )
   ___ ___  (_)  ___  (_)| |/')  _   _ | |_      __
-/' _ ` _ `\| |/' _ `\| || , <  ( ) ( )| '_`\  /'__`\
+/' _ ` _ `\| |/' _ `\| || , &lt;  ( ) ( )| '_`\  /'__`\
 | ( ) ( ) || || ( ) || || |\`\ | (_) || |_) )(  ___/
 (_) (_) (_)(_)(_) (_)(_)(_) (_)`\___/'(_,__/'`\____)
 
@@ -1480,42 +1547,41 @@ vda   vda1  vdb
 $ ls /dev/vdb
 /dev/vdb
 $ exit
-```
+</code></pre>
 
-> If the device is not visible inside the minikube VM, you need to start the minikube with the same command `minikube start` we used above to create the kubernetes cluster.
+<blockquote>
+  <p>If the device is not visible inside the minikube VM, you need to start the minikube with the same command <code class="language-plaintext highlighter-rouge">minikube start</code> we used above to create the kubernetes cluster.</p>
+</blockquote>
 
-> Repeat the same steps to add a  device to the other kubernetes cluster  `cluster2`, don't forget to change `--profile` value to `cluster2`.
+<blockquote>
+  <p>Repeat the same steps to add a  device to the other kubernetes cluster  <code class="language-plaintext highlighter-rouge">cluster2</code>, don’t forget to change <code class="language-plaintext highlighter-rouge">--profile</code> value to <code class="language-plaintext highlighter-rouge">cluster2</code>.</p>
+</blockquote>
 
+<h2 id="install-rook">Install Rook</h2>
 
-## Install Rook
+<p>Now we have the basic infrastructure to create a Ceph cluster. let’s install Rook on both kubernetes clusters</p>
 
-Now we have the basic infrastructure to create a Ceph cluster. let's install Rook on both kubernetes clusters
-
-```bash=
-$git clone git@github.com:rook/rook.git
+<pre><code class="language-bash=">$git clone git@github.com:rook/rook.git
 $ cd rook
-```
+</code></pre>
 
-### Create Required RBAC and CRD
-```bash=
-$kubectl create -f cluster/examples/kubernetes/ceph/common.yaml --context=cluster1
+<h3 id="create-required-rbac-and-crd">Create Required RBAC and CRD</h3>
+<pre><code class="language-bash=">$kubectl create -f cluster/examples/kubernetes/ceph/common.yaml --context=cluster1
 $kubectl create -f cluster/examples/kubernetes/ceph/crds.yaml --context=cluster1
-```
+</code></pre>
 
-### Install Rook operator
+<h3 id="install-rook-operator">Install Rook operator</h3>
 
-```bash=
-$kubectl create -f cluster/examples/kubernetes/ceph/operator.yaml --context=cluster1
+<pre><code class="language-bash=">$kubectl create -f cluster/examples/kubernetes/ceph/operator.yaml --context=cluster1
 configmap/rook-ceph-operator-config created
 deployment.apps/rook-ceph-operator created
-```
+</code></pre>
 
-As you already know that for RBD async mirroring RBD daemon need to talk to each other so am going to use hostNetworking for now to create a Ceph cluster
+<p>As you already know that for RBD async mirroring RBD daemon need to talk to each other so am going to use hostNetworking for now to create a Ceph cluster</p>
 
-### Create ceph cluster
+<h3 id="create-ceph-cluster">Create ceph cluster</h3>
 
-```bash=
-$cat <<EOF | kubectl --context=cluster1 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -1555,18 +1621,16 @@ spec:
         interval: 45s
         timeout: 600s
 EOF
-```
-### Create toolbox pod
+</code></pre>
+<h3 id="create-toolbox-pod">Create toolbox pod</h3>
 
-```bash=
-$kubectl create -f cluster/examples/kubernetes/ceph/toolbox.yaml --context=cluster1
+<pre><code class="language-bash=">$kubectl create -f cluster/examples/kubernetes/ceph/toolbox.yaml --context=cluster1
 deployment.apps/rook-ceph-tools created
-```
+</code></pre>
 
-### Verify all pods are in running state
+<h3 id="verify-all-pods-are-in-running-state">Verify all pods are in running state</h3>
 
-```bash=
-$kubectl get po --context=cluster1 -nrook-ceph
+<pre><code class="language-bash=">$kubectl get po --context=cluster1 -nrook-ceph
 NAME                                            READY   STATUS      RESTARTS   AGE
 csi-cephfsplugin-gzgxm                          3/3     Running     0          21m
 csi-cephfsplugin-provisioner-6cfdb89f9b-5bqbf   6/6     Running     0          21m
@@ -1581,19 +1645,19 @@ rook-ceph-osd-0-56d989d9cc-6rsxl                1/1     Running     0          2
 rook-ceph-osd-prepare-cluster1-hpxfp            0/1     Completed   0          24m
 rook-ceph-tools-78cdfd976c-jj98r                1/1     Running     0          3m30s
 rook-discover-p4dfs                             1/1     Running     0          32m
-```
+</code></pre>
 
-> Repeat the same steps we did to install rook. Now install Rook on cluster2. Don't forget to change the `--context` value
+<blockquote>
+  <p>Repeat the same steps we did to install rook. Now install Rook on cluster2. Don’t forget to change the <code class="language-plaintext highlighter-rouge">--context</code> value</p>
+</blockquote>
 
+<p>Once we have Rook installed on both the clusters, we can create pools, configure mirroring and try out rbd async replication</p>
 
-Once we have Rook installed on both the clusters, we can create pools, configure mirroring and try out rbd async replication
+<h3 id="create-rbd-block-pool">Create RBD Block Pool</h3>
 
-### Create RBD Block Pool
+<p>Rook allows the creation and customization of storage pools through the custom resource definitions (CRDs), Let’s create a Pool with Name <code class="language-plaintext highlighter-rouge">replicapool</code> with mirroring Enabled</p>
 
-Rook allows the creation and customization of storage pools through the custom resource definitions (CRDs), Let's create a Pool with Name `replicapool` with mirroring Enabled
-
-```bash=
-$cat <<EOF | kubectl --context=cluster1 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
 metadata:
@@ -1610,67 +1674,65 @@ spec:
       - interval: 24h # daily snapshots
         startTime: 14:00:00-05:00
 EOF
-```
+</code></pre>
 
-> Repeat the same steps on cluster2. Don't forget to change the `--context` value
+<blockquote>
+  <p>Repeat the same steps on cluster2. Don’t forget to change the <code class="language-plaintext highlighter-rouge">--context</code> value</p>
+</blockquote>
 
-Once mirroring is enabled, Rook will by default create its own bootstrap peer token so that it can be used by another cluster. The bootstrap peer token can be found in a Kubernetes Secret. The name of the Secret is present in the Status field of the CephBlockPool CR:
+<p>Once mirroring is enabled, Rook will by default create its own bootstrap peer token so that it can be used by another cluster. The bootstrap peer token can be found in a Kubernetes Secret. The name of the Secret is present in the Status field of the CephBlockPool CR:</p>
 
-```bash=
-$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.info}'
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.info}'
 {"rbdMirrorBootstrapPeerSecretName":"pool-peer-token-replicapool"}
-```
+</code></pre>
 
-This secret can then be fetched like so:
+<p>This secret can then be fetched like so:</p>
 
-```bash=
-$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
+<pre><code class="language-bash=">$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
 eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0=
-```
+</code></pre>
 
-### Create RBD mirror daemon CRD
+<h3 id="create-rbd-mirror-daemon-crd">Create RBD mirror daemon CRD</h3>
 
-Rook allows the creation and updating of the rbd-mirror daemon(s) through the custom resource definitions (CRDs). RBD images can be asynchronously mirrored between two Ceph clusters.
+<p>Rook allows the creation and updating of the rbd-mirror daemon(s) through the custom resource definitions (CRDs). RBD images can be asynchronously mirrored between two Ceph clusters.</p>
 
-#### Configure RBD mirroring on cluster1
+<h4 id="configure-rbd-mirroring-on-cluster1">Configure RBD mirroring on cluster1</h4>
 
-Let's configure the RBD mirror daemon on the cluster1, To do that we need to get the pool secret and site_name from the cluster2
+<p>Let’s configure the RBD mirror daemon on the cluster1, To do that we need to get the pool secret and site_name from the cluster2</p>
 
-##### Get site_name from the cluster2
+<h5 id="get-site_name-from-the-cluster2">Get site_name from the cluster2</h5>
 
-```bash=
-$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath='{.status.mirroringInfo.summary.summary.site_name}'
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath='{.status.mirroringInfo.summary.summary.site_name}'
 e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph
-```
+</code></pre>
 
-##### Get token from the cluster2
+<h5 id="get-token-from-the-cluster2">Get token from the cluster2</h5>
 
-```bash=
-$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster2 -o jsonpath='{.data.token}'|base64 -d
+<pre><code class="language-bash=">$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster2 -o jsonpath='{.data.token}'|base64 -d
 eyJmc2lkIjoiZTE4NzdhOTctNjYwNy00YmFhLWI0NzctNjRiMGM2MWYyNjhmIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFCZ1U3dGZydUh5THhBQVBMRE9EajJRMEcybjRCd2tDbmxLQUE9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuMTYwOjMzMDAsdjE6MTkyLjE2OC4zOS4xNjA6Njc4OV0ifQ==
-```
+</code></pre>
 
-When the peer token is available, you need to create a Kubernetes Secret. Our `e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph` will have to be created manually, like so:
+<p>When the peer token is available, you need to create a Kubernetes Secret. Our <code class="language-plaintext highlighter-rouge">e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph</code> will have to be created manually, like so:</p>
 
-##### Create secret for RBD mirroring on cluster1
+<h5 id="create-secret-for-rbd-mirroring-on-cluster1">Create secret for RBD mirroring on cluster1</h5>
 
-```bash=
-$kubectl -n rook-ceph create secret generic --context=cluster1 "e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph" \
+<pre><code class="language-bash=">$kubectl -n rook-ceph create secret generic --context=cluster1 "e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph" \
 --from-literal=token=eyJmc2lkIjoiZTE4NzdhOTctNjYwNy00YmFhLWI0NzctNjRiMGM2MWYyNjhmIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFCZ1U3dGZydUh5THhBQVBMRE9EajJRMEcybjRCd2tDbmxLQUE9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuMTYwOjMzMDAsdjE6MTkyLjE2OC4zOS4xNjA6Njc4OV0ifQ== \
 --from-literal=pool=replicapool
 secret/e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph created
-```
+</code></pre>
 
-> Pass the correct pool name and token retrieved from cluster2
+<blockquote>
+  <p>Pass the correct pool name and token retrieved from cluster2</p>
+</blockquote>
 
-Rook will read both token and pool keys of the Data content of the Secret. Rook also accepts the destination key, which specifies the mirroring direction. It defaults to rx-tx for bidirectional mirroring, but can also be set to rx-only for unidirectional mirroring.
+<p>Rook will read both token and pool keys of the Data content of the Secret. Rook also accepts the destination key, which specifies the mirroring direction. It defaults to rx-tx for bidirectional mirroring, but can also be set to rx-only for unidirectional mirroring.</p>
 
-##### Create mirroring CRD on cluster1
+<h5 id="create-mirroring-crd-on-cluster1">Create mirroring CRD on cluster1</h5>
 
-You can now inject the rbdmirror CR:
+<p>You can now inject the rbdmirror CR:</p>
 
-```bash=
-$cat <<EOF | kubectl --context=cluster1 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
 apiVersion: ceph.rook.io/v1
 kind: CephRBDMirror
 metadata:
@@ -1683,19 +1745,22 @@ spec:
       - "e1877a97-6607-4baa-b477-64b0c61f268f-rook-ceph"
 EOF
 cephrbdmirror.ceph.rook.io/my-rbd-mirror created
-```
-> Update the secretName in Mirror CRD with the one you created above.
+</code></pre>
+<blockquote>
+  <p>Update the secretName in Mirror CRD with the one you created above.</p>
+</blockquote>
 
-##### Validate mirroring health on cluster1
+<h5 id="validate-mirroring-health-on-cluster1">Validate mirroring health on cluster1</h5>
 
-Once we create mirror CRD we need to validate two things.
-1. Mirroring Pod in  rook-ceph namespace
-2. Blockpool mirroring info
+<p>Once we create mirror CRD we need to validate two things.</p>
+<ol>
+  <li>Mirroring Pod in  rook-ceph namespace</li>
+  <li>Blockpool mirroring info</li>
+</ol>
 
-###### Check mirroring pod status
+<h6 id="check-mirroring-pod-status">Check mirroring pod status</h6>
 
-```bash=
-$kubectl get po -nrook-ceph --context=cluster1
+<pre><code class="language-bash=">$kubectl get po -nrook-ceph --context=cluster1
 NAME                                            READY   STATUS      RESTARTS   AGE
 csi-cephfsplugin-8jj5b                          3/3     Running     0          28m
 csi-cephfsplugin-provisioner-7dc78747bf-426cp   6/6     Running     0          28m
@@ -1707,56 +1772,55 @@ rook-ceph-operator-559b6fcf59-77tct             1/1     Running     0          2
 rook-ceph-osd-0-6774f57f64-qmjqx                1/1     Running     0          27m
 rook-ceph-osd-prepare-cluster1-n8vqb            0/1     Completed   0          27m
 rook-ceph-rbd-mirror-a-6cbdcd6cc9-cfsj2         1/1     Running     0          6m33s
-```
+</code></pre>
 
-###### Check blockpool mirroring status
+<h6 id="check-blockpool-mirroring-status">Check blockpool mirroring status</h6>
 
-```bash=
-$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.mirroringStatus.summary.summary}'
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.mirroringStatus.summary.summary}'
 {"daemon_health":"OK","health":"OK","image_health":"OK","states":{}}
-```
+</code></pre>
 
-> You need to wait till all fields in `summary` become `OK`
+<blockquote>
+  <p>You need to wait till all fields in <code class="language-plaintext highlighter-rouge">summary</code> become <code class="language-plaintext highlighter-rouge">OK</code></p>
+</blockquote>
 
-Wow!! Everything seems fine let's configure the mirroring daemon on cluster2
+<p>Wow!! Everything seems fine let’s configure the mirroring daemon on cluster2</p>
 
-#### Configure RBD mirroring on cluster2
+<h4 id="configure-rbd-mirroring-on-cluster2">Configure RBD mirroring on cluster2</h4>
 
-Configure the RBD mirror daemon on the cluster2, To do that we need to get the pool secret and site_name from the cluster1
+<p>Configure the RBD mirror daemon on the cluster2, To do that we need to get the pool secret and site_name from the cluster1</p>
 
-##### Get site_name from the cluster1
+<h5 id="get-site_name-from-the-cluster1">Get site_name from the cluster1</h5>
 
-```bash=
-$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.mirroringInfo.summary.summary.site_name}'
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster1 -nrook-ceph -o jsonpath='{.status.mirroringInfo.summary.summary.site_name}'
 f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph
-```
+</code></pre>
 
-##### Get token from the cluster1
+<h5 id="get-token-from-the-cluster1">Get token from the cluster1</h5>
 
-```bash=
-$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
+<pre><code class="language-bash=">$kubectl get secret -n rook-ceph pool-peer-token-replicapool --context=cluster1 -o jsonpath='{.data.token}'|base64 -d
 eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0=
-```
+</code></pre>
 
-When the peer token is available, you need to create a Kubernetes Secret. Our `f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph` will have to be created manually, like so:
+<p>When the peer token is available, you need to create a Kubernetes Secret. Our <code class="language-plaintext highlighter-rouge">f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph</code> will have to be created manually, like so:</p>
 
-##### Create secret for RBD mirroring on cluster2
+<h5 id="create-secret-for-rbd-mirroring-on-cluster2">Create secret for RBD mirroring on cluster2</h5>
 
-```bash=
-$kubectl -n rook-ceph create secret generic --context=cluster2 "f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph" \
+<pre><code class="language-bash=">$kubectl -n rook-ceph create secret generic --context=cluster2 "f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph" \
 --from-literal=token=eyJmc2lkIjoiZjA1YzEwMGYtNjJkYS00YzU4LWI4OTktMzQyZTM0ZDg4MDNkIiwiY2xpZW50X2lkIjoicmJkLW1pcnJvci1wZWVyIiwia2V5IjoiQVFBNFU3dGZndDl6T3hBQUZXbEorYUFNUFo5MXpqNlRwUE84V3c9PSIsIm1vbl9ob3N0IjoiW3YyOjE5Mi4xNjguMzkuODQ6MzMwMCx2MToxOTIuMTY4LjM5Ljg0OjY3ODldIn0= \
 --from-literal=pool=replicapool
 secret/f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph created
-```
+</code></pre>
 
-> Pass the correct pool name and token retrieved from cluster1
+<blockquote>
+  <p>Pass the correct pool name and token retrieved from cluster1</p>
+</blockquote>
 
-##### Create mirroring CRD on cluster2
+<h5 id="create-mirroring-crd-on-cluster2">Create mirroring CRD on cluster2</h5>
 
-You can now inject the rbdmirror CR:
+<p>You can now inject the rbdmirror CR:</p>
 
-```bash=
-$cat <<EOF | kubectl --context=cluster2 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster2 apply -f -
 apiVersion: ceph.rook.io/v1
 kind: CephRBDMirror
 metadata:
@@ -1769,19 +1833,22 @@ spec:
       - "f05c100f-62da-4c58-b899-342e34d8803d-rook-ceph"
 EOF
 cephrbdmirror.ceph.rook.io/my-rbd-mirror created
-```
-> Update the secretName in CRD with the one you created.
+</code></pre>
+<blockquote>
+  <p>Update the secretName in CRD with the one you created.</p>
+</blockquote>
 
-##### Validate mirroring health on cluster1
+<h5 id="validate-mirroring-health-on-cluster1-1">Validate mirroring health on cluster1</h5>
 
-Once we create mirror CRD we need to validate two things.
-1. Mirroring Pod in  rook-ceph namespace
-2. Blockpool mirroring info
+<p>Once we create mirror CRD we need to validate two things.</p>
+<ol>
+  <li>Mirroring Pod in  rook-ceph namespace</li>
+  <li>Blockpool mirroring info</li>
+</ol>
 
-###### Check mirroring pod status
+<h6 id="check-mirroring-pod-status-1">Check mirroring pod status</h6>
 
-```bash=
-$kubectl get po -nrook-ceph --context=cluster2
+<pre><code class="language-bash=">$kubectl get po -nrook-ceph --context=cluster2
 NAME                                            READY   STATUS      RESTARTS   AGE
 csi-cephfsplugin-pkrhb                          3/3     Running     0          38m
 csi-cephfsplugin-provisioner-7dc78747bf-gr99q   6/6     Running     0          38m
@@ -1793,27 +1860,27 @@ rook-ceph-operator-559b6fcf59-mzbpb             1/1     Running     0          3
 rook-ceph-osd-0-557d5f5948-9qrvq                1/1     Running     0          37m
 rook-ceph-osd-prepare-cluster2-j9ccs            0/1     Completed   0          38m
 rook-ceph-rbd-mirror-a-7c6d49f67c-b2vd2         1/1     Running     0          83s
-```
+</code></pre>
 
-###### Check blockpool mirroring status
+<h6 id="check-blockpool-mirroring-status-1">Check blockpool mirroring status</h6>
 
-```bash=
-$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath='{.status.mirroringStatus.summary.summary}'
+<pre><code class="language-bash=">$kubectl get cephblockpools.ceph.rook.io replicapool --context=cluster2 -nrook-ceph -o jsonpath='{.status.mirroringStatus.summary.summary}'
 {"daemon_health":"OK","health":"OK","image_health":"OK","states":{}}
-```
+</code></pre>
 
-> You need to wait till all fields in `summary` become `OK`
+<blockquote>
+  <p>You need to wait till all fields in <code class="language-plaintext highlighter-rouge">summary</code> become <code class="language-plaintext highlighter-rouge">OK</code></p>
+</blockquote>
 
-Now the installation is complete, Let's see we can create rbd images and able to mirror it to the `secondary` cluster.
+<p>Now the installation is complete, Let’s see we can create rbd images and able to mirror it to the <code class="language-plaintext highlighter-rouge">secondary</code> cluster.</p>
 
-### Provision storage
+<h3 id="provision-storage">Provision storage</h3>
 
-Create a `storageclass` and `PVC`
+<p>Create a <code class="language-plaintext highlighter-rouge">storageclass</code> and <code class="language-plaintext highlighter-rouge">PVC</code></p>
 
-#### Create storageclass
+<h4 id="create-storageclass">Create storageclass</h4>
 
-```bash=
-$cat <<EOF | kubectl --context=cluster1 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -1834,15 +1901,16 @@ parameters:
 reclaimPolicy: Retain
 EOF
 storageclass.storage.k8s.io/rook-ceph-block created
-```
+</code></pre>
 
-> Create a storageclass with `Retain` `reclaimPolicy` so that we can use static binding for
-DR.
+<blockquote>
+  <p>Create a storageclass with <code class="language-plaintext highlighter-rouge">Retain</code> <code class="language-plaintext highlighter-rouge">reclaimPolicy</code> so that we can use static binding for
+DR.</p>
+</blockquote>
 
-### Create PersistentVolumeClaim on cluster1
+<h3 id="create-persistentvolumeclaim-on-cluster1">Create PersistentVolumeClaim on cluster1</h3>
 
-```bash=
-$cat <<EOF | kubectl --context=cluster1 apply -f -
+<pre><code class="language-bash=">$cat &lt;&lt;EOF | kubectl --context=cluster1 apply -f -
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -1855,33 +1923,29 @@ spec:
       storage: 1Gi
   storageClassName: rook-ceph-block
 EOF
-```
+</code></pre>
 
-Check PVC is in bound state
+<p>Check PVC is in bound state</p>
 
-```bash=
-$kubectl get pvc --context=cluster1
+<pre><code class="language-bash=">$kubectl get pvc --context=cluster1
 NAME      STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
 rbd-pvc   Bound    pvc-57cfca36-cb76-4d79-b258-a107bc5c4d15   1Gi        RWO            rook-ceph-block   44s
-```
+</code></pre>
 
-Get the RBD image name created for this PVC
+<p>Get the RBD image name created for this PVC</p>
 
-```bash=
-$kubectl get pv --context=cluster1 $(kubectl get pvc rbd-pvc  --context=cluster1 -o jsonpath='{.spec.volumeName}') -o jsonpath='{.spec.csi.volumeAttributes.imageName}'
+<pre><code class="language-bash=">$kubectl get pv --context=cluster1 $(kubectl get pvc rbd-pvc  --context=cluster1 -o jsonpath='{.spec.volumeName}') -o jsonpath='{.spec.csi.volumeAttributes.imageName}'
 csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004
-```
+</code></pre>
 
-Run commands on toolbox pod on cluster1 to enable mirroring
+<p>Run commands on toolbox pod on cluster1 to enable mirroring</p>
 
-```bash=
-$kubectl get po --context=cluster1 -nrook-ceph -l  app=rook-ceph-tools
+<pre><code class="language-bash=">$kubectl get po --context=cluster1 -nrook-ceph -l  app=rook-ceph-tools
 NAME                               READY   STATUS    RESTARTS   AGE
 rook-ceph-tools-78cdfd976c-jrhjm   1/1     Running   0          3m53s
-```
+</code></pre>
 
-```bash=
-$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+<pre><code class="language-bash=">$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
 rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
 	size 1 GiB in 256 objects
 	order 22 (4 MiB objects)
@@ -1895,17 +1959,15 @@ rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
 	create_timestamp: Mon Nov 23 07:04:21 2020
 	access_timestamp: Mon Nov 23 07:04:21 2020
 	modify_timestamp: Mon Nov 23 07:04:21 2020
-```
+</code></pre>
 
-```bash=
-kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd mirror image enable csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 snapshot --pool=replicapool
+<pre><code class="language-bash=">kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd mirror image enable csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 snapshot --pool=replicapool
 Mirroring enabled
-```
+</code></pre>
 
-Verify that mirroring enabled on the image
+<p>Verify that mirroring enabled on the image</p>
 
-```bash=
-$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+<pre><code class="language-bash=">$kubectl exec --context=cluster1 -nrook-ceph rook-ceph-tools-78cdfd976c-jrhjm -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
 rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
 	size 1 GiB in 256 objects
 	order 22 (4 MiB objects)
@@ -1923,20 +1985,18 @@ rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
 	mirroring mode: snapshot
 	mirroring global id: 7da10ec2-aa67-4b05-86f0-487b4fa9fdbb
 	mirroring primary: true
-```
+</code></pre>
 
-#### Verify that image is mirrored on the secondary cluster
+<h4 id="verify-that-image-is-mirrored-on-the-secondary-cluster">Verify that image is mirrored on the secondary cluster</h4>
 
-Run commands on toolbox pod on cluster1 to enable mirroring
+<p>Run commands on toolbox pod on cluster1 to enable mirroring</p>
 
-```bash=
-$kubectl get po --context=cluster2 -nrook-ceph -l  app=rook-ceph-tools
+<pre><code class="language-bash=">$kubectl get po --context=cluster2 -nrook-ceph -l  app=rook-ceph-tools
 NAME                               READY   STATUS    RESTARTS   AGE
 rook-ceph-tools-78cdfd976c-2566m   1/1     Running   0          3m53s
-```
+</code></pre>
 
-```bash=
-$kubectl exec --context=cluster2 -nrook-ceph rook-ceph-tools-78cdfd976c-2566m -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
+<pre><code class="language-bash=">$kubectl exec --context=cluster2 -nrook-ceph rook-ceph-tools-78cdfd976c-2566m -- rbd info csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004 --pool=replicapool
 rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
 	size 1 GiB in 256 objects
 	order 22 (4 MiB objects)
@@ -1954,90 +2014,92 @@ rbd image 'csi-vol-1b82d349-2d5a-11eb-b8d5-0242ac110004':
 	mirroring mode: snapshot
 	mirroring global id: 7da10ec2-aa67-4b05-86f0-487b4fa9fdbb
 	mirroring primary: false
-```]]></content><author><name></name></author><summary type="html"><![CDATA[This doc assumes that you already have a minikube installed, minikube is configured to use kvm2 to create a virtual machine. You can refer kvm2 to install the required prerequisites.]]></summary></entry><entry><title type="html">Set up external ceph cluster with Rook</title><link href="https://mrajanna.com/setup-external-ceph-with-rook/" rel="alternate" type="text/html" title="Set up external ceph cluster with Rook" /><published>2020-10-30T00:00:00+01:00</published><updated>2020-10-30T00:00:00+01:00</updated><id>https://mrajanna.com/setup-external-ceph-with-rook</id><content type="html" xml:base="https://mrajanna.com/setup-external-ceph-with-rook/"><![CDATA[This blog will help you out understand the various configuration we need to do
-to manage the external ceph cluster with Rook.
+</code></pre>]]></content><author><name></name></author><summary type="html"><![CDATA[This doc assumes that you already have a minikube installed, minikube is configured to use kvm2 to create a virtual machine. You can refer kvm2 to install the required prerequisites.]]></summary></entry><entry><title type="html">Set up external ceph cluster with Rook</title><link href="https://mrajanna.com/setup-external-ceph-with-rook/" rel="alternate" type="text/html" title="Set up external ceph cluster with Rook" /><published>2020-10-30T00:00:00+01:00</published><updated>2020-10-30T00:00:00+01:00</updated><id>https://mrajanna.com/setup-external-ceph-with-rook</id><content type="html" xml:base="https://mrajanna.com/setup-external-ceph-with-rook/"><![CDATA[<p>This blog will help you out understand the various configuration we need to do
+to manage the external ceph cluster with Rook.</p>
 
-## Checkout released Rook branch
+<h2 id="checkout-released-rook-branch">Checkout released Rook branch</h2>
 
-```bash=
-[🎩︎]mrajanna@localhost $]git clone https://github.com/rook/rook
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]git clone https://github.com/rook/rook
 [🎩︎]mrajanna@localhost $]git checkout v1.4.6
 [🎩︎]mrajanna@localhost $]cd rook/cluster/examples/kubernetes/ceph
-```
+</code></pre>
 
-Let's step into the ceph directory as we are more intrested in configuring the
-Rook for ceph
+<p>Let’s step into the ceph directory as we are more intrested in configuring the
+Rook for ceph</p>
 
-## Check network connectivity on your kubernetes nodes
+<h2 id="check-network-connectivity-on-your-kubernetes-nodes">Check network connectivity on your kubernetes nodes</h2>
 
-```bash=
-[🎩︎]mrajanna@localhost $]cat < /dev/tcp/192.168.39.101/6789
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]cat &lt; /dev/tcp/192.168.39.101/6789
 ceph v027���'e����'^C
-[🎩︎]mrajanna@localhost $] cat < /dev/tcp/192.168.39.101/3300
+[🎩︎]mrajanna@localhost $] cat &lt; /dev/tcp/192.168.39.101/3300
 ceph v2
 ^C
-```
+</code></pre>
 
-> Press ctrl+c as the command didn't return.
+<blockquote>
+  <p>Press ctrl+c as the command didn’t return.</p>
+</blockquote>
 
-## Create Required RBAC for Rook
+<h2 id="create-required-rbac-for-rook">Create Required RBAC for Rook</h2>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl create -f common.yaml
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl create -f common.yaml
+</code></pre>
 
-## Create operator deployment
+<h2 id="create-operator-deployment">Create operator deployment</h2>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl create -f operator.yaml
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl create -f operator.yaml
+</code></pre>
 
-> Verify Rook operator is running
+<blockquote>
+  <p>Verify Rook operator is running</p>
+</blockquote>
 
- ```bash=
-[🎩︎]mrajanna@localhost $]kuberc get po
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kuberc get po
 NAME                                READY   STATUS    RESTARTS   AGE
 rook-ceph-operator-86756d44-vdr8b   1/1     Running   0          3m20s
 rook-discover-sfjrf                 1/1     Running   0          2m47s
-```
+</code></pre>
 
-## Importing external ceph cluster
+<h2 id="importing-external-ceph-cluster">Importing external ceph cluster</h2>
 
-### Create RBAC for external ceph cluster
+<h3 id="create-rbac-for-external-ceph-cluster">Create RBAC for external ceph cluster</h3>
 
-> If Rook is not managing any existing cluster in the `rook-ceph` namespace do:
-> kubectl create -f common.yaml
-> kubectl create -f operator.yaml
-> kubectl create -f cluster-external.yaml (you need to change the namespace to `rook-ceph`)
+<blockquote>
+  <p>If Rook is not managing any existing cluster in the <code class="language-plaintext highlighter-rouge">rook-ceph</code> namespace do:
+kubectl create -f common.yaml
+kubectl create -f operator.yaml
+kubectl create -f cluster-external.yaml (you need to change the namespace to <code class="language-plaintext highlighter-rouge">rook-ceph</code>)</p>
+</blockquote>
 
-> If there is already a cluster managed by Rook in `rook-ceph` then do:
-> kubectl create -f common-external.yaml
-> kubectl create -f cluster-external-management.yaml
+<blockquote>
+  <p>If there is already a cluster managed by Rook in <code class="language-plaintext highlighter-rouge">rook-ceph</code> then do:
+kubectl create -f common-external.yaml
+kubectl create -f cluster-external-management.yaml</p>
+</blockquote>
 
-In my case Rook is not managing any ceph cluster in `rook-ceph` namespace i
-will create both `common-external.yaml` and `cluster-external-management.yaml`
+<p>In my case Rook is not managing any ceph cluster in <code class="language-plaintext highlighter-rouge">rook-ceph</code> namespace i
+will create both <code class="language-plaintext highlighter-rouge">common-external.yaml</code> and <code class="language-plaintext highlighter-rouge">cluster-external-management.yaml</code></p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl create -f common-external.yaml
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl create -f common-external.yaml
+</code></pre>
 
-### Import external ceph cluster
+<h3 id="import-external-ceph-cluster">Import external ceph cluster</h3>
 
-Export few pieces of information required for importing external ceph cluster
+<p>Export few pieces of information required for importing external ceph cluster</p>
 
-```bash=
-export NAMESPACE=rook-ceph-external ---> Namespace where we are planning use of external ceph cluster
-export ROOK_EXTERNAL_FSID=db747e90-2ede-4867-9aee-ba233aa1db55 ---> Run `ceph fsid` on your ceph cluster to get this
-export ROOK_EXTERNAL_ADMIN_SECRET=AQA2cSJfOMblMRAAeHroW3THSZukFGtpkIhZ1w== ---> Run `ceph auth get-key client.admin`
+<pre><code class="language-bash=">export NAMESPACE=rook-ceph-external ---&gt; Namespace where we are planning use of external ceph cluster
+export ROOK_EXTERNAL_FSID=db747e90-2ede-4867-9aee-ba233aa1db55 ---&gt; Run `ceph fsid` on your ceph cluster to get this
+export ROOK_EXTERNAL_ADMIN_SECRET=AQA2cSJfOMblMRAAeHroW3THSZukFGtpkIhZ1w== ---&gt; Run `ceph auth get-key client.admin`
 on external ceph cluster
-export ROOK_EXTERNAL_CEPH_MON_DATA=mon.ceph-node1=192.168.39.101:6789 ---> Run `ceph mon dump` to get the list of monitors(passing one Monitor IP should be enough)
-```
+export ROOK_EXTERNAL_CEPH_MON_DATA=mon.ceph-node1=192.168.39.101:6789 ---&gt; Run `ceph mon dump` to get the list of monitors(passing one Monitor IP should be enough)
+</code></pre>
 
->Make sure you pass correct monitor name, Provided an example below
-> `mon.ceph-node1` is the monitor name for `192.168.39.101:6789`
+<blockquote>
+  <p>Make sure you pass correct monitor name, Provided an example below
+<code class="language-plaintext highlighter-rouge">mon.ceph-node1</code> is the monitor name for <code class="language-plaintext highlighter-rouge">192.168.39.101:6789</code></p>
+</blockquote>
 
-```bash=
-[🎩︎]mrajanna@localhost $]ceph mon dump
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]ceph mon dump
 dumped monmap epoch 1
 epoch 1
 fsid fbafbb58-51d3-4f44-bedd-b3b728bc5766
@@ -2048,157 +2110,162 @@ min_mon_release 14 (nautilus)
 1: [v2:192.168.39.102:3300/0,v1:192.168.39.102:6789/0] mon.ceph-node2
 2: [v2:192.168.39.103:3300/0,v1:192.168.39.103:6789/0] mon.ceph-node3
 
-```
+</code></pre>
 
-```bash=
-[🎩︎]mrajanna@localhost $] bash import-external-cluster.sh
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $] bash import-external-cluster.sh
+</code></pre>
 
-### Create ceph cluster CRD
+<h3 id="create-ceph-cluster-crd">Create ceph cluster CRD</h3>
 
-As we have created  secrets required for the external ceph cluster, Let's create
-ceph cluster CRD.
+<p>As we have created  secrets required for the external ceph cluster, Let’s create
+ceph cluster CRD.</p>
 
-```yaml
-[🎩︎]mrajanna@localhost $] cat cluster-external-management.yaml
-apiVersion: ceph.rook.io/v1
-kind: CephCluster
-metadata:
-  name: rook-ceph-external
-  namespace: rook-ceph-external
-spec:
-  external:
-    enable: true -> set this to false if you want Rook to manage your external ceph cluster
-  dataDirHostPath: /var/lib/rook
-  # providing an image is required, if you want to create other CRs (rgw, mds, nfs)
-  # In latest Rook release we dont need to provide cephVersion we can skip this one.
-  cephVersion:
-    image: ceph/ceph:v14.2.12 # Should match external cluster version
-```
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">[</span><span class="nv">🎩︎</span><span class="pi">]</span><span class="s">mrajanna@localhost $] cat cluster-external-management.yaml</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">ceph.rook.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">CephCluster</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">rook-ceph-external</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">rook-ceph-external</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">external</span><span class="pi">:</span>
+    <span class="na">enable</span><span class="pi">:</span> <span class="kc">true</span><span class="s"> -&gt; set this to </span><span class="kc">false</span><span class="s"> if you want Rook to manage your external ceph cluster</span>
+  <span class="na">dataDirHostPath</span><span class="pi">:</span> <span class="s">/var/lib/rook</span>
+  <span class="c1"># providing an image is required, if you want to create other CRs (rgw, mds, nfs)</span>
+  <span class="c1"># In latest Rook release we dont need to provide cephVersion we can skip this one.</span>
+  <span class="na">cephVersion</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">ceph/ceph:v14.2.12</span> <span class="c1"># Should match external cluster version</span>
+</code></pre></div></div>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl create -f cluster-external-management.yaml
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl create -f cluster-external-management.yaml
+</code></pre>
 
-Let us check the status of the externa ceph cluster
+<p>Let us check the status of the externa ceph cluster</p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl get cephcluster -nrook-ceph-external
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl get cephcluster -nrook-ceph-external
 NAME                 DATADIRHOSTPATH   MONCOUNT   AGE   PHASE        MESSAGE                 HEALTH
 rook-ceph-external   /var/lib/rook                16s   Connecting   Cluster is connecting
-```
+</code></pre>
 
-> If the status is in the `Connecting` Phase for a longtime please check Rook
-> operator pod which will be running in `rook-ceph` namespace.
+<blockquote>
+  <p>If the status is in the <code class="language-plaintext highlighter-rouge">Connecting</code> Phase for a longtime please check Rook
+operator pod which will be running in <code class="language-plaintext highlighter-rouge">rook-ceph</code> namespace.</p>
+</blockquote>
 
-If you don't see any useful logs in the operator pod, increase the log level of
-the Rook operator deployment.
+<p>If you don’t see any useful logs in the operator pod, increase the log level of
+the Rook operator deployment.</p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl edit deployment rook-ceph-operator -nrook-ceph
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl edit deployment rook-ceph-operator -nrook-ceph
+</code></pre>
 
-> Change `ROOK_LOG_LEVEL` from `INFO` to `DEBUG`
+<blockquote>
+  <p>Change <code class="language-plaintext highlighter-rouge">ROOK_LOG_LEVEL</code> from <code class="language-plaintext highlighter-rouge">INFO</code> to <code class="language-plaintext highlighter-rouge">DEBUG</code></p>
+</blockquote>
 
-```yaml
-- name: ROOK_LOG_LEVEL
-  value: DEBUG
-```
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ROOK_LOG_LEVEL</span>
+  <span class="na">value</span><span class="pi">:</span> <span class="s">DEBUG</span>
+</code></pre></div></div>
 
-And watch for the operator logs again of any issue
+<p>And watch for the operator logs again of any issue</p>
 
-> 2020-10-30 12:25:40.271439 E | cephclient: ceph username is empty
-2020-10-30 12:25:40.275572 D | op-config: CephCluster "rook-ceph-external" status: "Failure". "Failed to configure external ceph cluster"
+<blockquote>
+  <table>
+    <tbody>
+      <tr>
+        <td>2020-10-30 12:25:40.271439 E</td>
+        <td>cephclient: ceph username is empty</td>
+      </tr>
+      <tr>
+        <td>2020-10-30 12:25:40.275572 D</td>
+        <td>op-config: CephCluster “rook-ceph-external” status: “Failure”. “Failed to configure external ceph cluster”</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
 
-If you see an error like `ceph username` we need to remove the unwanted entry in
-the secret created from the `import-external-cluster.sh`
+<p>If you see an error like <code class="language-plaintext highlighter-rouge">ceph username</code> we need to remove the unwanted entry in
+the secret created from the <code class="language-plaintext highlighter-rouge">import-external-cluster.sh</code></p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl edit secret rook-ceph-mon -nrook-ceph-external
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl edit secret rook-ceph-mon -nrook-ceph-external
+</code></pre>
 
-```yaml
-apiVersion: v1
-data:
-  admin-secret: QVFBMmNTSmZPTWJsTVJBQWVIcm9XM1RIU1p1a0ZHdHBrSWhaMXc9PQ==
-  ceph-secret: ""
-  ceph-username: ""
-  cluster-name: cm9vay1jZXBoLWV4dGVybmFs
-  fsid: ZGI3NDdlOTAtMmVkZS00ODY3LTlhZWUtYmEyMzNhYTFkYjU1
-  mon-secret: bW9uLXNlY3JldA==
-kind: Secret
-```
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">admin-secret</span><span class="pi">:</span> <span class="s">QVFBMmNTSmZPTWJsTVJBQWVIcm9XM1RIU1p1a0ZHdHBrSWhaMXc9PQ==</span>
+  <span class="na">ceph-secret</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">ceph-username</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">cluster-name</span><span class="pi">:</span> <span class="s">cm9vay1jZXBoLWV4dGVybmFs</span>
+  <span class="na">fsid</span><span class="pi">:</span> <span class="s">ZGI3NDdlOTAtMmVkZS00ODY3LTlhZWUtYmEyMzNhYTFkYjU1</span>
+  <span class="na">mon-secret</span><span class="pi">:</span> <span class="s">bW9uLXNlY3JldA==</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
+</code></pre></div></div>
 
-As the secret contains empty `ceph-username` and `ceph-secret` the ceph cluster
-is not getting connected just remove those 2 entries from the secret and save it.
+<p>As the secret contains empty <code class="language-plaintext highlighter-rouge">ceph-username</code> and <code class="language-plaintext highlighter-rouge">ceph-secret</code> the ceph cluster
+is not getting connected just remove those 2 entries from the secret and save it.</p>
 
-Start Watching for the operator pod log again, to see if there are any other
-issues
+<p>Start Watching for the operator pod log again, to see if there are any other
+issues</p>
 
-We have got one more issue in Rook operator related to updating secret failure
+<p>We have got one more issue in Rook operator related to updating secret failure</p>
 
-> 2020-10-30 12:32:55.493617 E | ceph-cluster-controller: failed to reconcile.
-> failed to reconcile cluster "rook-ceph-external": failed to configure
-> external ceph cluster: failed to create csi kubernetes secrets: failed to
-> create kubernetes csi secret: failed to create kubernetes secret
-> map["userID":"csi-rbd-provisioner"
-> "userKey":"AQAMBphfoeniNhAAtE7ZO00ZPBiJLwHU1hZnAw=="] for cluster
-> "rook-ceph-external": failed to update secret for rook-csi-rbd-provisioner:
-> Secret "rook-csi-rbd-provisioner" is invalid: type: Invalid value:
-> "kubernetes.io/rook": field is immutable
+<blockquote>
+  <p>2020-10-30 12:32:55.493617 E | ceph-cluster-controller: failed to reconcile.
+failed to reconcile cluster “rook-ceph-external”: failed to configure
+external ceph cluster: failed to create csi kubernetes secrets: failed to
+create kubernetes csi secret: failed to create kubernetes secret
+map[“userID”:”csi-rbd-provisioner”
+“userKey”:”AQAMBphfoeniNhAAtE7ZO00ZPBiJLwHU1hZnAw==”] for cluster
+“rook-ceph-external”: failed to update secret for rook-csi-rbd-provisioner:
+Secret “rook-csi-rbd-provisioner” is invalid: type: Invalid value:
+“kubernetes.io/rook”: field is immutable</p>
+</blockquote>
 
-To fix this issue lets delete all the secrets created by
-`import-external-cluster.sh` script and let `Rook` create required secrets
+<p>To fix this issue lets delete all the secrets created by
+<code class="language-plaintext highlighter-rouge">import-external-cluster.sh</code> script and let <code class="language-plaintext highlighter-rouge">Rook</code> create required secrets</p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl delete secret rook-csi-cephfs-node rook-csi-cephfs-provisioner rook-csi-rbd-node rook-csi-rbd-provisioner -nrook-ceph-external
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl delete secret rook-csi-cephfs-node rook-csi-cephfs-provisioner rook-csi-rbd-node rook-csi-rbd-provisioner -nrook-ceph-external
 secret "rook-csi-cephfs-node" deleted
 secret "rook-csi-cephfs-provisioner" deleted
 secret "rook-csi-rbd-node" deleted
 secret "rook-csi-rbd-provisioner" deleted
-```
+</code></pre>
 
-Once we delete the secrets, let's restart the `Rook` operator pod
+<p>Once we delete the secrets, let’s restart the <code class="language-plaintext highlighter-rouge">Rook</code> operator pod</p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl delete po/rook-ceph-operator-675fdbc9d9-g6mjm -nrook-ceph
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl delete po/rook-ceph-operator-675fdbc9d9-g6mjm -nrook-ceph
+</code></pre>
 
-Start Watching for the operator pod log again, to see if there are any other
-issues
+<p>Start Watching for the operator pod log again, to see if there are any other
+issues</p>
 
-Meanwhile, start checking the `cephclusters` status
+<p>Meanwhile, start checking the <code class="language-plaintext highlighter-rouge">cephclusters</code> status</p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl get cephclusters.ceph.rook.io -nrook-ceph-external
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl get cephclusters.ceph.rook.io -nrook-ceph-external
 NAME                 DATADIRHOSTPATH   MONCOUNT   AGE   PHASE       MESSAGE                          HEALTH
 rook-ceph-external   /var/lib/rook                32m   Connected   Cluster connected successfully   HEALTH_OK
-```
+</code></pre>
 
-Wow!!! Now Rook is connected to the external ceph cluster.]]></content><author><name></name></author><summary type="html"><![CDATA[This blog will help you out understand the various configuration we need to do to manage the external ceph cluster with Rook.]]></summary></entry><entry><title type="html">Track PV to RADOS omap data mapping stored by cephcsi</title><link href="https://mrajanna.com/tracking-pv-rados-omap-in-cephcsi/" rel="alternate" type="text/html" title="Track PV to RADOS omap data mapping stored by cephcsi" /><published>2020-10-22T00:00:00+02:00</published><updated>2020-10-22T00:00:00+02:00</updated><id>https://mrajanna.com/tracking-pv-rados-omap-in-cephcsi</id><content type="html" xml:base="https://mrajanna.com/tracking-pv-rados-omap-in-cephcsi/"><![CDATA[This blog will help you to understand how to track the internal rados omap data
-stored by cephcsi for cephfs and rbd pvc.
+<p>Wow!!! Now Rook is connected to the external ceph cluster.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[This blog will help you out understand the various configuration we need to do to manage the external ceph cluster with Rook.]]></summary></entry><entry><title type="html">Track PV to RADOS omap data mapping stored by cephcsi</title><link href="https://mrajanna.com/tracking-pv-rados-omap-in-cephcsi/" rel="alternate" type="text/html" title="Track PV to RADOS omap data mapping stored by cephcsi" /><published>2020-10-22T00:00:00+02:00</published><updated>2020-10-22T00:00:00+02:00</updated><id>https://mrajanna.com/tracking-pv-rados-omap-in-cephcsi</id><content type="html" xml:base="https://mrajanna.com/tracking-pv-rados-omap-in-cephcsi/"><![CDATA[<p>This blog will help you to understand how to track the internal rados omap data
+stored by cephcsi for cephfs and rbd pvc.</p>
 
-Note: This blog assumes that you have rook cluster up and running and few
-CephFS and RBD PVC's are created.
+<p>Note: This blog assumes that you have rook cluster up and running and few
+CephFS and RBD PVC’s are created.</p>
 
-```bash=
-[🎩︎]mrajanna@ceph $]kubectl get pvc
+<pre><code class="language-bash=">[🎩︎]mrajanna@ceph $]kubectl get pvc
 NAME         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
 cephfs-pvc   Bound    pvc-88919d42-ecdf-4737-a805-065eacdfd34f   1Gi        RWO            rook-cephfs       68s
 rbd-pvc      Bound    pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1   1Gi        RWO            rook-ceph-block   79s
-```
+</code></pre>
 
-In the above PVC list we have one RBD and one CephFS PVC, let us first track the
-rados omap for RBD
+<p>In the above PVC list we have one RBD and one CephFS PVC, let us first track the
+rados omap for RBD</p>
 
-## Track RBD omap data
+<h2 id="track-rbd-omap-data">Track RBD omap data</h2>
 
-To get the omap details we need to know the rbd pool in which cephcsi
-stores the omap data. let's first get the pool name which is stored in PV CSI
-spec
+<p>To get the omap details we need to know the rbd pool in which cephcsi
+stores the omap data. let’s first get the pool name which is stored in PV CSI
+spec</p>
 
-```bash=
-[🎩︎]mrajanna@ceph $]kubectl get pv pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1 -o jsonpath='{.spec.csi}'
+<pre><code class="language-bash=">[🎩︎]mrajanna@ceph $]kubectl get pv pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1 -o jsonpath='{.spec.csi}'
 {
 	"controllerExpandSecretRef": {
 		"name": "rook-csi-rbd-provisioner",
@@ -2222,72 +2289,81 @@ spec
 	},
 	"volumeHandle": "0001-0009-rook-ceph-0000000000000002-92837648-1431-11eb-8990-0242ac110005"
 }
-```
+</code></pre>
 
-In the above PV `replicapool` is the journal pool name so let's step into the toolbox
-pod which helps us to connect to the ceph cluster
+<p>In the above PV <code class="language-plaintext highlighter-rouge">replicapool</code> is the journal pool name so let’s step into the toolbox
+pod which helps us to connect to the ceph cluster</p>
 
-**_NOTE:_** If you are using a standalone ceph cluster you can execute these commands
-from your ceph cluster
+<p><strong><em>NOTE:</em></strong> If you are using a standalone ceph cluster you can execute these commands
+from your ceph cluster</p>
 
-> Cephcsi internal design created 2 omap mapping
-> * one is request ID(PV name) to unique ID mapping
->   * This helps to make cephcsi idempotent even if we get the same request
-      we return the existing data.
-> * One is uniqueID and image details mapping
->   * This helps cephcsi to extract the image details   when volumeID is passed in
-      the request, cephcsi will decode the volumeID and get the omap
-      details to extract image/volume name etc.
+<blockquote>
+  <p>Cephcsi internal design created 2 omap mapping</p>
+  <ul>
+    <li>one is request ID(PV name) to unique ID mapping
+      <ul>
+        <li>This helps to make cephcsi idempotent even if we get the same request
+  we return the existing data.</li>
+      </ul>
+    </li>
+    <li>One is uniqueID and image details mapping
+      <ul>
+        <li>This helps cephcsi to extract the image details   when volumeID is passed in
+  the request, cephcsi will decode the volumeID and get the omap
+  details to extract image/volume name etc.</li>
+      </ul>
+    </li>
+  </ul>
+</blockquote>
 
-### RBD PV name and unique ID mapping
+<h3 id="rbd-pv-name-and-unique-id-mapping">RBD PV name and unique ID mapping</h3>
 
-PV name is the request name, let's get the unique ID mapped to the request name
+<p>PV name is the request name, let’s get the unique ID mapped to the request name</p>
 
-```bash=
-[🎩︎]mrajanna@ceph $]kubectl exec -it rook-ceph-tools-6c984f579-qqh7n sh -nrook-ceph
+<pre><code class="language-bash=">[🎩︎]mrajanna@ceph $]kubectl exec -it rook-ceph-tools-6c984f579-qqh7n sh -nrook-ceph
 sh-4.4# rados getomapval csi.volumes.default csi.volume.pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1 --pool=replicapool
 value (36 bytes) :
 00000000  39 32 38 33 37 36 34 38  2d 31 34 33 31 2d 31 31  |92837648-1431-11|
 00000010  65 62 2d 38 39 39 30 2d  30 32 34 32 61 63 31 31  |eb-8990-0242ac11|
 00000020  30 30 30 35                                       |0005|
 00000024
-```
+</code></pre>
 
-`csi.volumes.default` is the object created by cephcsi to store the request
-name to unique ID mapping
+<p><code class="language-plaintext highlighter-rouge">csi.volumes.default</code> is the object created by cephcsi to store the request
+name to unique ID mapping</p>
 
-`92837648-1431-11eb-8990-0242ac110005` is the unique ID mapped to request name
-`pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1`
+<p><code class="language-plaintext highlighter-rouge">92837648-1431-11eb-8990-0242ac110005</code> is the unique ID mapped to request name
+<code class="language-plaintext highlighter-rouge">pvc-4a4c2fa3-086b-49fc-a1ef-fd8b0768f4b1</code></p>
 
-### RBD unique ID and omap details mapping
+<h3 id="rbd-unique-id-and-omap-details-mapping">RBD unique ID and omap details mapping</h3>
 
-Let's get the list of keys cephcsi stores with this unique ID
+<p>Let’s get the list of keys cephcsi stores with this unique ID</p>
 
-```bash=
-sh-4.4# rados listomapkeys csi.volume.92837648-1431-11eb-8990-0242ac110005 --pool=replicapool
+<pre><code class="language-bash=">sh-4.4# rados listomapkeys csi.volume.92837648-1431-11eb-8990-0242ac110005 --pool=replicapool
 csi.imageid
 csi.imagename
 csi.volname
-```
+</code></pre>
 
-`csi.volume.92837648-1431-11eb-8990-0242ac110005` is the object cephcsi creates
+<p><code class="language-plaintext highlighter-rouge">csi.volume.92837648-1431-11eb-8990-0242ac110005</code> is the object cephcsi creates
 to store individual image details and its always unique and last part of the
-object is the unique ID that we got from Request Name mapping.
+object is the unique ID that we got from Request Name mapping.</p>
 
-For RBD, cephcsi stores 3 keys in the unique object
+<p>For RBD, cephcsi stores 3 keys in the unique object</p>
 
-1. csi.imageid is the key which holds the imageid which is required by cephcsi
-   to deletion operation.
-2. csi.imagename which holds the RBD image name.
-3. csi.volname holds the request name.
+<ol>
+  <li>csi.imageid is the key which holds the imageid which is required by cephcsi
+to deletion operation.</li>
+  <li>csi.imagename which holds the RBD image name.</li>
+  <li>csi.volname holds the request name.</li>
+</ol>
 
-Let's get all the values of these keys
+<p>Let’s get all the values of these keys</p>
 
-**Note:** Am listing all the values stored in the
-`csi.volume.92837648-1431-11eb-8990-0242ac110005` object
+<p><strong>Note:</strong> Am listing all the values stored in the
+<code class="language-plaintext highlighter-rouge">csi.volume.92837648-1431-11eb-8990-0242ac110005</code> object</p>
 
-```bash=
-sh-4.4# rados listomapvals csi.volume.92837648-1431-11eb-8990-0242ac110005 --pool=replicapool
+<pre><code class="language-bash=">sh-4.4# rados listomapvals csi.volume.92837648-1431-11eb-8990-0242ac110005 --pool=replicapool
 csi.imageid
 value (11 bytes) :
 00000000  31 30 39 36 39 35 32 32  61 35 63                 |10969522a5c|
@@ -2306,19 +2382,18 @@ value (40 bytes) :
 00000010  62 2d 34 39 66 63 2d 61  31 65 66 2d 66 64 38 62  |b-49fc-a1ef-fd8b|
 00000020  30 37 36 38 66 34 62 31                           |0768f4b1|
 00000028
-```
+</code></pre>
 
-We have seen how to track the PV -> rados omap mapping for the RBD,let's see how
-to track the CephFS rados omap data
+<p>We have seen how to track the PV -&gt; rados omap mapping for the RBD,let’s see how
+to track the CephFS rados omap data</p>
 
-## Track CephFS PVC omap data
+<h2 id="track-cephfs-pvc-omap-data">Track CephFS PVC omap data</h2>
 
-To get the omap details we need to know the cephfs metadata pool in which
-cephcsi stores the omap data. Let's get the filesystem name which is
-stored in PV CSI spec
+<p>To get the omap details we need to know the cephfs metadata pool in which
+cephcsi stores the omap data. Let’s get the filesystem name which is
+stored in PV CSI spec</p>
 
-```bash=
-[🎩︎]mrajanna@ceph $]kubectl get pv pvc-88919d42-ecdf-4737-a805-065eacdfd34f -o jsonpath='{.spec.csi}'
+<pre><code class="language-bash=">[🎩︎]mrajanna@ceph $]kubectl get pv pvc-88919d42-ecdf-4737-a805-065eacdfd34f -o jsonpath='{.spec.csi}'
 {
 	"controllerExpandSecretRef": {
 		"name": "rook-csi-cephfs-provisioner",
@@ -2339,66 +2414,64 @@ stored in PV CSI spec
 	},
 	"volumeHandle": "0001-0009-rook-ceph-0000000000000001-bff8a308-1431-11eb-b0fd-0242ac110006"
 }
-```
+</code></pre>
 
-In the above PV `myfs` is the CephFS filesystem name so let's step into the
-toolbox pod which helps us to connect to ceph cluster
+<p>In the above PV <code class="language-plaintext highlighter-rouge">myfs</code> is the CephFS filesystem name so let’s step into the
+toolbox pod which helps us to connect to ceph cluster</p>
 
-**Note:** If you are using standalone ceph cluster you can execute these commands
-from your ceph cluster
+<p><strong>Note:</strong> If you are using standalone ceph cluster you can execute these commands
+from your ceph cluster</p>
 
-```text
-To know the metadata pool for the filesystem, run
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>To know the metadata pool for the filesystem, run
 sh-4.4# ceph fs ls
 name: myfs, metadata pool: myfs-metadata, data pools: [myfs-data0 ]
-```
+</code></pre></div></div>
 
-### CephFS PV name and unique ID mapping
+<h3 id="cephfs-pv-name-and-unique-id-mapping">CephFS PV name and unique ID mapping</h3>
 
-PV name is the request name, let's get the unique ID mapped to the request name
+<p>PV name is the request name, let’s get the unique ID mapped to the request name</p>
 
-```bash=
-[🎩︎]mrajanna@ceph $]kubectl exec -it rook-ceph-tools-6c984f579-qqh7n sh -nrook-ceph
+<pre><code class="language-bash=">[🎩︎]mrajanna@ceph $]kubectl exec -it rook-ceph-tools-6c984f579-qqh7n sh -nrook-ceph
 sh-4.4# rados getomapval csi.volumes.default csi.volume.pvc-88919d42-ecdf-4737-a805-065eacdfd34f --pool=myfs-metadata --namespace=csi
 value (36 bytes) :
 00000000  62 66 66 38 61 33 30 38  2d 31 34 33 31 2d 31 31  |bff8a308-1431-11|
 00000010  65 62 2d 62 30 66 64 2d  30 32 34 32 61 63 31 31  |eb-b0fd-0242ac11|
 00000020  30 30 30 36                                       |0006|
-```
+</code></pre>
 
-`csi.volumes.default` is the object created by cephcsi to store the request
-name to unique ID mapping, For CephFS cephcsi uses `csi` namespace by
-default,for RBD its `default` rados namespace.
+<p><code class="language-plaintext highlighter-rouge">csi.volumes.default</code> is the object created by cephcsi to store the request
+name to unique ID mapping, For CephFS cephcsi uses <code class="language-plaintext highlighter-rouge">csi</code> namespace by
+default,for RBD its <code class="language-plaintext highlighter-rouge">default</code> rados namespace.</p>
 
-`bff8a308-1431-11eb-b0fd-0242ac110006` is the unique ID mapped to request name
-`pvc-88919d42-ecdf-4737-a805-065eacdfd34f`
+<p><code class="language-plaintext highlighter-rouge">bff8a308-1431-11eb-b0fd-0242ac110006</code> is the unique ID mapped to request name
+<code class="language-plaintext highlighter-rouge">pvc-88919d42-ecdf-4737-a805-065eacdfd34f</code></p>
 
-### CephFS unique ID and omap details mapping
+<h3 id="cephfs-unique-id-and-omap-details-mapping">CephFS unique ID and omap details mapping</h3>
 
-Let's get the list of keys cephcsi stores with this unique ID
+<p>Let’s get the list of keys cephcsi stores with this unique ID</p>
 
-```bash=
-sh-4.4# rados listomapkeys csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006 --pool=myfs-metadata --namespace=csi
+<pre><code class="language-bash=">sh-4.4# rados listomapkeys csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006 --pool=myfs-metadata --namespace=csi
 csi.imagename
 csi.volname
-```
+</code></pre>
 
-`csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006` is the object cephcsi creates
+<p><code class="language-plaintext highlighter-rouge">csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006</code> is the object cephcsi creates
 to store indivisual image details and its always unique and last part of the
-object is the unique ID that we got from Request Name mapping.
+object is the unique ID that we got from Request Name mapping.</p>
 
-For CephFS, cephcsi stores 2 keys in the unique object
+<p>For CephFS, cephcsi stores 2 keys in the unique object</p>
 
-1. csi.imagename which holds the CephFS subvolume name.
-2. csi.volname holds the request name.
+<ol>
+  <li>csi.imagename which holds the CephFS subvolume name.</li>
+  <li>csi.volname holds the request name.</li>
+</ol>
 
-Let's get all the values of these keys
+<p>Let’s get all the values of these keys</p>
 
-Note:- Am listing all the values stored in the
-`csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006` object
+<p>Note:- Am listing all the values stored in the
+<code class="language-plaintext highlighter-rouge">csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006</code> object</p>
 
-```bash=
-sh-4.4# rados listomapvals csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006 --pool=myfs-metadata --namespace=csi
+<pre><code class="language-bash=">sh-4.4# rados listomapvals csi.volume.bff8a308-1431-11eb-b0fd-0242ac110006 --pool=myfs-metadata --namespace=csi
 csi.imagename
 value (44 bytes) :
 00000000  63 73 69 2d 76 6f 6c 2d  62 66 66 38 61 33 30 38  |csi-vol-bff8a308|
@@ -2412,112 +2485,100 @@ value (40 bytes) :
 00000010  66 2d 34 37 33 37 2d 61  38 30 35 2d 30 36 35 65  |f-4737-a805-065e|
 00000020  61 63 64 66 64 33 34 66                           |acdfd34f|
 00000028
-```]]></content><author><name></name></author><summary type="html"><![CDATA[This blog will help you to understand how to track the internal rados omap data stored by cephcsi for cephfs and rbd pvc.]]></summary></entry><entry><title type="html">Install Rook in minikube</title><link href="https://mrajanna.com/setup-minikube-rook/" rel="alternate" type="text/html" title="Install Rook in minikube" /><published>2020-10-11T00:00:00+02:00</published><updated>2020-10-11T00:00:00+02:00</updated><id>https://mrajanna.com/setup-minikube-rook</id><content type="html" xml:base="https://mrajanna.com/setup-minikube-rook/"><![CDATA[This blog will help you out to install and setup rook in a minikube vm, before
-you continue make sure you have installed minikube on your local system
+</code></pre>]]></content><author><name></name></author><summary type="html"><![CDATA[This blog will help you to understand how to track the internal rados omap data stored by cephcsi for cephfs and rbd pvc.]]></summary></entry><entry><title type="html">Install Rook in minikube</title><link href="https://mrajanna.com/setup-minikube-rook/" rel="alternate" type="text/html" title="Install Rook in minikube" /><published>2020-10-11T00:00:00+02:00</published><updated>2020-10-11T00:00:00+02:00</updated><id>https://mrajanna.com/setup-minikube-rook</id><content type="html" xml:base="https://mrajanna.com/setup-minikube-rook/"><![CDATA[<p>This blog will help you out to install and setup rook in a minikube vm, before
+you continue make sure you have installed minikube on your local system</p>
 
-## Install minikube
+<h2 id="install-minikube">Install minikube</h2>
 
-```bash=
-[🎩︎]mrajanna@localhost $]curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 [🎩︎]mrajanna@localhost $]sudo install minikube-linux-amd64 /usr/local/bin/minikube
-```
+</code></pre>
 
-## create kubernetes cluster using minikube
+<h2 id="create-kubernetes-cluster-using-minikube">create kubernetes cluster using minikube</h2>
 
-```bash=
-[🎩︎]mrajanna@localhost $]minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"
+</code></pre>
 
-I will be using `kvm2` in this blog as a vmdriver to  create minikube vm, rook
+<p>I will be using <code class="language-plaintext highlighter-rouge">kvm2</code> in this blog as a vmdriver to  create minikube vm, rook
 expects us to have a raw device on the nodes where we are creating a ceph
 cluster. using kvm2 we can attach devices to the minikube vm.You can also
-select different vm drivers when installing the minikube.
+select different vm drivers when installing the minikube.</p>
 
-### Create a folder for rook to store the ceph information
+<h3 id="create-a-folder-for-rook-to-store-the-ceph-information">Create a folder for rook to store the ceph information</h3>
 
-```bash=
-[🎩︎]mrajanna@localhost $]minikube ssh "sudo mkdir -p /mnt/vda1/var/lib/rook;sudo ln -s /mnt/vda1/var/lib/rook /var/lib/rook"
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]minikube ssh "sudo mkdir -p /mnt/vda1/var/lib/rook;sudo ln -s /mnt/vda1/var/lib/rook /var/lib/rook"
+</code></pre>
 
-### Add a disk to minikube vm
+<h3 id="add-a-disk-to-minikube-vm">Add a disk to minikube vm</h3>
 
-```bash=
-[🎩︎]mrajanna@localhost $]sudo -S qemu-img create -f raw /var/lib/libvirt/images/minikube-box-vm-disk-50G 50G
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]sudo -S qemu-img create -f raw /var/lib/libvirt/images/minikube-box-vm-disk-50G 50G
 [🎩︎]mrajanna@localhost $]virsh -c qemu:///system attach-disk minikube --source /var/lib/libvirt/images/minikube-box-vm-disk-50G --target vdb --cache none
 [🎩︎]mrajanna@localhost $]virsh -c qemu:///system reboot --domain minikube
-```
+</code></pre>
 
-Assuming you have already installed libvirt virsh etc. Am attaching a device
-called `vdb` to the minikube vm to create ceph cluster.
+<p>Assuming you have already installed libvirt virsh etc. Am attaching a device
+called <code class="language-plaintext highlighter-rouge">vdb</code> to the minikube vm to create ceph cluster.</p>
 
-Note:
+<p>Note:</p>
 
-```note
-You can do `minikube ssh` and step inside the minikube vm and check `/dev/vdb` is created.
+<pre><code class="language-note">You can do `minikube ssh` and step inside the minikube vm and check `/dev/vdb` is created.
 sometimes the disk wont show up immidiately for that you can need to  start
 the minikube again.
-```
+</code></pre>
 
-```bash=
-[🎩︎]mrajanna@localhost $]minikube ssh
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]minikube ssh
 $ ls /dev/vdb
 $ exit
 [🎩︎]mrajanna@localhost $]minikube start --force --memory="4096" --cpus="2" -b kubeadm --kubernetes-version="v1.19.2" --driver="kvm2" --feature-gates="BlockVolume=true,CSIBlockVolume=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true"
-```
+</code></pre>
 
-to verify the kubernetes cluster  is created you can run below command
+<p>to verify the kubernetes cluster  is created you can run below command</p>
 
-```console
-[🎩︎]mrajanna@localhost $]minikube kubectl -- cluster-info
-```
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">[🎩︎]mrajanna@localhost $</span><span class="o">]</span>minikube kubectl <span class="nt">--</span> cluster-info
+</code></pre></div></div>
 
-### Install Rook
+<h3 id="install-rook">Install Rook</h3>
 
-As the kubernetes cluster is installed we can start installing the rook now,
+<p>As the kubernetes cluster is installed we can start installing the rook now,
 for that we need to first download the  rook github project and check out the
-release branch.
+release branch.</p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]git clone git@github.com:rook/rook.git
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]git clone git@github.com:rook/rook.git
 [🎩︎]mrajanna@localhost $]git checkout v1.4.5
-```
+</code></pre>
 
-All the kubernetes templates which are required for the rook installation are
-localted at `cluster/examples/kubernetes/ceph`
+<p>All the kubernetes templates which are required for the rook installation are
+localted at <code class="language-plaintext highlighter-rouge">cluster/examples/kubernetes/ceph</code></p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]cd rook/cluster/examples/kubernetes/ceph
-```
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]cd rook/cluster/examples/kubernetes/ceph
+</code></pre>
 
-To have a complete ceph cluster, we need to install below yaml files
+<p>To have a complete ceph cluster, we need to install below yaml files</p>
 
-```text
-common.yaml         ----> CRD's and RBAC's required for operator
-operator.yaml       ----> Operator deployment
-cluster-test.yaml   ----> The ceph cluster CRD
-pool-test.yaml      ----> block pool CRD
-filesystem.yaml     ----> ceph filesystem CRD
-toolbox.yaml        ----> toolbox deployment to execute ceph commands
-```
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>common.yaml         ----&gt; CRD's and RBAC's required for operator
+operator.yaml       ----&gt; Operator deployment
+cluster-test.yaml   ----&gt; The ceph cluster CRD
+pool-test.yaml      ----&gt; block pool CRD
+filesystem.yaml     ----&gt; ceph filesystem CRD
+toolbox.yaml        ----&gt; toolbox deployment to execute ceph commands
+</code></pre></div></div>
 
-Files ending with *_test.yaml* should be used only for testing not for
-production.
+<p>Files ending with <em>_test.yaml</em> should be used only for testing not for
+production.</p>
 
-Lets create all the kubernetes templates to create ceph cluster
+<p>Lets create all the kubernetes templates to create ceph cluster</p>
 
-```bash=
-kubectl create -f common.yaml
+<pre><code class="language-bash=">kubectl create -f common.yaml
 kubectl create -f operator.yaml
 kubectl create -f cluster-test.yaml
 kubectl create -f pool-test.yaml
 kubectl create -f filesystem.yaml
 kubectl create -f toolbox.yaml
-```
+</code></pre>
 
-Lets wait for few minutes and Verify all the pods are running
+<p>Lets wait for few minutes and Verify all the pods are running</p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl get po -nrook-ceph
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl get po -nrook-ceph
 NAME                                            READY   STATUS      RESTARTS   AGE
 csi-cephfsplugin-7llbt                          3/3     Running     0          22h
 csi-cephfsplugin-provisioner-5c65b94c8d-tljqd   0/6     Pending     0          22h
@@ -2534,24 +2595,22 @@ rook-ceph-osd-0-77b585d64-5pfcq                 1/1     Running     0          2
 rook-ceph-osd-prepare-minikube-hqqj7            0/1     Completed   0          15h
 rook-ceph-tools-6c984f579-m6ccc                 1/1     Running     0          22h
 rook-discover-hjj6c                             1/1     Running     0          22h
-```
+</code></pre>
 
-Check ceph filesystem  and block pool is create
+<p>Check ceph filesystem  and block pool is create</p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl -n rook-ceph get cephfilesystems myfs
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl -n rook-ceph get cephfilesystems myfs
 NAME   ACTIVEMDS   AGE
 myfs   1           22h
 [🎩︎]mrajanna@localhost $]kubectl -n rook-ceph get  cephblockpools replicapool
 NAME          AGE
 replicapool   22h
-```
+</code></pre>
 
-Let exec into the ceph toolbox pod and verify `ceph status`, pools and
-filesystem  created in ceph.
+<p>Let exec into the ceph toolbox pod and verify <code class="language-plaintext highlighter-rouge">ceph status</code>, pools and
+filesystem  created in ceph.</p>
 
-```bash=
-[🎩︎]mrajanna@localhost $]kubectl exec -it rook-ceph-tools-6c984f579-m6ccc sh -nrook-ceph
+<pre><code class="language-bash=">[🎩︎]mrajanna@localhost $]kubectl exec -it rook-ceph-tools-6c984f579-m6ccc sh -nrook-ceph
 sh-4.4# ceph -s
   cluster:
     id:     f50de5f0-5d0a-4621-a6fb-04192efdcc79
@@ -2585,8 +2644,8 @@ sh-4.4# ceph osd lspools
 sh-4.4# ceph fs ls
 name: myfs, metadata pool: myfs-metadata, data pools: [myfs-data0 ]
 sh-4.4#
-```
+</code></pre>
 
-Now we have create ceph cluster using rook in minikube. The commands we have
+<p>Now we have create ceph cluster using rook in minikube. The commands we have
 exectuted is available as a
-[shell-script](https://gist.github.com/Madhu-1/2f5db960884671942540f06c599e50c2)]]></content><author><name></name></author><summary type="html"><![CDATA[This blog will help you out to install and setup rook in a minikube vm, before you continue make sure you have installed minikube on your local system]]></summary></entry></feed>
+<a href="https://gist.github.com/Madhu-1/2f5db960884671942540f06c599e50c2">shell-script</a></p>]]></content><author><name></name></author><summary type="html"><![CDATA[This blog will help you out to install and setup rook in a minikube vm, before you continue make sure you have installed minikube on your local system]]></summary></entry></feed>

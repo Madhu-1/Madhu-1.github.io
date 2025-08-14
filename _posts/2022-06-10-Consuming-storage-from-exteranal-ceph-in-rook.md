@@ -11,7 +11,7 @@ ceph cluster.
 
 This doc assumes that you already set up the Rook with an external ceph cluster.
 
-Please refer to [doc](../setup-external-ceph-cluster-with-rook) on how to setup
+Please refer to [doc](../setup-external-ceph-with-rook) on how to setup
 external ceph cluster with Rook.
 
 * CephBlockPool
